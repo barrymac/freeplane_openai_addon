@@ -2,3 +2,4 @@
 
 Install add on using the Gpt-AddOn-v0.2.addon.mm file , the rest of the files are for development.
 
+![demo](demo/demo.gif)
