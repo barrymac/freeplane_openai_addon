@@ -3,10 +3,10 @@
 ![demo](demo/demo.gif)
 
 ## Usage
-It's not ready for use yet, because there's a mysterious network permissions issue I'm still working out. 
-but you can try it out by installing the groovy script into the freeplace ~/.freeplane/scripts directory and using the groovy script directly.   
+There's a mysterious network permissions issue that sometimes comes up that I'm still working out.  
 
 ## Development
+Prompt suggestions are very welcome, this is only a start!!
 
 ### Setup
 Install add on using the Gpt-AddOn-v0.2.addon.mm file , the rest of the files are for development.
