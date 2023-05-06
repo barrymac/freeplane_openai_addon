@@ -1,3 +1,4 @@
+
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 import groovy.util.Eval
@@ -22,21 +23,6 @@ generate_ideas(apiUrl, apiKey, node, prompt)
 //    generate_ideas(apiUrl, apiKey, child)
 //}
 
-def generate_ideas(apiUrl, apiKey, parentNode, prompt) {
-    String currentNodeText = parentNode.getText()
-
-    List<Map<String, String>> messages = [
-            [role: 'user', content: prompt]
-    ]
-
-    def response = call_openai_chat(apiUrl, apiKey, messages)
-    logger.info("GPT response: $response")
-
-    def ideas = response.split('\n')
-    ideas.each { idea ->
-        def newNode = parentNode.createChild(idea.trim())
-    }
-}
 
 def call_openai_chat(String apiUrl, String apiKey, List<Map<String, String>> messages,
                      String model = 'gpt-3.5-turbo', Double temperature = 0.7,
@@ -73,6 +59,24 @@ def call_openai_chat(String apiUrl, String apiKey, List<Map<String, String>> mes
 
     return assistantMessage
 }
+
+//// Function to generate ideas and create child nodes
+def generate_ideas(apiUrl, apiKey, parentNode, prompt) {
+    String currentNodeText = parentNode.getText()
+
+    List<Map<String, String>> messages = [
+            [role: 'user', content: prompt]
+    ]
+
+    def response = call_openai_chat(apiUrl, apiKey, messages)
+    logger.info("GPT response: $response")
+
+    def ideas = response.split('\n')
+    ideas.each { idea ->
+        def newNode = parentNode.createChild(idea.trim())
+    }
+}
+
 
 // Function to make the API call
 def make_api_call(String apiUrl, String apiKey, Map<String, Object> payloadMap) {

@@ -1,3 +1,4 @@
+
 @Grab(group = 'org.codehaus.gpars', module = 'gpars', version = '1.2.1')
 
 import groovy.json.JsonOutput
@@ -95,6 +96,7 @@ def listGParsPoolMethods() {
     }
 }
 
+// Function to make the API call
 def make_api_call(String apiUrl, String apiKey, Map<String, Object> payloadMap) {
     def responseText = ""
 
