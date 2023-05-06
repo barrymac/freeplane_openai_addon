@@ -1,6 +1,6 @@
 <map version="freeplane 1.11.1">
 <!--To view this file, download free mind mapping software Freeplane from https://www.freeplane.org -->
-<node TEXT="Gpt-AddOn" FOLDED="false" ID="ID_696401721" CREATED="1610381621824" MODIFIED="1683255699396" LINK="https://github.com/barrymac/freeplane" BACKGROUND_COLOR="#97c7dc" STYLE="oval">
+<node TEXT="Gpt-AddOn" FOLDED="false" ID="ID_696401721" LINK="https://github.com/barrymac/freeplane_openai_addon" BACKGROUND_COLOR="#97c7dc" STYLE="oval">
 <font SIZE="16" BOLD="true" ITALIC="true"/>
 <hook NAME="MapStyle">
     <properties show_icon_for_attributes="true" edgeColorConfiguration="#808080ff,#ff0000ff,#0000ffff,#00ff00ff,#ff00ffff,#00ffffff,#7c0000ff,#00007cff,#007c00ff,#7c007cff,#007c7cff,#7c7c00ff" show_note_icons="true" associatedTemplateLocation="template:/standard-1.6.mm" fit_to_viewport="false"/>
@@ -73,7 +73,7 @@
 <attribute NAME="name" VALUE="gptAddOn"/>
 <attribute NAME="version" VALUE="v0.2"/>
 <attribute NAME="author" VALUE="barry"/>
-<attribute NAME="freeplaneVersionFrom" VALUE="1.9" OBJECT="org.freeplane.features.format.FormattedNumber|1.9"/>
+<attribute NAME="freeplaneVersionFrom" VALUE="v1.9" OBJECT="org.freeplane.features.format.FormattedObject|java.lang.String&amp;#x7c;v1.9|number:decimal:#0.####"/>
 <attribute NAME="freeplaneVersionTo" VALUE=""/>
 <attribute NAME="updateUrl" VALUE="http://github.com"/>
 <richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
@@ -522,7 +522,6 @@
   </body>
 </html></richcontent>
 <attribute_layout NAME_WIDTH="104.25 pt"/>
-<attribute NAME="${name}-icon.png" VALUE=""/>
 </node>
 </node>
 </map>
