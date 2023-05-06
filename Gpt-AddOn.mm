@@ -1,6 +1,6 @@
-<map version="freeplane 1.11.1">
+<map version="freeplane 1.9.13">
 <!--To view this file, download free mind mapping software Freeplane from https://www.freeplane.org -->
-<node TEXT="Gpt-AddOn" FOLDED="false" ID="ID_696401721" LINK="https://github.com/barrymac/freeplane_openai_addon" BACKGROUND_COLOR="#97c7dc" STYLE="oval">
+<node TEXT="Gpt-AddOn" FOLDED="false" ID="ID_696401721" CREATED="1683390537356" MODIFIED="1683390999613" LINK="https://github.com/barrymac/freeplane_openai_addon" BACKGROUND_COLOR="#97c7dc" STYLE="oval">
 <font SIZE="16" BOLD="true" ITALIC="true"/>
 <hook NAME="MapStyle">
     <properties show_icon_for_attributes="true" edgeColorConfiguration="#808080ff,#ff0000ff,#0000ffff,#00ff00ff,#ff00ffff,#00ffffff,#7c0000ff,#00007cff,#007c00ff,#7c007cff,#007c7cff,#7c7c00ff" mapUsesOwnSaveOptions="true" save_modification_times="false" save_last_visited_node="default" show_note_icons="true" associatedTemplateLocation="template:/standard-1.6.mm" save_folding="save_folding_if_map_is_changed" fit_to_viewport="false"/>
@@ -8,7 +8,7 @@
 <map_styles>
 <stylenode LOCALIZED_TEXT="styles.root_node" STYLE="oval" UNIFORM_SHAPE="true" VGAP_QUANTITY="24 pt">
 <font SIZE="24"/>
-<stylenode LOCALIZED_TEXT="styles.predefined" POSITION="bottom_or_right" STYLE="bubble">
+<stylenode LOCALIZED_TEXT="styles.predefined" STYLE="bubble" POSITION="bottom_or_right">
 <stylenode LOCALIZED_TEXT="default" ID="ID_271890427" ICON_SIZE="12 pt" COLOR="#000000" STYLE="fork">
 <arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="200" DASH="" FONT_SIZE="9" FONT_FAMILY="SansSerif" DESTINATION="ID_271890427" STARTARROW="NONE" ENDARROW="DEFAULT"/>
 <font NAME="SansSerif" SIZE="10" BOLD="false" ITALIC="false"/>
@@ -26,7 +26,7 @@
 </stylenode>
 <stylenode LOCALIZED_TEXT="defaultstyle.selection" BACKGROUND_COLOR="#afd3f7" BORDER_COLOR_LIKE_EDGE="false" BORDER_COLOR="#afd3f7"/>
 </stylenode>
-<stylenode LOCALIZED_TEXT="styles.user-defined" POSITION="bottom_or_right" STYLE="bubble">
+<stylenode LOCALIZED_TEXT="styles.user-defined" STYLE="bubble" POSITION="bottom_or_right">
 <stylenode LOCALIZED_TEXT="styles.topic" COLOR="#18898b" STYLE="fork">
 <font NAME="Liberation Sans" SIZE="10" BOLD="true"/>
 </stylenode>
@@ -41,7 +41,7 @@
 <arrowlink COLOR="#003399" TRANSPARENCY="255" DESTINATION="ID_67550811"/>
 </stylenode>
 </stylenode>
-<stylenode LOCALIZED_TEXT="styles.AutomaticLayout" POSITION="bottom_or_right" STYLE="bubble">
+<stylenode LOCALIZED_TEXT="styles.AutomaticLayout" STYLE="bubble" POSITION="bottom_or_right">
 <stylenode LOCALIZED_TEXT="AutomaticLayout.level.root" COLOR="#000000" STYLE="oval" SHAPE_HORIZONTAL_MARGIN="10 pt" SHAPE_VERTICAL_MARGIN="10 pt">
 <font SIZE="18"/>
 </stylenode>
@@ -75,10 +75,11 @@
 <attribute NAME="author" VALUE="barry"/>
 <attribute NAME="freeplaneVersionFrom" VALUE="v1.9" OBJECT="org.freeplane.features.format.FormattedObject|java.lang.String&amp;#x7c;v1.9|number:decimal:#0.####"/>
 <attribute NAME="freeplaneVersionTo" VALUE=""/>
-<attribute NAME="downloadUrl" VALUE="${homepage}/releases/download/${version}/"/>
-<attribute NAME="changelogUrl" VALUE="${homepage}/releases/latest/download/history.md"/>
-<attribute NAME="addonsMenu" VALUE="/menu_bar/Others"/>
-<attribute NAME="updateUrl" VALUE="${homepage}/releases/latest/download/version.properties"/>
+<attribute NAME="homepage" VALUE="github.com/barrymac/freeplane_openai_addon"/>
+<attribute NAME="downloadUrl" VALUE="https://${homepage}/releases/download/${version}/"/>
+<attribute NAME="changelogUrl" VALUE="https://${homepage}/releases/latest/download/history.md"/>
+<attribute NAME="addonsMenu" VALUE="/menu_bar/OpenAI"/>
+<attribute NAME="updateUrl" VALUE="https://${homepage}/releases/latest/download/version.properties"/>
 <richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
   <head>
@@ -93,67 +94,28 @@
     </p>
     <ul>
       <li>
-        <b>name</b>: The name of the add-on, normally a technically one (no spaces, no special characters except _.-).
+        name: The name of the add-on, normally a technically one (no spaces, no special characters except _.-).
       </li>
       <li>
-        <b>author</b>: Author's name(s) and (optionally) email adresses.
+        author: Author's name(s) and (optionally) email adresses.
       </li>
       <li>
-        <b>version</b>: Since it's difficult to protect numbers like 1.0 from Freeplane's number parser it's advised to prepend a 'v' to the number, e.g. 'v1.0'.
+        version: Since it's difficult to protect numbers like 1.0 from Freeplane's number parser it's advised to prepend a 'v' to the number, e.g. 'v1.0'.
       </li>
       <li>
-        <b>freeplane-version-from</b>: The oldest compatible Freeplane version. The add-on will not be installed if the Freeplane version is too old.
+        freeplane-version-from: The oldest compatible Freeplane version. The add-on will not be installed if the Freeplane version is too old.
       </li>
       <li>
-        <b>freeplane-version-to</b>: Normally empty: The newest compatible Freeplane version. The add-on will not be installed if the Freeplane version is too new.
+        freeplane-version-to: Normally empty: The newest compatible Freeplane version. The add-on will not be installed if the Freeplane version is too new.
       </li>
       <li>
-        <b>updateUrl</b>: URL of the file containing information (version, download url) on the latest version of this add-on.<br/>By default: &quot;${homepage}/version.properties&quot;<br/>Examples:
-
-        <ul>
-          <li>
-            <b>For GitHub releases</b>: &quot;${homepage}/releases/latest/download/version.properties&quot;
-          </li>
-          <li>
-            <b>For Github in a folder named like the add-on&#xa0;(in the main repository branch)</b>: &quot;${homepage}/raw/main/${name}/version.properties
-          </li>
-          <li>
-            <b>For Github in a folder named like the add-on&#xa0;(in a repository branch named as the add-on version)</b>: &quot;${homepage}/raw/${version}/${name}/version.properties&quot;
-          </li>
-        </ul>
-      </li>
-      <li>
-        <b>addonsMenu</b>: Defines the addon's main menu location, defaults menu 'main_menu_scripting'.<br/>Use developer tool menuItemInfo to inspect menu location keys.<br/>This attribute is mandatory.<br/>Example: '/menu_bar/myAddons'
-      </li>
-      <li>
-        <b>downloadUrl</b>: URL from the place where the AddOn file will be available for downloading.<br/>By default is the same as the homepage.<br/>You can define a different place or a subfolder of the homepage.<br/>Examples:
-
-        <ul>
-          <li>
-            <b>homepage subfolder 'files'</b>: &quot;${homepage}/files/&quot;
-          </li>
-          <li>
-            <b>For GitHub releases (release named as the add-on version)</b>: ${homepage}/releases/download/${version}/
-          </li>
-        </ul>
-      </li>
-      <li>
-        <b>changelogUrl</b>: URL from the place where the history file will be available for downloading.<br/>By default is &quot;${homepage}/history.md&quot;<br/>You can define a different place or a subfolder of the homepage and a different file name and extension if wanted.<br/>Examples:
-
-        <ul>
-          <li>
-            <b>txt file</b>: &quot;${homepage}/history.md&quot;
-          </li>
-          <li>
-            <b>For GitHub releases as Markdown file</b>: &quot;${homepage}/releases/latest/download/history.md&quot;
-          </li>
-        </ul>
+        updateUrl: URL of the file containing information (version, download url) on the latest version of this add-on. By default: &quot;${homepage}/version.properties&quot;
       </li>
     </ul>
   </body>
 </html>
 </richcontent>
-<node TEXT="description" POSITION="top_or_left" ID="ID_365830098">
+<node TEXT="description" POSITION="left" ID="ID_365830098" CREATED="1683390537376" MODIFIED="1683390907387">
 <edge COLOR="#ff0000"/>
 <richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
@@ -165,7 +127,7 @@
       Description would be awkward to edit as an attribute.
     </p>
     <p>
-      So you have to put the add-on description as a child of the <i>'description'</i>&#xa0;node.
+      So you have to put the add-on description as a child of the <i>'description'</i>&nbsp;node.
     </p>
     <p>
       To translate the description you have to define a translation for the key 'addons.${name}.description'.
@@ -173,9 +135,9 @@
   </body>
 </html>
 </richcontent>
-<node TEXT="Add on to use GPT api to generate ideas" ID="ID_110054152"/>
+<node TEXT="Add on to use GPT api to generate ideas" ID="ID_110054152" CREATED="1683390537378" MODIFIED="1683390537378"/>
 </node>
-<node TEXT="changes" POSITION="top_or_left" ID="ID_138977336">
+<node TEXT="changes" POSITION="left" ID="ID_138977336" CREATED="1683390537378" MODIFIED="1683390907389">
 <edge COLOR="#0000ff"/>
 <richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
@@ -190,7 +152,7 @@
 </html>
 </richcontent>
 </node>
-<node TEXT="license" FOLDED="true" POSITION="top_or_left" ID="ID_950695085">
+<node TEXT="license" FOLDED="true" POSITION="left" ID="ID_950695085" CREATED="1683390537379" MODIFIED="1683390907392">
 <edge COLOR="#00ff00"/>
 <richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
@@ -205,14 +167,14 @@
       
     </p>
     <p>
-      The License text has to be entered as a child of the <i>'license'</i>&#xa0;node, either as plain text or as HTML.
+      The License text has to be entered as a child of the <i>'license'</i>&nbsp;node, either as plain text or as HTML.
     </p>
   </body>
 </html>
 </richcontent>
-<node TEXT="&#xa;This add-on is free software: you can redistribute it and/or modify&#xa;it under the terms of the GNU General Public License as published by&#xa;the Free Software Foundation, either version 2 of the License, or&#xa;(at your option) any later version.&#xa;&#xa;This program is distributed in the hope that it will be useful,&#xa;but WITHOUT ANY WARRANTY; without even the implied warranty of&#xa;MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&#xa;GNU General Public License for more details.&#xa;" ID="ID_726417928"/>
+<node TEXT="&#xa;This add-on is free software: you can redistribute it and/or modify&#xa;it under the terms of the GNU General Public License as published by&#xa;the Free Software Foundation, either version 2 of the License, or&#xa;(at your option) any later version.&#xa;&#xa;This program is distributed in the hope that it will be useful,&#xa;but WITHOUT ANY WARRANTY; without even the implied warranty of&#xa;MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&#xa;GNU General Public License for more details.&#xa;" ID="ID_726417928" CREATED="1683390537381" MODIFIED="1683390537381"/>
 </node>
-<node TEXT="preferences.xml" POSITION="top_or_left" ID="ID_902316079">
+<node TEXT="preferences.xml" POSITION="left" ID="ID_902316079" CREATED="1683390537381" MODIFIED="1683390907397">
 <edge COLOR="#ff00ff"/>
 <richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
@@ -224,107 +186,14 @@
       <font color="#000000" face="SansSerif, sans-serif">The child node contains the add-on configuration as an extension to mindmapmodemenu.xml (in Tools-&gt;Preferences-&gt;Add-ons). </font>
     </p>
     <p>
-      <font color="#000000" face="SansSerif, sans-serif">&#xa0;</font>
+      <font color="#000000" face="SansSerif, sans-serif">Every property in the configuration should receive a default value in <i>default.properties</i>&nbsp;node.</font>
     </p>
-    <p>
-      <font color="#000000" face="SansSerif, sans-serif">Every property in the configuration should receive a default value in <i>default.properties</i>&#xa0;node. </font>
-    </p>
-    <p>
-      
-    </p>
-    <p>
-      <b>Automatic way (new since v0.9.30): </b>
-    </p>
-    <p>
-      you can add the preferences parameters as attributes to this node and then, by checking AddOn it will:
-    </p>
-    <ul>
-      <li>
-        create the child node containing <font color="#000000" face="SansSerif, sans-serif">the add-on configuration as an extension to mindmapmodemenu.xml</font>
-      </li>
-      <li>
-        add the properties to the <font color="#000000" face="SansSerif, sans-serif"><i>default.properties</i>&#xa0;node</font>
-      </li>
-      <li>
-        add the properties to the <i>translations</i><font color="#000000" face="SansSerif, sans-serif">&#xa0;node</font>
-      </li>
-    </ul>
-    <p>
-      
-    </p>
-    <p>
-      <b>How? </b>
-    </p>
-    <ul>
-      <li>
-        Add an attribute for each preference.
-      </li>
-      <li>
-        the attribute name should be the preference name.
-      </li>
-      <li>
-        as attribute value you should specify if it is a <b>boolean</b>, <b>string</b>&#xa0;or <b>number</b>&#xa0;preference
-      </li>
-      <li>
-        if it is a <b>number</b>&#xa0;preference. you should add the min and max value for it (separed by comma)
-      </li>
-    </ul>
-    <p>
-      
-    </p>
-    <p>
-      <b>Example: </b>
-    </p>
-    <p>
-      
-    </p>
-    <p>
-      Attributes:
-    </p>
-    <table border="0" style="width: 80%; border-top-style: solid; border-right-style: solid; border-bottom-style: solid; border-left-style: solid; border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0">
-      <tr>
-        <td valign="top" style="width: 50%; border-top-style: solid; border-right-style: solid; border-bottom-style: solid; border-left-style: solid; border-top-width: 1; border-right-width: 1; border-bottom-width: 1; border-left-width: 1">
-          <p style="margin-top: 1; margin-right: 1; margin-bottom: 1; margin-left: 1">
-            isStudent
-          </p>
-        </td>
-        <td valign="top" style="width: 50%; border-top-style: solid; border-right-style: solid; border-bottom-style: solid; border-left-style: solid; border-top-width: 1; border-right-width: 1; border-bottom-width: 1; border-left-width: 1">
-          <p style="margin-top: 1; margin-right: 1; margin-bottom: 1; margin-left: 1">
-            boolean
-          </p>
-        </td>
-      </tr>
-      <tr>
-        <td valign="top" style="width: 50%; border-top-style: solid; border-right-style: solid; border-bottom-style: solid; border-left-style: solid; border-top-width: 1; border-right-width: 1; border-bottom-width: 1; border-left-width: 1">
-          <p style="margin-top: 1; margin-right: 1; margin-bottom: 1; margin-left: 1">
-            userName
-          </p>
-        </td>
-        <td valign="top" style="width: 50%; border-top-style: solid; border-right-style: solid; border-bottom-style: solid; border-left-style: solid; border-top-width: 1; border-right-width: 1; border-bottom-width: 1; border-left-width: 1">
-          <p style="margin-top: 1; margin-right: 1; margin-bottom: 1; margin-left: 1">
-            string
-          </p>
-        </td>
-      </tr>
-      <tr>
-        <td valign="top" style="width: 50%; border-top-style: solid; border-right-style: solid; border-bottom-style: solid; border-left-style: solid; border-top-width: 1; border-right-width: 1; border-bottom-width: 1; border-left-width: 1">
-          <p style="margin-top: 1; margin-right: 1; margin-bottom: 1; margin-left: 1">
-            birthMonth
-          </p>
-        </td>
-        <td valign="top" style="width: 50%; border-top-style: solid; border-right-style: solid; border-bottom-style: solid; border-left-style: solid; border-top-width: 1; border-right-width: 1; border-bottom-width: 1; border-left-width: 1">
-          <p style="margin-top: 1; margin-right: 1; margin-bottom: 1; margin-left: 1">
-            number,1,12
-          </p>
-        </td>
-      </tr>
-    </table>
   </body>
 </html>
 </richcontent>
-<node TEXT="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#xa;&lt;preferences_structure xmlns=&quot;http://freeplane.sf.net/ui/preferences/1.0&quot;&gt;&#xa;    &lt;tabbed_pane&gt;&#xa;        &lt;tab name=&quot;plugins&quot;&gt;&#xa;            &lt;separator name=&quot;gpt_plugin&quot;&gt;&#xa;                &lt;string name=&quot;openai_key&quot;/&gt;&#xa;                &lt;string name=&quot;gpt_prompt&quot;/&gt;&#xa;            &lt;/separator&gt;&#xa;        &lt;/tab&gt;&#xa;    &lt;/tabbed_pane&gt;&#xa;&lt;/preferences_structure&gt;" ID="ID_516268456"/>
+<node TEXT="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#xa;&lt;preferences_structure xmlns=&quot;http://freeplane.sf.net/ui/preferences/1.0&quot;&gt;&#xa;    &lt;tabbed_pane&gt;&#xa;        &lt;tab name=&quot;plugins&quot;&gt;&#xa;            &lt;separator name=&quot;gpt_plugin&quot;&gt;&#xa;                &lt;string name=&quot;openai_key&quot;/&gt;&#xa;                &lt;string name=&quot;gpt_prompt&quot;/&gt;&#xa;            &lt;/separator&gt;&#xa;        &lt;/tab&gt;&#xa;    &lt;/tabbed_pane&gt;&#xa;&lt;/preferences_structure&gt;" ID="ID_516268456" CREATED="1683390537382" MODIFIED="1683390537382"/>
 </node>
-<node TEXT="default.properties" POSITION="top_or_left" ID="ID_769124461">
+<node TEXT="default.properties" POSITION="left" ID="ID_769124461" CREATED="1683390537382" MODIFIED="1683390907401">
 <edge COLOR="#00ffff"/>
 <richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
@@ -346,14 +215,14 @@
   </body>
 </html>
 </richcontent>
-<node TEXT="openai.key&#x9;Gpt-AddOn" ID="ID_1225509203">
+<node TEXT="openai.key&#x9;Gpt-AddOn" ID="ID_1225509203" CREATED="1683390537384" MODIFIED="1683390537384">
 <attribute_layout VALUE_WIDTH="123 pt"/>
 <attribute NAME="openai_key" VALUE=""/>
 <attribute NAME="gpt_prompt" VALUE="&quot;Please generate a list of 5 ideas related to this: $currentNodeText in the context of $node.mindMap.root.text. Separate each idea with a newline.&quot;"/>
 <attribute NAME="${name}.icon" VALUE="/images/${name}-icon.png"/>
 </node>
 </node>
-<node TEXT="translations" POSITION="top_or_left" ID="ID_1606264590">
+<node TEXT="translations" POSITION="left" ID="ID_1606264590" CREATED="1683390537384" MODIFIED="1683390907404">
 <edge COLOR="#7c0000"/>
 <richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
@@ -374,20 +243,11 @@
       <li>
         'addons.${name}.&lt;scriptname&gt;' for each script since it will be the menu title.
       </li>
-      <li>
-        'OptionPanel.separator.${name}' for the add-on's name in the preferences panel
-      </li>
-      <li>
-        'OptionPanel.&lt;property&gt;' for the label of the property in the preferences panel
-      </li>
-      <li>
-        'OptionPanel.&lt;property&gt;.tooltip' for the tooltip message for the property in the preferences panel (whwn hovering on it with the mouse)
-      </li>
     </ul>
   </body>
 </html>
 </richcontent>
-<node TEXT="en" POSITION="top_or_left" ID="ID_1097454652">
+<node TEXT="en" ID="ID_1097454652" CREATED="1683390537386" MODIFIED="1683390537386" POSITION="top_or_left">
 <attribute_layout NAME_WIDTH="159 pt" VALUE_WIDTH="102 pt"/>
 <attribute NAME="addons.${name}" VALUE="Gpt-AddOn"/>
 <attribute NAME="addons.${name}.openAiGpt" VALUE="GPT Ideas"/>
@@ -399,7 +259,7 @@
 <attribute NAME="gpt_prompt" VALUE="Default GPT Prompt"/>
 </node>
 </node>
-<node TEXT="deinstall" POSITION="top_or_left" ID="ID_1927303474">
+<node TEXT="deinstall" POSITION="left" ID="ID_1927303474" CREATED="1683390537388" MODIFIED="1683390907413">
 <edge COLOR="#00007c"/>
 <richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
@@ -421,7 +281,7 @@
 <attribute NAME="delete" VALUE="${installationbase}/icons/gptAddOn.png"/>
 <attribute NAME="delete" VALUE="${installationbase}/icons/gptAddOn-icon.png"/>
 </node>
-<node TEXT="scripts" POSITION="bottom_or_right" ID="ID_684917236">
+<node TEXT="scripts" ID="ID_684917236" CREATED="1683390537389" MODIFIED="1683390907424" POSITION="bottom_or_right">
 <edge COLOR="#007c00"/>
 <richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
@@ -439,13 +299,13 @@
       * menuLocation: &lt;locationkey&gt;
     </p>
     <p>
-      &#xa0;&#xa0;&#xa0;- Defines the menu location, defaults a sub menu 'main_menu_scripting/addons.${name}'.
+      &nbsp;&nbsp;&nbsp;- Defines the menu location, defaults a sub menu 'main_menu_scripting/addons.${name}'.
     </p>
     <p>
-      &#xa0;&#xa0;&#xa0;-&#xa0;Use developer tool menuItemInfo to inspect menu location keys.
+      &nbsp;&nbsp;&nbsp;-&nbsp;Use developer tool menuItemInfo to inspect menu location keys.
     </p>
     <p>
-      &#xa0;&#xa0;&#xa0;- This attribute is mandatory
+      &nbsp;&nbsp;&nbsp;- This attribute is mandatory
     </p>
     <p>
       
@@ -454,10 +314,10 @@
       * menuTitleKey: &lt;key&gt;
     </p>
     <p>
-      &#xa0;&#xa0;&#xa0;- The menu item title will be looked up under the translation key &lt;key&gt; - don't forget to define its translation.
+      &nbsp;&nbsp;&nbsp;- The menu item title will be looked up under the translation key &lt;key&gt; - don't forget to define its translation.
     </p>
     <p>
-      &#xa0;&#xa0;&#xa0;- This attribute is mandatory
+      &nbsp;&nbsp;&nbsp;- This attribute is mandatory
     </p>
     <p>
       
@@ -466,22 +326,22 @@
       * executionMode: &lt;mode&gt;
     </p>
     <p>
-      &#xa0;&#xa0;&#xa0;- The execution mode as described in the Freeplane wiki (http://freeplane.sourceforge.net/wiki/index.php/Scripting)
+      &nbsp;&nbsp;&nbsp;- The execution mode as described in the Freeplane wiki (http://freeplane.sourceforge.net/wiki/index.php/Scripting)
     </p>
     <p>
-      &#xa0;&#xa0;&#xa0;- ON_SINGLE_NODE: Execute the script once. The <i>node</i>&#xa0;variable is set to the selected node.
+      &nbsp;&nbsp;&nbsp;- ON_SINGLE_NODE: Execute the script once. The <i>node</i>&nbsp;variable is set to the selected node.
     </p>
     <p>
-      &#xa0;&#xa0;&#xa0;- ON_SELECTED_NODE: Execute the script n times for n selected nodes, once for each node.
+      &nbsp;&nbsp;&nbsp;- ON_SELECTED_NODE: Execute the script n times for n selected nodes, once for each node.
     </p>
     <p>
-      &#xa0;&#xa0;&#xa0;- ON_SELECTED_NODE_RECURSIVELY: Execute the script on every selected node and recursively on all of its children.
+      &nbsp;&nbsp;&nbsp;- ON_SELECTED_NODE_RECURSIVELY: Execute the script on every selected node and recursively on all of its children.
     </p>
     <p>
-      &#xa0;&#xa0;&#xa0;- In doubt use ON_SINGLE_NODE.
+      &nbsp;&nbsp;&nbsp;- In doubt use ON_SINGLE_NODE.
     </p>
     <p>
-      &#xa0;&#xa0;&#xa0;- This attribute is mandatory
+      &nbsp;&nbsp;&nbsp;- This attribute is mandatory
     </p>
     <p>
       
@@ -490,57 +350,57 @@
       * keyboardShortcut: &lt;shortcut&gt;
     </p>
     <p>
-      &#xa0;&#xa0;&#xa0;- Optional: keyboard combination / accelerator for this script, e.g. control alt I
+      &nbsp;&nbsp;&nbsp;- Optional: keyboard combination / accelerator for this script, e.g. control alt I
     </p>
     <p>
-      &#xa0;&#xa0;&#xa0;- Use lowercase letters for modifiers and uppercase for letters. Use no + signs.
+      &nbsp;&nbsp;&nbsp;- Use lowercase letters for modifiers and uppercase for letters. Use no + signs.
     </p>
     <p>
-      &#xa0;&#xa0;&#xa0;- The available key names are listed at http://download.oracle.com/javase/1.4.2/docs/api/java/awt/event/KeyEvent.html#VK_0
+      &nbsp;&nbsp;&nbsp;- The available key names are listed at http://download.oracle.com/javase/1.4.2/docs/api/java/awt/event/KeyEvent.html#VK_0
     </p>
     <p>
-      &#xa0;&#xa0;&#xa0;&#xa0;&#xa0;In the list only entries with a 'VK_' prefix count. Omit the prefix in the shortcut definition.
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;In the list only entries with a 'VK_' prefix count. Omit the prefix in the shortcut definition.
     </p>
     <p>
       
     </p>
     <p>
-      * Permissions&#xa0;that the script(s) require, each either false or true:
+      * Permissions&nbsp;that the script(s) require, each either false or true:
     </p>
     <p>
-      &#xa0;&#xa0;&#xa0;- execute_scripts_without_asking
+      &nbsp;&nbsp;&nbsp;- execute_scripts_without_asking
     </p>
     <p>
-      &#xa0;&#xa0;&#xa0;- execute_scripts_without_file_restriction: permission to read files
+      &nbsp;&nbsp;&nbsp;- execute_scripts_without_file_restriction: permission to read files
     </p>
     <p>
-      &#xa0;&#xa0;&#xa0;- execute_scripts_without_write_restriction: permission to create/change/delete files
+      &nbsp;&nbsp;&nbsp;- execute_scripts_without_write_restriction: permission to create/change/delete files
     </p>
     <p>
-      &#xa0;&#xa0;&#xa0;- execute_scripts_without_exec_restriction: permission to execute other programs
+      &nbsp;&nbsp;&nbsp;- execute_scripts_without_exec_restriction: permission to execute other programs
     </p>
     <p>
-      &#xa0;&#xa0;&#xa0;- execute_scripts_without_network_restriction: permission to access the network
+      &nbsp;&nbsp;&nbsp;- execute_scripts_without_network_restriction: permission to access the network
     </p>
     <p>
-      &#xa0;&#xa0;Notes:
+      &nbsp;&nbsp;Notes:
     </p>
     <p>
-      &#xa0;&#xa0;- The set of permissions is fixed.
+      &nbsp;&nbsp;- The set of permissions is fixed.
     </p>
     <p>
-      &#xa0;&#xa0;- Don't change the attribute names, don't omit one.
+      &nbsp;&nbsp;- Don't change the attribute names, don't omit one.
     </p>
     <p>
-      &#xa0;&#xa0;- Set the values either to true or to false
+      &nbsp;&nbsp;- Set the values either to true or to false
     </p>
     <p>
-      &#xa0;&#xa0;- In any case set execute_scripts_without_asking to true unless you want to annoy users.
+      &nbsp;&nbsp;- In any case set execute_scripts_without_asking to true unless you want to annoy users.
     </p>
   </body>
 </html>
 </richcontent>
-<node TEXT="openAiGpt.groovy" ID="ID_231711959">
+<node TEXT="openAiGpt.groovy" ID="ID_231711959" CREATED="1683390537391" MODIFIED="1683390537391">
 <attribute_layout NAME_WIDTH="202.49999 pt" VALUE_WIDTH="156.75 pt"/>
 <attribute NAME="menuTitleKey" VALUE="addons.${name}.openAiGpt"/>
 <attribute NAME="menuLocation" VALUE="${addonsMenu}/addons.${name}"/>
@@ -552,7 +412,7 @@
 <attribute NAME="execute_scripts_without_exec_restriction" VALUE="true"/>
 <attribute NAME="execute_scripts_without_network_restriction" VALUE="true"/>
 </node>
-<node TEXT="openAiGptAsync.groovy" ID="ID_681009706">
+<node TEXT="openAiGptAsync.groovy" ID="ID_681009706" CREATED="1683390537392" MODIFIED="1683390537392">
 <attribute_layout NAME_WIDTH="202.49999 pt" VALUE_WIDTH="158.25 pt"/>
 <attribute NAME="menuTitleKey" VALUE="addons.${name}.openAiGptAsync"/>
 <attribute NAME="menuLocation" VALUE="${addonsMenu}/addons.${name}"/>
@@ -565,7 +425,7 @@
 <attribute NAME="execute_scripts_without_network_restriction" VALUE="true"/>
 </node>
 </node>
-<node TEXT="lib" POSITION="bottom_or_right" ID="ID_1845190577">
+<node TEXT="lib" ID="ID_1845190577" CREATED="1683390537392" MODIFIED="1683390907472" POSITION="bottom_or_right">
 <edge COLOR="#7c007c"/>
 <richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
@@ -580,31 +440,31 @@
       
     </p>
     <p>
-      &#xa0;- The immediate child nodes contain the name of the file, e.g. 'mysql-connector-java-5.1.25.jar'). Put the file into a 'lib' subdirectory of the add-on base directory.
+      &nbsp;- The immediate child nodes contain the name of the file, e.g. 'mysql-connector-java-5.1.25.jar'). Put the file into a 'lib' subdirectory of the add-on base directory.
     </p>
     <p>
       
     </p>
     <p>
-      &#xa0;- The child nodes of these nodes contain the actual files.
+      &nbsp;- The child nodes of these nodes contain the actual files.
     </p>
     <p>
       
     </p>
     <p>
-      &#xa0;- Any lib file will be extracted in &lt;installationbase&gt;/&lt;addonname&gt;/lib.
+      &nbsp;- Any lib file will be extracted in &lt;installationbase&gt;/&lt;addonname&gt;/lib.
     </p>
     <p>
       
     </p>
     <p>
-      &#xa0;- The files will be processed in the sequence as seen in the map.
+      &nbsp;- The files will be processed in the sequence as seen in the map.
     </p>
   </body>
 </html>
 </richcontent>
 </node>
-<node TEXT="zips" POSITION="bottom_or_right" ID="ID_169986368">
+<node TEXT="zips" ID="ID_169986368" CREATED="1683390537394" MODIFIED="1683390907479" POSITION="bottom_or_right">
 <edge COLOR="#007c7c"/>
 <richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
@@ -619,32 +479,32 @@
       
     </p>
     <p>
-      &#xa0;- The immediate child nodes contain a description of the zip. The devtools script releaseAddOn.groovy allows automatic zip creation if the name of this node matches a directory in the current directory.
+      &nbsp;- The immediate child nodes contain a description of the zip. The devtools script releaseAddOn.groovy allows automatic zip creation if the name of this node matches a directory in the current directory.
     </p>
     <p>
       
     </p>
     <p>
-      &#xa0;- The child nodes of these nodes contain the actual zip files.
+      &nbsp;- The child nodes of these nodes contain the actual zip files.
     </p>
     <p>
       
     </p>
     <p>
-      &#xa0;- Any zip file will be extracted in the &lt;installationbase&gt;. Currently, &lt;installationbase&gt; is always Freeplane's &lt;userhome&gt;, e.g. ~/.freeplane/1.3.
+      &nbsp;- Any zip file will be extracted in the &lt;installationbase&gt;. Currently, &lt;installationbase&gt; is always Freeplane's &lt;userhome&gt;, e.g. ~/.freeplane/1.3.
     </p>
     <p>
       
     </p>
     <p>
-      &#xa0;- The files will be processed in the sequence as seen in the map.
+      &nbsp;- The files will be processed in the sequence as seen in the map.
     </p>
   </body>
 </html>
 </richcontent>
-<node TEXT="icons" ID="ID_2478986"/>
+<node TEXT="icons" ID="ID_2478986" CREATED="1683390537395" MODIFIED="1683390537395"/>
 </node>
-<node TEXT="images" POSITION="bottom_or_right" ID="ID_295383454">
+<node TEXT="images" ID="ID_295383454" CREATED="1683390537395" MODIFIED="1683390907503" POSITION="bottom_or_right">
 <edge COLOR="#7c7c00"/>
 <richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
@@ -656,7 +516,7 @@
       An add-on may define any number of images as child nodes of the images node. The actual image data has to be placed as base64 encoded binary data into the text of a subnode.
     </p>
     <p>
-      The images are saved to the <i>${installationbase}/resources/images</i>&#xa0;directory.
+      The images are saved to the <i>${installationbase}/resources/images</i>&nbsp;directory.
     </p>
     <p>
       
@@ -673,14 +533,14 @@
       </li>
     </ul>
     <p>
-      Images can be added automatically by releaseAddOn.groovy or must be uploaded into the map via the script <i>Tools-&gt;Scripts-&gt;Insert Binary</i>&#xa0;since they have to be (base64) encoded as simple strings.
+      Images can be added automatically by releaseAddOn.groovy or must be uploaded into the map via the script <i>Tools-&gt;Scripts-&gt;Insert Binary</i>&nbsp;since they have to be (base64) encoded as simple strings.
     </p>
   </body>
 </html>
 </richcontent>
 <attribute_layout NAME_WIDTH="104.25 pt"/>
 </node>
-<node TEXT="actions" POSITION="bottom_or_right" ID="ID_1265299212">
+<node TEXT="actions" ID="ID_1265299212" CREATED="1683390537396" MODIFIED="1683390537396" POSITION="bottom_or_right">
 <edge COLOR="#ff00ff"/>
 <richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
@@ -690,12 +550,11 @@
   <body>
     Direct links to menu commands
   </body>
-</html>
-</richcontent>
-<node TEXT="Build add-on" ID="ID_1119854319" LINK="menuitem:_addons.devtools.checkAddOn_on_single_node"/>
-<node TEXT="Package add-on for publication" ID="ID_119351145" LINK="menuitem:_addons.devtools.releaseAddOn_on_single_node"/>
-<node TEXT="Export Translations" ID="ID_426003495" LINK="menuitem:_addons.devtools.exportTranslations_on_single_node"/>
-<node TEXT="Import Translations" ID="ID_1933654428" LINK="menuitem:_addons.devtools.importTranslations_on_single_node"/>
+</html></richcontent>
+<node TEXT="Build add-on" ID="ID_1119854319" CREATED="1683390537397" MODIFIED="1683390537397" LINK="menuitem:_addons.devtools.checkAddOn_on_single_node"/>
+<node TEXT="Package add-on for publication" ID="ID_119351145" CREATED="1683390537398" MODIFIED="1683390537398" LINK="menuitem:_addons.devtools.releaseAddOn_on_single_node"/>
+<node TEXT="Export Translations" ID="ID_426003495" CREATED="1683390537398" MODIFIED="1683390537398" LINK="menuitem:_addons.devtools.exportTranslations_on_single_node"/>
+<node TEXT="Import Translations" ID="ID_1933654428" CREATED="1683390537398" MODIFIED="1683390537398" LINK="menuitem:_addons.devtools.importTranslations_on_single_node"/>
 </node>
 </node>
 </map>

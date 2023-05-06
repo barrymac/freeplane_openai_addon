@@ -61,8 +61,8 @@ def call_openai_chat(String apiUrl, String apiKey, List<Map<String, String>> mes
 }
 
 //// Function to generate ideas and create child nodes
-def generate_ideas(apiUrl, apiKey, parentNode, prompt) {
-    String currentNodeText = parentNode.getText()
+def generate_ideas(apiUrl, apiKey, node, prompt) {
+    String currentNodeText = node.getText()
 
     List<Map<String, String>> messages = [
             [role: 'user', content: prompt]
@@ -73,7 +73,7 @@ def generate_ideas(apiUrl, apiKey, parentNode, prompt) {
 
     def ideas = response.split('\n')
     ideas.each { idea ->
-        def newNode = parentNode.createChild(idea.trim())
+        def newNode = node.createChild(idea.trim())
     }
 }
 
