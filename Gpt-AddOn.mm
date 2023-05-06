@@ -109,7 +109,8 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <node TEXT="description" POSITION="top_or_left" ID="ID_365830098">
 <edge COLOR="#ff0000"/>
 <richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
@@ -128,7 +129,8 @@
       To translate the description you have to define a translation for the key 'addons.${name}.description'.
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <node TEXT="Add on to use GPT api to generate ideas" ID="ID_110054152"/>
 </node>
 <node TEXT="changes" POSITION="top_or_left" ID="ID_138977336">
@@ -143,7 +145,8 @@
       Change log of this add-on: append one node for each noteworthy version and put the details for each version into a child node.
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 <node TEXT="license" FOLDED="true" POSITION="top_or_left" ID="ID_950695085">
 <edge COLOR="#00ff00"/>
@@ -163,7 +166,8 @@
       The License text has to be entered as a child of the <i>'license'</i>&#xa0;node, either as plain text or as HTML.
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <node TEXT="&#xa;This add-on is free software: you can redistribute it and/or modify&#xa;it under the terms of the GNU General Public License as published by&#xa;the Free Software Foundation, either version 2 of the License, or&#xa;(at your option) any later version.&#xa;&#xa;This program is distributed in the hope that it will be useful,&#xa;but WITHOUT ANY WARRANTY; without even the implied warranty of&#xa;MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&#xa;GNU General Public License for more details.&#xa;" ID="ID_726417928"/>
 </node>
 <node TEXT="preferences.xml" POSITION="top_or_left" ID="ID_902316079">
@@ -181,7 +185,8 @@
       <font color="#000000" face="SansSerif, sans-serif">Every property in the configuration should receive a default value in <i>default.properties</i>&#xa0;node.</font>
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <node TEXT="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#xa;&lt;preferences_structure xmlns=&quot;http://freeplane.sf.net/ui/preferences/1.0&quot;&gt;&#xa;    &lt;tabbed_pane&gt;&#xa;        &lt;tab name=&quot;plugins&quot;&gt;&#xa;            &lt;separator name=&quot;gpt_plugin&quot;&gt;&#xa;                &lt;string name=&quot;openai_key&quot;/&gt;&#xa;                &lt;string name=&quot;gpt_prompt&quot;/&gt;&#xa;            &lt;/separator&gt;&#xa;        &lt;/tab&gt;&#xa;    &lt;/tabbed_pane&gt;&#xa;&lt;/preferences_structure&gt;" ID="ID_516268456"/>
 </node>
 <node TEXT="default.properties" POSITION="top_or_left" ID="ID_769124461">
@@ -204,7 +209,8 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <node TEXT="openai.key&#x9;Gpt-AddOn" ID="ID_1225509203">
 <attribute_layout VALUE_WIDTH="123 pt"/>
 <attribute NAME="openai_key" VALUE=""/>
@@ -235,9 +241,10 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
-<attribute_layout NAME_WIDTH="158.25 pt"/>
+</html>
+</richcontent>
 <node TEXT="en" POSITION="top_or_left" ID="ID_1097454652">
+<attribute_layout NAME_WIDTH="159 pt" VALUE_WIDTH="102 pt"/>
 <attribute NAME="addons.${name}" VALUE="Gpt-AddOn"/>
 <attribute NAME="addons.${name}.openAiGpt" VALUE="GPT Ideas"/>
 <attribute NAME="addons.${name}.openAiGptAsync" VALUE="GPT Ideas Async"/>
@@ -260,7 +267,8 @@
       List of files and/or directories to remove on uninstall
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <attribute_layout NAME_WIDTH="37.5 pt" VALUE_WIDTH="268.49999 pt"/>
 <attribute NAME="delete" VALUE="${installationbase}/addons/${name}.script.xml"/>
 <attribute NAME="delete" VALUE="${installationbase}/addons/${name}/scripts/openAiGpt.groovy"/>
@@ -386,9 +394,10 @@
       &#xa0;&#xa0;- In any case set execute_scripts_without_asking to true unless you want to annoy users.
     </p>
   </body>
-</html></richcontent>
-<attribute_layout NAME_WIDTH="190.49999 pt" VALUE_WIDTH="313.49999 pt"/>
+</html>
+</richcontent>
 <node TEXT="openAiGpt.groovy" ID="ID_231711959">
+<attribute_layout NAME_WIDTH="202.49999 pt" VALUE_WIDTH="156.75 pt"/>
 <attribute NAME="menuTitleKey" VALUE="addons.${name}.openAiGpt"/>
 <attribute NAME="menuLocation" VALUE="main_menu_scripting/addons.${name}"/>
 <attribute NAME="executionMode" VALUE="on_single_node"/>
@@ -399,7 +408,8 @@
 <attribute NAME="execute_scripts_without_exec_restriction" VALUE="true"/>
 <attribute NAME="execute_scripts_without_network_restriction" VALUE="true"/>
 </node>
-<node TEXT="openAiGptAsync.groovy" ID="ID_1109549336" CREATED="1683215899138" MODIFIED="1683215899243">
+<node TEXT="openAiGptAsync.groovy" ID="ID_681009706">
+<attribute_layout NAME_WIDTH="202.49999 pt" VALUE_WIDTH="158.25 pt"/>
 <attribute NAME="menuTitleKey" VALUE="addons.${name}.openAiGptAsync"/>
 <attribute NAME="menuLocation" VALUE="main_menu_scripting/addons.${name}"/>
 <attribute NAME="executionMode" VALUE="on_single_node"/>
@@ -447,7 +457,8 @@
       &#xa0;- The files will be processed in the sequence as seen in the map.
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 </node>
 <node TEXT="zips" POSITION="bottom_or_right" ID="ID_169986368">
 <edge COLOR="#007c7c"/>
@@ -485,7 +496,8 @@
       &#xa0;- The files will be processed in the sequence as seen in the map.
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <node TEXT="icons" ID="ID_2478986"/>
 </node>
 <node TEXT="images" POSITION="bottom_or_right" ID="ID_295383454">
@@ -520,7 +532,8 @@
       Images can be added automatically by releaseAddOn.groovy or must be uploaded into the map via the script <i>Tools-&gt;Scripts-&gt;Insert Binary</i>&#xa0;since they have to be (base64) encoded as simple strings.
     </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <attribute_layout NAME_WIDTH="104.25 pt"/>
 </node>
 </node>
