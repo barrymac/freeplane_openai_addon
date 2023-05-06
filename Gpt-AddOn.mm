@@ -68,8 +68,8 @@
 </stylenode>
 </map_styles>
 </hook>
-<hook NAME="AutomaticEdgeColor" COUNTER="14" RULE="ON_BRANCH_CREATION"/>
-<attribute_layout NAME_WIDTH="93.75 pt" VALUE_WIDTH="138.75 pt"/>
+<hook NAME="AutomaticEdgeColor" COUNTER="15" RULE="ON_BRANCH_CREATION"/>
+<attribute_layout NAME_WIDTH="112.5 pt" VALUE_WIDTH="259.49999 pt"/>
 <attribute NAME="name" VALUE="gptAddOn"/>
 <attribute NAME="version" VALUE="v0.2"/>
 <attribute NAME="author" VALUE="barry"/>
