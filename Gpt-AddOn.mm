@@ -3,7 +3,7 @@
 <node TEXT="Gpt-AddOn" FOLDED="false" ID="ID_696401721" LINK="https://github.com/barrymac/freeplane_openai_addon" BACKGROUND_COLOR="#97c7dc" STYLE="oval">
 <font SIZE="16" BOLD="true" ITALIC="true"/>
 <hook NAME="MapStyle">
-    <properties show_icon_for_attributes="true" edgeColorConfiguration="#808080ff,#ff0000ff,#0000ffff,#00ff00ff,#ff00ffff,#00ffffff,#7c0000ff,#00007cff,#007c00ff,#7c007cff,#007c7cff,#7c7c00ff" show_note_icons="true" associatedTemplateLocation="template:/standard-1.6.mm" fit_to_viewport="false"/>
+    <properties show_icon_for_attributes="true" edgeColorConfiguration="#808080ff,#ff0000ff,#0000ffff,#00ff00ff,#ff00ffff,#00ffffff,#7c0000ff,#00007cff,#007c00ff,#7c007cff,#007c7cff,#7c7c00ff" mapUsesOwnSaveOptions="true" save_modification_times="false" save_last_visited_node="default" show_note_icons="true" associatedTemplateLocation="template:/standard-1.6.mm" save_folding="save_folding_if_map_is_changed" fit_to_viewport="false"/>
 
 <map_styles>
 <stylenode LOCALIZED_TEXT="styles.root_node" STYLE="oval" UNIFORM_SHAPE="true" VGAP_QUANTITY="24 pt">
@@ -110,7 +110,7 @@
     </ul>
   </body>
 </html></richcontent>
-<node TEXT="description" POSITION="top_or_left" ID="ID_365830098" CREATED="1683214810552" MODIFIED="1683255699407">
+<node TEXT="description" POSITION="top_or_left" ID="ID_365830098">
 <edge COLOR="#ff0000"/>
 <richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
@@ -129,9 +129,9 @@
     </p>
   </body>
 </html></richcontent>
-<node TEXT="Add on to use GPT api to generate ideas" ID="ID_110054152" CREATED="1683215195029" MODIFIED="1683215204841"/>
+<node TEXT="Add on to use GPT api to generate ideas" ID="ID_110054152"/>
 </node>
-<node TEXT="changes" POSITION="top_or_left" ID="ID_138977336" CREATED="1683214810577" MODIFIED="1683255699410">
+<node TEXT="changes" POSITION="top_or_left" ID="ID_138977336">
 <edge COLOR="#0000ff"/>
 <richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
@@ -145,7 +145,7 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="license" FOLDED="true" POSITION="top_or_left" ID="ID_950695085" CREATED="1683214810585" MODIFIED="1683255699414">
+<node TEXT="license" FOLDED="true" POSITION="top_or_left" ID="ID_950695085">
 <edge COLOR="#00ff00"/>
 <richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
@@ -164,9 +164,9 @@
     </p>
   </body>
 </html></richcontent>
-<node TEXT="&#xa;This add-on is free software: you can redistribute it and/or modify&#xa;it under the terms of the GNU General Public License as published by&#xa;the Free Software Foundation, either version 2 of the License, or&#xa;(at your option) any later version.&#xa;&#xa;This program is distributed in the hope that it will be useful,&#xa;but WITHOUT ANY WARRANTY; without even the implied warranty of&#xa;MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&#xa;GNU General Public License for more details.&#xa;" ID="ID_726417928" CREATED="1683214810595" MODIFIED="1683236204175"/>
+<node TEXT="&#xa;This add-on is free software: you can redistribute it and/or modify&#xa;it under the terms of the GNU General Public License as published by&#xa;the Free Software Foundation, either version 2 of the License, or&#xa;(at your option) any later version.&#xa;&#xa;This program is distributed in the hope that it will be useful,&#xa;but WITHOUT ANY WARRANTY; without even the implied warranty of&#xa;MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&#xa;GNU General Public License for more details.&#xa;" ID="ID_726417928"/>
 </node>
-<node TEXT="preferences.xml" POSITION="top_or_left" ID="ID_902316079" CREATED="1683214810705" MODIFIED="1683255699417">
+<node TEXT="preferences.xml" POSITION="top_or_left" ID="ID_902316079">
 <edge COLOR="#ff00ff"/>
 <richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
@@ -182,9 +182,9 @@
     </p>
   </body>
 </html></richcontent>
-<node TEXT="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#xa;&lt;preferences_structure xmlns=&quot;http://freeplane.sf.net/ui/preferences/1.0&quot;&gt;&#xa;    &lt;tabbed_pane&gt;&#xa;        &lt;tab name=&quot;plugins&quot;&gt;&#xa;            &lt;separator name=&quot;gpt_plugin&quot;&gt;&#xa;                &lt;string name=&quot;openai_key&quot;/&gt;&#xa;                &lt;string name=&quot;gpt_prompt&quot;/&gt;&#xa;            &lt;/separator&gt;&#xa;        &lt;/tab&gt;&#xa;    &lt;/tabbed_pane&gt;&#xa;&lt;/preferences_structure&gt;" ID="ID_516268456" CREATED="1683231106968" MODIFIED="1683231182719"/>
+<node TEXT="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#xa;&lt;preferences_structure xmlns=&quot;http://freeplane.sf.net/ui/preferences/1.0&quot;&gt;&#xa;    &lt;tabbed_pane&gt;&#xa;        &lt;tab name=&quot;plugins&quot;&gt;&#xa;            &lt;separator name=&quot;gpt_plugin&quot;&gt;&#xa;                &lt;string name=&quot;openai_key&quot;/&gt;&#xa;                &lt;string name=&quot;gpt_prompt&quot;/&gt;&#xa;            &lt;/separator&gt;&#xa;        &lt;/tab&gt;&#xa;    &lt;/tabbed_pane&gt;&#xa;&lt;/preferences_structure&gt;" ID="ID_516268456"/>
 </node>
-<node TEXT="default.properties" POSITION="top_or_left" ID="ID_769124461" CREATED="1683214810715" MODIFIED="1683255699420">
+<node TEXT="default.properties" POSITION="top_or_left" ID="ID_769124461">
 <edge COLOR="#00ffff"/>
 <richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
@@ -205,14 +205,14 @@
     </ul>
   </body>
 </html></richcontent>
-<node TEXT="openai.key&#x9;Gpt-AddOn" ID="ID_1225509203" CREATED="1683219113270" MODIFIED="1683256376624">
+<node TEXT="openai.key&#x9;Gpt-AddOn" ID="ID_1225509203">
 <attribute_layout VALUE_WIDTH="123 pt"/>
 <attribute NAME="openai_key" VALUE=""/>
 <attribute NAME="gpt_prompt" VALUE="&quot;Please generate a list of 5 ideas related to this: $currentNodeText in the context of $node.mindMap.root.text. Separate each idea with a newline.&quot;"/>
 <attribute NAME="${name}.icon" VALUE="/images/${name}-icon.png"/>
 </node>
 </node>
-<node TEXT="translations" POSITION="top_or_left" ID="ID_1606264590" CREATED="1683214810723" MODIFIED="1683255699423">
+<node TEXT="translations" POSITION="top_or_left" ID="ID_1606264590">
 <edge COLOR="#7c0000"/>
 <richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
@@ -236,8 +236,8 @@
     </ul>
   </body>
 </html></richcontent>
-<node TEXT="en" POSITION="top_or_left" ID="ID_1097454652" CREATED="1683214810733" MODIFIED="1683235720937">
 <attribute_layout NAME_WIDTH="158.25 pt"/>
+<node TEXT="en" POSITION="top_or_left" ID="ID_1097454652">
 <attribute NAME="addons.${name}" VALUE="Gpt-AddOn"/>
 <attribute NAME="addons.${name}.openAiGpt" VALUE="GPT Ideas"/>
 <attribute NAME="addons.${name}.openAiGptAsync" VALUE="GPT Ideas Async"/>
@@ -248,7 +248,7 @@
 <attribute NAME="gpt_prompt" VALUE="Default GPT Prompt"/>
 </node>
 </node>
-<node TEXT="deinstall" POSITION="top_or_left" ID="ID_1927303474" CREATED="1683214810777" MODIFIED="1683255699426">
+<node TEXT="deinstall" POSITION="top_or_left" ID="ID_1927303474">
 <edge COLOR="#00007c"/>
 <richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
@@ -269,7 +269,7 @@
 <attribute NAME="delete" VALUE="${installationbase}/icons/gptAddOn.png"/>
 <attribute NAME="delete" VALUE="${installationbase}/icons/gptAddOn-icon.png"/>
 </node>
-<node TEXT="scripts" POSITION="bottom_or_right" ID="ID_684917236" CREATED="1683214810801" MODIFIED="1683255699434">
+<node TEXT="scripts" POSITION="bottom_or_right" ID="ID_684917236">
 <edge COLOR="#007c00"/>
 <richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
@@ -387,8 +387,8 @@
     </p>
   </body>
 </html></richcontent>
-<node TEXT="openAiGpt.groovy" ID="ID_1920654188" CREATED="1683215707210" MODIFIED="1683217027807">
 <attribute_layout NAME_WIDTH="190.49999 pt" VALUE_WIDTH="313.49999 pt"/>
+<node TEXT="openAiGpt.groovy" ID="ID_231711959">
 <attribute NAME="menuTitleKey" VALUE="addons.${name}.openAiGpt"/>
 <attribute NAME="menuLocation" VALUE="main_menu_scripting/addons.${name}"/>
 <attribute NAME="executionMode" VALUE="on_single_node"/>
@@ -411,7 +411,7 @@
 <attribute NAME="execute_scripts_without_network_restriction" VALUE="true"/>
 </node>
 </node>
-<node TEXT="lib" POSITION="bottom_or_right" ID="ID_1845190577" CREATED="1683214810838" MODIFIED="1683255699474">
+<node TEXT="lib" POSITION="bottom_or_right" ID="ID_1845190577">
 <edge COLOR="#7c007c"/>
 <richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
@@ -449,7 +449,7 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="zips" POSITION="bottom_or_right" ID="ID_169986368" CREATED="1683214810850" MODIFIED="1683255699480">
+<node TEXT="zips" POSITION="bottom_or_right" ID="ID_169986368">
 <edge COLOR="#007c7c"/>
 <richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
@@ -486,9 +486,9 @@
     </p>
   </body>
 </html></richcontent>
-<node TEXT="icons" ID="ID_2478986" CREATED="1683215866037" MODIFIED="1683215868362"/>
+<node TEXT="icons" ID="ID_2478986"/>
 </node>
-<node TEXT="images" POSITION="bottom_or_right" ID="ID_295383454" CREATED="1683214810860" MODIFIED="1683255699510">
+<node TEXT="images" POSITION="bottom_or_right" ID="ID_295383454">
 <edge COLOR="#7c7c00"/>
 <richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
