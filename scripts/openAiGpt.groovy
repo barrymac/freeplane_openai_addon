@@ -6,16 +6,18 @@ import groovy.util.Eval
 String apiUrl = "https://api.openai.com/v1/chat/completions"
 String apiKey = config.getProperty('openai_key')
 
-def currentNodeText = node.getText()
-logger.info(currentNodeText)
-
 //todo - make this configurable in the preferences UI
-//def prompt = config.getProperty('gpt_prompt') ?: "Please generate a list of 5 ideas related to the subject: $currentNodeText , in the context of $node.mindMap.root.text. Separate each idea with a newline."
-//def evaluatedPrompt = Eval.me('currentNodeText', currentNode, prompt)
+String defaultPrompt = '''
+    Please generate a list of 5 ideas related to the subject: '${node.getText()}', in the context of '${node.mindMap.root.text}'. Separate each idea with a newline.
+'''
 
-def prompt = "Please generate a list of 5 ideas related to the subject: $currentNodeText , in the context of $node.mindMap.root.text. Separate each idea with a newline."
+def templateText = config.getProperty('gpt_prompt').replaceAll(/^"(.*)"$/, '$1')
+def binding = [node: node]
+def engine = new groovy.text.SimpleTemplateEngine()
+def template = engine.createTemplate(templateText).make(binding)
+def evaluatedPrompt = template.toString()
 
-generate_ideas(apiUrl, apiKey, node, prompt)
+generate_ideas(apiUrl, apiKey, node, evaluatedPrompt)
 
 //todo - make recursion depth configurable in the preferences UI
 // Generate ideas for each child of the current node (one level of nesting)
