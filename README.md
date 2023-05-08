@@ -34,8 +34,20 @@ Check-list before starting
 
 ... you're done.
 
+## Prompt template
+The default prompt should be found in the add-on configuration. It is a good starting point for brainstorming ideas. You can change it to suit your needs. The default prompt is:
+```Please generate a list of 5 ideas related to the subject: '${node.getText()}', in the context of '${node.mindMap.root.text}'. Separate each idea with a newline.```
+
+Where the following variables are replaced by the add-on:
+- `${node.getText()}` is replaced by the text of the selected node
+- `${node.mindMap.root.text}` is replaced by the text of the root node of the mindmap
+
+The `node` variable is rendered by a groovy template and comes from the groovy script DSL within freeplane. There are probably many more useful variables that can be used, but I haven't found them yet.  
+
 ## Improvements
 Prompt suggestions are very welcome, this is only a start!!
 
-### Word in progress / future release
+### Work in progress / future release
+- [ ] Add preferences to set more GPT parameters
 - [ ] Add features for research task execution, like how AutoGPT, Baby AGI, Agent-LLM etc work.
+
