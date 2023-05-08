@@ -1,12 +1,11 @@
-
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
-import groovy.util.Eval
 
 String apiUrl = "https://api.openai.com/v1/chat/completions"
 String apiKey = config.getProperty('openai_key')
+String model = config.getProperty('gpt_model')
+String max_node_depth = config.getProperty('max_node_depth')
 
-//todo - make this configurable in the preferences UI
 String defaultPrompt = '''
     Please generate a list of 5 ideas related to the subject: '${node.getText()}', in the context of '${node.mindMap.root.text}'. Separate each idea with a newline.
 '''
@@ -25,9 +24,10 @@ generate_ideas(apiUrl, apiKey, node, evaluatedPrompt)
 //    generate_ideas(apiUrl, apiKey, child)
 //}
 
-
+//todo make model selectable in preferences UI
 def call_openai_chat(String apiUrl, String apiKey, List<Map<String, String>> messages,
-                     String model = 'gpt-3.5-turbo', Double temperature = 0.7,
+                     String model = config.getProperty('gpt_model'),
+                     Double temperature = 0.7,
                      Integer max_tokens = 200, Double top_p = 1, Integer n = 1, Boolean stream = false,
                      Integer logprobs = null, Boolean echo = false, List<String> stop = null,
                      Double presence_penalty = 0, Double frequency_penalty = 0,
