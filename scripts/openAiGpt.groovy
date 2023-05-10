@@ -96,10 +96,20 @@ def make_api_call(String apiUrl, String apiKey, Map<String, Object> payloadMap) 
         post.getOutputStream().write(payload.getBytes("UTF-8"))
 
         def postRC = post.getResponseCode()
+
         if (postRC.equals(200)) {
             responseText = post.getInputStream().getText()
             logger.info("GPT response: $responseText")
+        } else if (postRC.equals(401)) {
+            logger.error("Invalid authentication or incorrect API key provided.")
+        } else if (postRC.equals(404)) {
+            logger.error("You must be a member of an organization to use the API.")
+        } else if (postRC.equals(429)) {
+            logger.error("Rate limit reached for requests or current quota exceeded.")
+        } else {
+            logger.error("Unhandled error code returned from API.")
         }
+
     } catch (Exception e) {
         println("ERROR: " + e.toString())
     }
