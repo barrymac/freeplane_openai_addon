@@ -1,34 +1,209 @@
+import groovy.swing.SwingBuilder
+import java.awt.GridBagConstraints
+import java.awt.GridBagLayout
+import java.awt.FlowLayout
+import javax.swing.*
+import java.nio.file.*
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 
-String apiUrl = "https://api.openai.com/v1/chat/completions"
-String apiKey = config.getProperty('openai_key')
-String model = config.getProperty('gpt_model')
-String max_node_depth = config.getProperty('max_node_depth')
+String apiKey = config.getProperty('openai.key', '')
+String gptModel = config.getProperty('openai.gpt_model', 'gpt-3.5-turbo')
+int maxResponseLength = config.getProperty('openai.max_response_length', 1000)
+int selectedSystemMessageIndex = config.getProperty('openai.system_message_index', 0)
+int selectedUserMessageIndex = config.getProperty('openai.user_message_index', 0)
 
-String defaultPrompt = '''
-    Please generate a list of 5 ideas related to the subject: '${node.getText()}', in the context of '${node.mindMap.root.text}'. Separate each idea with a newline.
-'''
+String systemMessagesFilePath = "${config.freeplaneUserDirectory}/chatGptSystemMessages.txt"
+String userMessagesFilePath = "${config.freeplaneUserDirectory}/chatGptUserMessages.txt"
 
-def templateText = config.getProperty('gpt_prompt').replaceAll(/^"(.*)"$/, '$1')
-def binding = [node: node]
-def engine = new groovy.text.SimpleTemplateEngine()
-def template = engine.createTemplate(templateText).make(binding)
-def evaluatedPrompt = template.toString()
+String defaultSystemMessages = '''
+Learn the format "outline" from the example below and create similar outlines for topics given by the user.
+Strictly follow the format.  Use multiple nested levels. Start a new paragraph for each new sentence. Suppress any bullet points or other characters like - at the beginning of the list, use just the formatting as in the example     
 
-generate_ideas(apiUrl, apiKey, node, evaluatedPrompt)
+Don't give it any title. 
 
-//todo - make recursion depth configurable in the preferences UI
-// Generate ideas for each child of the current node (one level of nesting)
-//node.children.each { child ->
-//    generate_ideas(apiUrl, apiKey, child)
-//}
+Concentrate on the topic only. Cover as many aspects of the topic as possible as deeply as possible.
 
-//todo make model selectable in preferences UI
-def call_openai_chat(String apiUrl, String apiKey, List<Map<String, String>> messages,
-                     String model = config.getProperty('gpt_model'),
+Don't repeat known facts.
+
+Don't comment the task itself.
+
+Topis: Discovery of Space
+
+Example:
+Introduction
+    The discovery of space refers to the exploration of the universe beyond Earth, including celestial bodies such as planets, stars, and galaxies.
+Historical Background
+    The first known observation of space was made by ancient civilizations, including the Greeks and Egyptians, who used the stars for navigation and as a basis for their calendars.
+    In 1957, the Soviet Union launched the first artificial satellite, Sputnik 1, sparking the Space Race between the United States and the Soviet Union.
+Major Accomplishments
+    1961 - Yuri Gagarin becomes the first human to travel to space.
+    1969 - Neil Armstrong and Buzz Aldrin become the first humans to walk on the Moon.
+    1971 - The Soviet Union launches the first space station, Salyut 1.
+    1998 - The first components of the International Space Station (ISS) are launched into orbit.
+Space Agencies
+    National Aeronautics and Space Administration (NASA) - United States
+    Roscosmos - Russia
+    European Space Agency (ESA) - Europe
+    China National Space Administration (CNSA) - China
+    Indian Space Research Organisation (ISRO) - India
+Spacecraft and Technology
+    Satellites - used for communication, navigation, and observation of Earth and space.
+    Space Probes - used for exploration and data collection of celestial bodies.
+    Space Shuttles - reusable spacecraft used for carrying crew and cargo to and from space.
+    Rockets - used for launching spacecraft into orbit and beyond.
+Challenges and Risks
+    Space exploration poses various challenges and risks, including:
+        Exposure to radiation and microgravity can have negative effects on human health.
+        Space debris can pose a threat to spacecraft and astronauts.
+        The high cost of space exploration and the risk of equipment failure.
+Benefits and Impact
+    Space exploration has led to numerous scientific discoveries and technological advancements, including:
+        Improved weather forecasting and disaster management.
+        Development of new materials and technologies for use on Earth.
+        Advancements in medical research and technology.
+        Increased understanding of the universe and our place in it.
+    The space industry also provides economic benefits, generating jobs and revenue for countries involved in space exploration.
+======
+Learn the format "trigger word outline" from the example below and create similar trigger word outlines for topics given by the user.
+Strictly follow the format.  Use multiple nested levels. Always break sentences. Put each word on its own line. Use no '-' characters or bullet points. 
+
+Don't give it any title. 
+
+Concentrate on the topic only. Cover as many aspects of the topic as possible as deeply as possible.
+
+Don't repeat known facts.
+
+Don't comment the task itself.
+
+Split each sentence into multiple parts separating parts of the sentence as in the example.
+
+Topic: War on Another Planet
+
+Example:
+Time Line
+    2150
+        Humans
+            Discover
+                Planet Z
+                    Rich in Resources
+                        Gold
+                        Diamond
+                        Oil
+                    Inhabited by
+                        Aliens
+                            Peaceful at First
+                                Welcome Humans
+                            Later
+                                Start Claiming Resources
+    2155
+        Humans
+            Start Mining Operations
+                Aliens
+                    Protest
+                        Humans
+                            Ignore
+                                Tensions Rise
+    2160
+        Aliens
+            Attack
+                Human Mining Facilities
+                    Humans
+                        Respond with Force
+                            War Breaks Out
+Where
+    On Planet Z
+        Terrain
+            Mostly Desert
+                Harsh Conditions
+            Few Oases
+                Strategic Importance
+        Underground Tunnels
+            Used for
+                Transport
+                Communication
+                Hiding
+        Skies
+            Filled with
+                Alien Aircrafts
+                    Advanced Technology
+                        Hard to Defeat
+                Human Ships
+                    More Numerous
+                    Less Advanced
+                        Cheaply Produced
+    Other Planets
+        Allies
+            Humans
+                Seek Help from
+                    Other Colonized Planets
+                        Mostly Friendly
+        Enemies
+            Aliens
+                Also Have Allies
+                    Powerful and Dangerous
+        Space Battles
+            Happen in
+                Open Space
+                Near Planets
+                Near Moons
+Impact
+    Can Determine
+        The Outcome of the War
+        The Fate of the Galaxy
+           '''.trim();
+           def userSystemMessages = '''
+Known facts:
+$ancestorContents
+$siblingContents
+
+Topic: $nodeContent
+
+Language: English
+            '''.trim();
+
+def expandMessage(String message) {
+    def node = c.selected
+    def pathToRoot = node.pathToRoot
+    pathToRoot = pathToRoot.take(pathToRoot.size() - 1)
+    String ancestorContents = pathToRoot*.plainText.join('\n')
+    String siblingContents = node.isRoot()?'': node.parent.children.findAll { it != node } *.plainText.join('\n')
+    def binding = [
+        nodeContent: node.plainText,
+        ancestorContents: ancestorContents,
+        siblingContents:siblingContents
+        ]
+    def engine = new groovy.text.SimpleTemplateEngine()
+    def template = engine.createTemplate(message).make(binding)
+    def expandedMessage = template.toString()
+    return expandedMessage
+}
+
+def generateBranches(String apiKey, String systemMessage, String userMessage, String model, Integer maxTokens) {
+    List<Map<String, String>> messages = [
+            [role: 'system', content: systemMessage],
+            [role: 'user', content: userMessage]
+    ]
+    def node = c.selected
+    def workerThread = new Thread({
+        def response = call_openai_chat(apiKey, messages, model, maxTokens)
+        logger.info("GPT response: $response")
+        SwingUtilities.invokeLater {
+            node.appendTextOutlineAsBranch(response)
+        }
+    })
+    workerThread.setContextClassLoader(getClass().classLoader)
+    workerThread.start()
+    logger.info(userMessage)
+    ui.informationMessage(userMessage)
+}
+
+
+def call_openai_chat(String apiKey, List<Map<String, String>> messages,
+                     String model,
+                     Integer max_tokens, 
                      Double temperature = 0.7,
-                     Integer max_tokens = 200, Double top_p = 1, Integer n = 1, Boolean stream = false,
+                     Double top_p = 1, Integer n = 1, Boolean stream = false,
                      Integer logprobs = null, Boolean echo = false, List<String> stop = null,
                      Double presence_penalty = 0, Double frequency_penalty = 0,
                      Integer best_of = 1, Map<String, Integer> logit_bias = null,
@@ -53,39 +228,24 @@ def call_openai_chat(String apiUrl, String apiKey, List<Map<String, String>> mes
     if (logit_bias != null) payloadMap['logit_bias'] = logit_bias
     if (user != null) payloadMap['user'] = user
 
-    def responseText = make_api_call(apiUrl, apiKey, payloadMap)
+    def responseText = make_api_call(apiKey, payloadMap)
+
+    if(responseText.isEmpty())
+        return ""
 
     def jsonSlurper = new JsonSlurper()
     def jsonResponse = jsonSlurper.parseText(responseText)
     def assistantMessage = jsonResponse.choices[0].message.content
-
+    println(assistantMessage)
     return assistantMessage
 }
 
-//// Function to generate ideas and create child nodes
-def generate_ideas(apiUrl, apiKey, node, prompt) {
-    String currentNodeText = node.getText()
-
-    List<Map<String, String>> messages = [
-            [role: 'user', content: prompt]
-    ]
-
-    def response = call_openai_chat(apiUrl, apiKey, messages)
-    logger.info("GPT response: $response")
-
-    def ideas = response.split('\n')
-    ideas.each { idea ->
-        def newNode = node.createChild(idea.trim())
-    }
-}
-
-
 // Function to make the API call
-def make_api_call(String apiUrl, String apiKey, Map<String, Object> payloadMap) {
+def make_api_call(String apiKey, Map<String, Object> payloadMap) {
     def responseText = ""
 
     try {
-        // Create connection
+        String apiUrl = 'https://api.openai.com/v1/chat/completions'
         def post = new URL(apiUrl).openConnection()
         post.setRequestMethod("POST")
         post.setDoOutput(true)
@@ -101,19 +261,138 @@ def make_api_call(String apiUrl, String apiKey, Map<String, Object> payloadMap) 
             responseText = post.getInputStream().getText()
             logger.info("GPT response: $responseText")
         } else if (postRC.equals(401)) {
-            logger.error("Invalid authentication or incorrect API key provided.")
+            ui.errorMessage("Invalid authentication or incorrect API key provided.")
         } else if (postRC.equals(404)) {
-            logger.error("You must be a member of an organization to use the API.")
+            ui.errorMessage("You must be a member of an organization to use the API.")
         } else if (postRC.equals(429)) {
-            logger.error("Rate limit reached for requests or current quota exceeded.")
+            ui.errorMessage("Rate limit reached for requests or current quota exceeded.")
         } else {
-            logger.error("Unhandled error code returned from API.")
+            ui.errorMessage("Unhandled error code returned from API.")
         }
 
     } catch (Exception e) {
-        println("ERROR: " + e.toString())
+        ui.errorMessage(e.toString())
     }
 
     return responseText
 }
 
+
+def loadMessagesFromFile(String filePath, String fallback) {
+    def messages
+    def fileContent
+    try {
+        fileContent = new File(filePath).text
+    } catch (Exception e) {
+        fileContent = fallback
+        new File(filePath).write(fallback)
+    }
+    messages = fileContent.split(/======+\n/)*.trim()
+    return messages
+}
+
+def saveMessagesToFile(String filePath, List messages) {
+    def fileContent = messages.join("\n======\n")
+    new File(filePath).write(fileContent)
+}
+
+class MessageArea {
+    JTextArea textArea
+    JComboBox comboBox
+}
+
+MessageArea createMessageSection(def swingBuilder, def messages, def title, int initialIndex, def constraints, def weighty) {
+    def comboBoxModel = new DefaultComboBoxModel()
+    messages.each { comboBoxModel.addElement(it.replaceAll(/\s+/, ' ').take(120)) }
+    def messageComboBox, messageText
+    def selectedIndex = initialIndex
+
+    constraints.gridy++
+    swingBuilder.label("${title}:", constraints: constraints)
+    constraints.gridy++
+    messageComboBox = swingBuilder.comboBox(model: comboBoxModel, constraints: constraints)
+    messageComboBox.selectedIndex = initialIndex
+
+    constraints.gridy++
+    constraints.weighty = 1.0 * weighty
+    swingBuilder.scrollPane(constraints: constraints) {
+        messageText = textArea(rows: 5 * weighty, columns: 80, tabSize: 3, lineWrap: true, wrapStyleWord: true, text: messages[initialIndex], caretPosition: 0) {}
+    }
+    messageComboBox.addActionListener { actionEvent ->
+        if (selectedIndex != -1 && messageComboBox.selectedIndex != selectedIndex) {
+            messages[selectedIndex] = messageText.text
+            comboBoxModel.removeElementAt(selectedIndex)
+            comboBoxModel.insertElementAt(messages[selectedIndex].replaceAll(/\s+/, ' ').take(120), selectedIndex)
+        }
+        selectedIndex = messageComboBox.selectedIndex
+        messageText.text = messages[selectedIndex]
+        messageText.caretPosition = 0
+    }
+    constraints.gridy++
+    constraints.weighty = 0.0
+    swingBuilder.panel(layout: new FlowLayout(), constraints: constraints) {
+        button(action: swingBuilder.action(name: "Reset Changes ${title}".toString()) {
+            messageText.text = messages[selectedIndex]
+            messageText.caretPosition = 0       
+        })
+        button(action: swingBuilder.action(name: "Add New Message ${title}".toString()) {
+            messages.add("")
+            comboBoxModel.addElement("")
+        })
+        button(action: swingBuilder.action(name: "Delete Current Message ${title}".toString()) {
+            if (selectedIndex != -1) {
+                messages.remove(selectedIndex)
+                comboBoxModel.removeElementAt(selectedIndex)
+                selectedIndex = -1
+            }
+        })
+    }
+    return new MessageArea(textArea: messageText, comboBox: messageComboBox)
+}
+
+def swingBuilder = new SwingBuilder()
+swingBuilder.edt { // edt method makes sure the GUI is built on the Event Dispatch Thread.
+    def dialog = swingBuilder.dialog(title: 'Message Manager', owner: ui.currentFrame) {
+        panel(layout: new GridBagLayout()) {
+            def constraints = new GridBagConstraints()
+            constraints.fill = GridBagConstraints.BOTH
+            constraints.weightx = 1.0
+            constraints.gridx = 0
+            constraints.gridy = -1  // Will be incremented to 0 in the first call to createSection
+            def systemMessages = loadMessagesFromFile(systemMessagesFilePath, defaultSystemMessages)
+            def userMessages = loadMessagesFromFile(userMessagesFilePath, userSystemMessages)
+            MessageArea systemMessageArea = createMessageSection(swingBuilder, systemMessages, "System Messages", selectedSystemMessageIndex, constraints, 4)
+            MessageArea userMessageArea = createMessageSection(swingBuilder, userMessages, "User Messages", selectedUserMessageIndex, constraints, 1)
+            constraints.gridy++
+            swingBuilder.panel(constraints: constraints) {
+                layout = new FlowLayout()
+                label('API Key:')
+                def apiKeyField = textField(columns: 20, text: apiKey)
+                label('Maximum Response Length:')
+                def responseLengthField = formattedTextField(columns: 10, value: maxResponseLength)
+                label('GPT Model:')
+                def gptModelBox = comboBox(items: ['gpt-3.5-turbo', 'gpt-4'], selectedItem: gptModel)
+                def askGptButton = button(action: swingBuilder.action(name: 'Ask GPT') {
+                    generateBranches(apiKeyField.text, 
+                    systemMessageArea.textArea.text, 
+                    expandMessage(userMessageArea.textArea.text), 
+                    gptModelBox.selectedItem, 
+                    responseLengthField.value) 
+                })
+                askGptButton.rootPane.defaultButton = askGptButton
+                swingBuilder.button(action: swingBuilder.action(name: 'Save Changes') {
+                    saveMessagesToFile(systemMessagesFilePath, systemMessages)
+                    saveMessagesToFile(userMessagesFilePath, userMessages)
+                    config.setProperty('openai.key', apiKeyField.text)
+                    config.setProperty('openai.gpt_model', gptModelBox.selectedItem)
+                    config.setProperty('openai.max_response_length', responseLengthField.value)
+                    config.setProperty('openai.system_message_index', systemMessageArea.comboBox.selectedIndex)
+                    config.setProperty('openai.user_message_index', userMessageArea.comboBox.selectedIndex)
+                    })
+                }
+            }
+    }
+    dialog.pack()
+    ui.setDialogLocationRelativeTo(dialog, ui.currentFrame)
+    dialog.show()
+}
