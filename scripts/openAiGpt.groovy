@@ -38,9 +38,9 @@ Go to the museum
 Stay at home
 ======
 Learn the format "outline" from the example below and create similar outlines for topics given by the user.
-Strictly follow the format.  Use multiple nested levels. Start a new paragraph for each new sentence. Suppress any bullet points or other characters like - at the beginning of the list, use just the formatting as in the example     
+Strictly follow the format.  Use multiple nested levels. Start a new paragraph for each new sentence. Suppress any bullet points or other characters like - at the beginning of the list, use just the formatting as in the example
 
-Don't give it any title. 
+Don't give it any title.
 
 Concentrate on the topic only. Cover as many aspects of the topic as possible as deeply as possible.
 
@@ -86,9 +86,9 @@ Benefits and Impact
     The space industry also provides economic benefits, generating jobs and revenue for countries involved in space exploration.
 ======
 Learn the format "trigger word outline" from the example below and create similar trigger word outlines for topics given by the user.
-Strictly follow the format.  Use multiple nested levels. Always break sentences. Put each word on its own line. Use no '-' characters or bullet points. 
+Strictly follow the format.  Use multiple nested levels. Always break sentences. Put each word on its own line. Use no '-' characters or bullet points.
 
-Don't give it any title. 
+Don't give it any title.
 
 Concentrate on the topic only. Cover as many aspects of the topic as possible as deeply as possible.
 
@@ -200,6 +200,12 @@ def expandMessage(String message) {
 }
 
 def generateBranches(String apiKey, String systemMessage, String userMessage, String model, Integer maxTokens) {
+    if(apiKey.isEmpty()){
+        java.awt.Desktop.desktop.browse(new URI("https://platform.openai.com/account/api-keys"))
+        ui.errorMessage("Invalid authentication or incorrect API key provided.")
+        return;
+    }
+
     List<Map<String, String>> messages = [
             [role: 'system', content: systemMessage],
             [role: 'user', content: userMessage]
@@ -221,7 +227,7 @@ def generateBranches(String apiKey, String systemMessage, String userMessage, St
 
 def call_openai_chat(String apiKey, List<Map<String, String>> messages,
                      String model,
-                     Integer max_tokens, 
+                     Integer max_tokens,
                      Double temperature = 0.7,
                      Double top_p = 1, Integer n = 1, Boolean stream = false,
                      Integer logprobs = null, Boolean echo = false, List<String> stop = null,
@@ -278,9 +284,10 @@ def make_api_call(String apiKey, Map<String, Object> payloadMap) {
         def postRC = post.getResponseCode()
 
         if (postRC.equals(200)) {
-            responseText = post.getInputStream().getText()
+            responseText = post.getInputStream().getText("UTF-8")
             logger.info("GPT response: $responseText")
         } else if (postRC.equals(401)) {
+            java.awt.Desktop.desktop.browse(new URI("https://platform.openai.com/account/api-keys"))
             ui.errorMessage("Invalid authentication or incorrect API key provided.")
         } else if (postRC.equals(404)) {
             ui.errorMessage("You must be a member of an organization to use the API.")
@@ -353,7 +360,7 @@ MessageArea createMessageSection(def swingBuilder, def messages, def title, int 
     swingBuilder.panel(layout: new FlowLayout(), constraints: constraints) {
         button(action: swingBuilder.action(name: "Reset Changes ${title}".toString()) {
             messageText.text = messages[selectedIndex]
-            messageText.caretPosition = 0       
+            messageText.caretPosition = 0
         })
         button(action: swingBuilder.action(name: "Add New Message ${title}".toString()) {
             messages.add("")
@@ -387,17 +394,17 @@ swingBuilder.edt { // edt method makes sure the GUI is built on the Event Dispat
             swingBuilder.panel(constraints: constraints) {
                 layout = new FlowLayout()
                 label('API Key:')
-                def apiKeyField = textField(columns: 20, text: apiKey)
+                def apiKeyField = passwordField(columns: 10, text: apiKey)
                 label('Maximum Response Length:')
-                def responseLengthField = formattedTextField(columns: 10, value: maxResponseLength)
+                def responseLengthField = formattedTextField(columns: 5, value: maxResponseLength)
                 label('GPT Model:')
                 def gptModelBox = comboBox(items: ['gpt-3.5-turbo', 'gpt-4'], selectedItem: gptModel)
                 def askGptButton = button(action: swingBuilder.action(name: 'Ask GPT') {
-                    generateBranches(apiKeyField.text, 
-                    systemMessageArea.textArea.text, 
-                    expandMessage(userMessageArea.textArea.text), 
-                    gptModelBox.selectedItem, 
-                    responseLengthField.value) 
+                    generateBranches(String.valueOf(apiKeyField.password),
+                    systemMessageArea.textArea.text,
+                    expandMessage(userMessageArea.textArea.text),
+                    gptModelBox.selectedItem,
+                    responseLengthField.value)
                 })
                 askGptButton.rootPane.defaultButton = askGptButton
                 swingBuilder.button(action: swingBuilder.action(name: 'Save Changes') {
@@ -405,7 +412,7 @@ swingBuilder.edt { // edt method makes sure the GUI is built on the Event Dispat
                     userMessages[userMessageArea.comboBox.selectedIndex] = userMessageArea.textArea.text
                     saveMessagesToFile(systemMessagesFilePath, systemMessages)
                     saveMessagesToFile(userMessagesFilePath, userMessages)
-                    config.setProperty('openai.key', apiKeyField.text)
+                    config.setProperty('openai.key', String.valueOf(apiKeyField.password))
                     config.setProperty('openai.gpt_model', gptModelBox.selectedItem)
                     config.setProperty('openai.max_response_length', responseLengthField.value)
                     config.setProperty('openai.system_message_index', systemMessageArea.comboBox.selectedIndex)

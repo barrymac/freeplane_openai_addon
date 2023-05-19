@@ -113,8 +113,7 @@
       </li>
     </ul>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <node TEXT="description" POSITION="top_or_left" ID="ID_365830098" CREATED="1684435528724" MODIFIED="1684435528724">
 <edge COLOR="#ff0000"/>
 <richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
@@ -379,7 +378,7 @@
     </p>
   </body>
 </html></richcontent>
-<node TEXT="openAiGpt.groovy" ID="ID_231711959" CREATED="1684435528727" MODIFIED="1684508244792">
+<node TEXT="openAiGpt.groovy" ID="ID_231711959" CREATED="1684435528727" MODIFIED="1684520637732">
 <attribute_layout NAME_WIDTH="202.49999 pt" VALUE_WIDTH="156.75 pt"/>
 <attribute NAME="menuTitleKey" VALUE="addons.${name}.openAiGpt"/>
 <attribute NAME="menuLocation" VALUE="${addonsMenu}/addons.${name}"/>
@@ -388,7 +387,7 @@
 <attribute NAME="execute_scripts_without_asking" VALUE="true"/>
 <attribute NAME="execute_scripts_without_file_restriction" VALUE="true"/>
 <attribute NAME="execute_scripts_without_write_restriction" VALUE="true"/>
-<attribute NAME="execute_scripts_without_exec_restriction" VALUE="false"/>
+<attribute NAME="execute_scripts_without_exec_restriction" VALUE="true"/>
 <attribute NAME="execute_scripts_without_network_restriction" VALUE="true"/>
 </node>
 </node>
