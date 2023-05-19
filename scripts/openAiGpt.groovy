@@ -17,6 +17,26 @@ String systemMessagesFilePath = "${config.freeplaneUserDirectory}/chatGptSystemM
 String userMessagesFilePath = "${config.freeplaneUserDirectory}/chatGptUserMessages.txt"
 
 String defaultSystemMessages = '''
+You are creative assistent.
+Please generate ideas related to the topic given by user.
+Separate each idea with a newline.
+
+Don't give it any heading like "Ideas".
+Don't enumerate generated ideas.
+Don't use any indentation characters like bullet points, asterics or minus characters.
+Write your ideas one per line.
+Don't repeat known facts.
+Don't comment the task itself.
+
+Concentrate on the topic only.
+Cover as many aspects of the topic as possible as deeply as possible.
+
+Example:
+
+Go to the theater
+Go to the museum
+Stay at home
+======
 Learn the format "outline" from the example below and create similar outlines for topics given by the user.
 Strictly follow the format.  Use multiple nested levels. Start a new paragraph for each new sentence. Suppress any bullet points or other characters like - at the beginning of the list, use just the formatting as in the example     
 
@@ -195,7 +215,7 @@ def generateBranches(String apiKey, String systemMessage, String userMessage, St
     workerThread.setContextClassLoader(getClass().classLoader)
     workerThread.start()
     logger.info(userMessage)
-    ui.informationMessage(userMessage)
+    ui.informationMessage(ui.currentRootComponent, userMessage, "Wait. Your question:")
 }
 
 
@@ -352,7 +372,7 @@ MessageArea createMessageSection(def swingBuilder, def messages, def title, int 
 
 def swingBuilder = new SwingBuilder()
 swingBuilder.edt { // edt method makes sure the GUI is built on the Event Dispatch Thread.
-    def dialog = swingBuilder.dialog(title: 'Message Manager', owner: ui.currentFrame) {
+    def dialog = swingBuilder.dialog(title: 'Chat GPT Communicator', owner: ui.currentFrame) {
         panel(layout: new GridBagLayout()) {
             def constraints = new GridBagConstraints()
             constraints.fill = GridBagConstraints.BOTH
@@ -381,6 +401,8 @@ swingBuilder.edt { // edt method makes sure the GUI is built on the Event Dispat
                 })
                 askGptButton.rootPane.defaultButton = askGptButton
                 swingBuilder.button(action: swingBuilder.action(name: 'Save Changes') {
+                    systemMessages[systemMessageArea.comboBox.selectedIndex] = systemMessageArea.textArea.text
+                    userMessages[userMessageArea.comboBox.selectedIndex] = userMessageArea.textArea.text
                     saveMessagesToFile(systemMessagesFilePath, systemMessages)
                     saveMessagesToFile(userMessagesFilePath, userMessages)
                     config.setProperty('openai.key', apiKeyField.text)
