@@ -323,6 +323,30 @@ def saveMessagesToFile(String filePath, List messages) {
     new File(filePath).write(fileContent)
 }
 
+class MessageItem {
+    String value
+ 
+    MessageItem(String value) {
+        this.value = value.replaceAll(/\s+/, ' ').take(120)
+    }
+
+    @Override
+    boolean equals(Object o) {
+        return this.is(o)
+    }
+
+    @Override
+    int hashCode() {
+        return System.identityHashCode(this)
+    }
+
+    @Override
+    String toString() {
+        return value
+    }
+}
+
+
 class MessageArea {
     JTextArea textArea
     JComboBox comboBox
@@ -330,7 +354,7 @@ class MessageArea {
 
 MessageArea createMessageSection(def swingBuilder, def messages, def title, int initialIndex, def constraints, def weighty) {
     def comboBoxModel = new DefaultComboBoxModel()
-    messages.each { comboBoxModel.addElement(it.replaceAll(/\s+/, ' ').take(120)) }
+    messages.each { comboBoxModel.addElement(new MessageItem(it))}
     def messageComboBox, messageText
     def selectedIndex = initialIndex
 
@@ -349,7 +373,7 @@ MessageArea createMessageSection(def swingBuilder, def messages, def title, int 
         if (selectedIndex != -1 && messageComboBox.selectedIndex != selectedIndex) {
             messages[selectedIndex] = messageText.text
             comboBoxModel.removeElementAt(selectedIndex)
-            comboBoxModel.insertElementAt(messages[selectedIndex].replaceAll(/\s+/, ' ').take(120), selectedIndex)
+            comboBoxModel.insertElementAt(new MessageItem(messages[selectedIndex]), selectedIndex)
         }
         selectedIndex = messageComboBox.selectedIndex
         messageText.text = messages[selectedIndex]
@@ -358,15 +382,16 @@ MessageArea createMessageSection(def swingBuilder, def messages, def title, int 
     constraints.gridy++
     constraints.weighty = 0.0
     swingBuilder.panel(layout: new FlowLayout(), constraints: constraints) {
-        button(action: swingBuilder.action(name: "Reset Changes ${title}".toString()) {
+        button(action: swingBuilder.action(name: "Reset ${title}".toString()) {
             messageText.text = messages[selectedIndex]
             messageText.caretPosition = 0
         })
-        button(action: swingBuilder.action(name: "Add New Message ${title}".toString()) {
-            messages.add("")
-            comboBoxModel.addElement("")
+        button(action: swingBuilder.action(name: "Duplicate ${title}".toString()) {
+            messages.add(messageText.text)
+            comboBoxModel.addElement(new MessageItem(messageText.text))
+            messageComboBox.selectedIndex = selectedIndex = messageComboBox.itemCount - 1
         })
-        button(action: swingBuilder.action(name: "Delete Current Message ${title}".toString()) {
+        button(action: swingBuilder.action(name: "Delete ${title}".toString()) {
             if (selectedIndex != -1) {
                 messages.remove(selectedIndex)
                 comboBoxModel.removeElementAt(selectedIndex)
@@ -388,8 +413,8 @@ swingBuilder.edt { // edt method makes sure the GUI is built on the Event Dispat
             constraints.gridy = -1  // Will be incremented to 0 in the first call to createSection
             def systemMessages = loadMessagesFromFile(systemMessagesFilePath, defaultSystemMessages)
             def userMessages = loadMessagesFromFile(userMessagesFilePath, userSystemMessages)
-            MessageArea systemMessageArea = createMessageSection(swingBuilder, systemMessages, "System Messages", selectedSystemMessageIndex, constraints, 4)
-            MessageArea userMessageArea = createMessageSection(swingBuilder, userMessages, "User Messages", selectedUserMessageIndex, constraints, 1)
+            MessageArea systemMessageArea = createMessageSection(swingBuilder, systemMessages, "System Message", selectedSystemMessageIndex, constraints, 4)
+            MessageArea userMessageArea = createMessageSection(swingBuilder, userMessages, "User Message", selectedUserMessageIndex, constraints, 1)
             constraints.gridy++
             swingBuilder.panel(constraints: constraints) {
                 layout = new FlowLayout()
