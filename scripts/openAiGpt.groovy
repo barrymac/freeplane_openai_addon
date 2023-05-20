@@ -389,6 +389,7 @@ MessageArea createMessageSection(def swingBuilder, def messages, def title, int 
         button(action: swingBuilder.action(name: "Duplicate ${title}".toString()) {
             messages.add(messageText.text)
             comboBoxModel.addElement(new MessageItem(messageText.text))
+            messageText.text = messages[selectedIndex]
             messageComboBox.selectedIndex = selectedIndex = messageComboBox.itemCount - 1
         })
         button(action: swingBuilder.action(name: "Delete ${title}".toString()) {

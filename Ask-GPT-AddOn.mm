@@ -1,6 +1,6 @@
 <map version="freeplane 1.11.1">
 <!--To view this file, download free mind mapping software Freeplane from https://www.freeplane.org -->
-<node TEXT="Ask-GPT-AddOn" FOLDED="false" ID="ID_696401721" CREATED="1684435528719" MODIFIED="1684613665676" LINK="https://github.com/dpolivaev/freeplane_openai_addon" BACKGROUND_COLOR="#97c7dc" STYLE="oval" MAX_WIDTH="20 cm">
+<node TEXT="Ask-GPT-AddOn" FOLDED="false" ID="ID_696401721" CREATED="1684435528719" MODIFIED="1684614493333" LINK="https://github.com/dpolivaev/freeplane_openai_addon" BACKGROUND_COLOR="#97c7dc" STYLE="oval" MAX_WIDTH="20 cm">
 <font SIZE="16" BOLD="true" ITALIC="true"/>
 <hook NAME="MapStyle">
     <properties show_icon_for_attributes="true" edgeColorConfiguration="#808080ff,#ff0000ff,#0000ffff,#00ff00ff,#ff00ffff,#00ffffff,#7c0000ff,#00007cff,#007c00ff,#7c007cff,#007c7cff,#7c7c00ff" mapUsesOwnSaveOptions="true" save_modification_times="false" save_last_visited_node="default" show_note_icons="true" associatedTemplateLocation="template:/standard-1.6.mm" save_folding="save_folding_if_map_is_changed" fit_to_viewport="false"/>
@@ -71,7 +71,7 @@
 <hook NAME="AutomaticEdgeColor" COUNTER="17" RULE="ON_BRANCH_CREATION"/>
 <attribute_layout NAME_WIDTH="112.61538 pt" VALUE_WIDTH="333.23076 pt"/>
 <attribute NAME="name" VALUE="AskGPTAddOn"/>
-<attribute NAME="version" VALUE="v0.3.1"/>
+<attribute NAME="version" VALUE="v0.3.2"/>
 <attribute NAME="author" VALUE="barry, dpolivaev"/>
 <attribute NAME="freeplaneVersionFrom" VALUE="v1.11.3" OBJECT="org.freeplane.features.format.FormattedObject|java.lang.String&amp;#x7c;v1.11.3|number:decimal:#0.####"/>
 <attribute NAME="freeplaneVersionTo" VALUE=""/>
