@@ -2,6 +2,7 @@ import groovy.swing.SwingBuilder
 import java.awt.GridBagConstraints
 import java.awt.GridBagLayout
 import java.awt.FlowLayout
+import java.awt.BorderLayout
 import javax.swing.*
 import java.nio.file.*
 import groovy.json.JsonOutput
@@ -211,17 +212,30 @@ def generateBranches(String apiKey, String systemMessage, String userMessage, St
             [role: 'user', content: userMessage]
     ]
     def node = c.selected
+    def swingBuilder = new SwingBuilder()
+    def dialog = swingBuilder.dialog(title: 'I am asking your question. Wait for the response.',
+        owner: ui.currentFrame,
+        modal: false,
+        resizable: true,
+        defaultCloseOperation: WindowConstants.DO_NOTHING_ON_CLOSE) {
+            swingBuilder.scrollPane(constraints: BorderLayout.CENTER) {
+                    swingBuilder.textArea(rows: 10, columns: 60, lineWrap: true, wrapStyleWord: true, editable: false, text: userMessage)
+        }
+    }
+    dialog.pack()
+    ui.setDialogLocationRelativeTo(dialog, node.delegate)
+    dialog.setVisible(true)
+    logger.info(userMessage)
     def workerThread = new Thread({
         def response = call_openai_chat(apiKey, messages, model, maxTokens)
         logger.info("GPT response: $response")
         SwingUtilities.invokeLater {
+            dialog.dispose()
             node.appendTextOutlineAsBranch(response)
         }
     })
     workerThread.setContextClassLoader(getClass().classLoader)
     workerThread.start()
-    logger.info(userMessage)
-    ui.informationMessage(ui.currentRootComponent, userMessage, "Wait. Your question:")
 }
 
 
