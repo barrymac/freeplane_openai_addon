@@ -1,6 +1,6 @@
 <map version="freeplane 1.11.1">
 <!--To view this file, download free mind mapping software Freeplane from https://www.freeplane.org -->
-<node TEXT="Ask-GPT-AddOn" FOLDED="false" ID="ID_696401721" LINK="https://github.com/dpolivaev/freeplane_openai_addon" BACKGROUND_COLOR="#97c7dc" STYLE="oval" MAX_WIDTH="20 cm">
+<node TEXT="Ask-GPT-AddOn" FOLDED="false" ID="ID_696401721" CREATED="1685111823904" MODIFIED="1685113339551" LINK="https://github.com/dpolivaev/freeplane_openai_addon" BACKGROUND_COLOR="#97c7dc" STYLE="oval" MAX_WIDTH="20 cm">
 <font SIZE="16" BOLD="true" ITALIC="true"/>
 <hook NAME="MapStyle">
     <properties show_icon_for_attributes="true" edgeColorConfiguration="#808080ff,#ff0000ff,#0000ffff,#00ff00ff,#ff00ffff,#00ffffff,#7c0000ff,#00007cff,#007c00ff,#7c007cff,#007c7cff,#7c7c00ff" mapUsesOwnSaveOptions="true" save_modification_times="false" save_last_visited_node="default" show_note_icons="true" associatedTemplateLocation="template:/standard-1.6.mm" save_folding="save_folding_if_map_is_changed" fit_to_viewport="false"/>
@@ -71,15 +71,15 @@
 <hook NAME="AutomaticEdgeColor" COUNTER="17" RULE="ON_BRANCH_CREATION"/>
 <attribute_layout NAME_WIDTH="112.61538 pt" VALUE_WIDTH="333.23076 pt"/>
 <attribute NAME="name" VALUE="AskGPTAddOn"/>
-<attribute NAME="version" VALUE="v0.3.3"/>
+<attribute NAME="version" VALUE="v0.3.4"/>
 <attribute NAME="author" VALUE="barry, dpolivaev"/>
 <attribute NAME="freeplaneVersionFrom" VALUE="v1.11.3" OBJECT="org.freeplane.features.format.FormattedObject|java.lang.String&amp;#x7c;v1.11.3|number:decimal:#0.####"/>
 <attribute NAME="freeplaneVersionTo" VALUE=""/>
 <attribute NAME="homepage" VALUE="github.com/dpolivaev/freeplane_openai_addon"/>
-<attribute NAME="downloadUrl" VALUE="https://${homepage}/releases/download/${version}/"/>
-<attribute NAME="changelogUrl" VALUE="https://${homepage}/releases/latest/download/history.md"/>
+<attribute NAME="downloadUrl" VALUE="https://${homepage}/releases/tag/${version}"/>
+<attribute NAME="changelogUrl" VALUE="https://${homepage}/commits/main"/>
 <attribute NAME="addonsMenu" VALUE="/menu_bar/OpenAI"/>
-<attribute NAME="updateUrl" VALUE="https://${homepage}/releases/latest/download/version.properties"/>
+<attribute NAME="updateUrl" VALUE="https://raw.githubusercontent.com/dpolivaev/freeplane_openai_addon/release/version.properties"/>
 <richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
   <head>
@@ -114,7 +114,7 @@
     </ul>
   </body>
 </html></richcontent>
-<node TEXT="description" POSITION="top_or_left" ID="ID_365830098">
+<node TEXT="description" POSITION="top_or_left" ID="ID_365830098" CREATED="1685111823975" MODIFIED="1685111823975">
 <edge COLOR="#ff0000"/>
 <richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
@@ -133,9 +133,9 @@
     </p>
   </body>
 </html></richcontent>
-<node TEXT="Add on to use OpenAI GPT API to generate mind map content" ID="ID_110054152"/>
+<node TEXT="Add on to use OpenAI GPT API to generate mind map content" ID="ID_110054152" CREATED="1685111823976" MODIFIED="1685111823976"/>
 </node>
-<node TEXT="changes" POSITION="top_or_left" ID="ID_138977336">
+<node TEXT="changes" POSITION="top_or_left" ID="ID_138977336" CREATED="1685111823976" MODIFIED="1685111823976">
 <edge COLOR="#0000ff"/>
 <richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
@@ -149,7 +149,7 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="license" FOLDED="true" POSITION="top_or_left" ID="ID_950695085">
+<node TEXT="license" FOLDED="true" POSITION="top_or_left" ID="ID_950695085" CREATED="1685111823976" MODIFIED="1685111823976">
 <edge COLOR="#00ff00"/>
 <richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
@@ -168,9 +168,9 @@
     </p>
   </body>
 </html></richcontent>
-<node TEXT="&#xa;This add-on is free software: you can redistribute it and/or modify&#xa;it under the terms of the GNU General Public License as published by&#xa;the Free Software Foundation, either version 2 of the License, or&#xa;(at your option) any later version.&#xa;&#xa;This program is distributed in the hope that it will be useful,&#xa;but WITHOUT ANY WARRANTY; without even the implied warranty of&#xa;MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&#xa;GNU General Public License for more details.&#xa;" ID="ID_726417928"/>
+<node TEXT="&#xa;This add-on is free software: you can redistribute it and/or modify&#xa;it under the terms of the GNU General Public License as published by&#xa;the Free Software Foundation, either version 2 of the License, or&#xa;(at your option) any later version.&#xa;&#xa;This program is distributed in the hope that it will be useful,&#xa;but WITHOUT ANY WARRANTY; without even the implied warranty of&#xa;MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&#xa;GNU General Public License for more details.&#xa;" ID="ID_726417928" CREATED="1685111823976" MODIFIED="1685111823976"/>
 </node>
-<node TEXT="preferences.xml" POSITION="top_or_left" ID="ID_902316079">
+<node TEXT="preferences.xml" POSITION="top_or_left" ID="ID_902316079" CREATED="1685111823976" MODIFIED="1685111823976">
 <edge COLOR="#ff00ff"/>
 <richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
@@ -187,7 +187,7 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="default.properties" POSITION="top_or_left" ID="ID_1363888784">
+<node TEXT="default.properties" POSITION="top_or_left" ID="ID_1363888784" CREATED="1685111823976" MODIFIED="1685111823976">
 <attribute_layout NAME_WIDTH="138.75 pt" VALUE_WIDTH="138.75 pt"/>
 <attribute NAME="${name}.icon" VALUE="/images/${name}.svg"/>
 <richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
@@ -211,7 +211,7 @@
 </html></richcontent>
 <edge COLOR="#00ffff"/>
 </node>
-<node TEXT="translations" POSITION="top_or_left" ID="ID_1606264590">
+<node TEXT="translations" POSITION="top_or_left" ID="ID_1606264590" CREATED="1685111823976" MODIFIED="1685111823976">
 <edge COLOR="#7c0000"/>
 <richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
@@ -235,13 +235,13 @@
     </ul>
   </body>
 </html></richcontent>
-<node TEXT="en" ID="ID_1097454652">
+<node TEXT="en" ID="ID_1097454652" CREATED="1685111823977" MODIFIED="1685111823977">
 <attribute_layout NAME_WIDTH="159 pt" VALUE_WIDTH="102 pt"/>
 <attribute NAME="addons.${name}" VALUE="Ask GPT AddOn"/>
 <attribute NAME="addons.${name}.askGPT" VALUE="AskGPT"/>
 </node>
 </node>
-<node TEXT="deinstall" POSITION="top_or_left" ID="ID_1927303474">
+<node TEXT="deinstall" POSITION="top_or_left" ID="ID_1927303474" CREATED="1685111823977" MODIFIED="1685111823977">
 <edge COLOR="#00007c"/>
 <richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
@@ -260,7 +260,7 @@
 <attribute NAME="delete" VALUE="${installationbase}/images/${name}.svg"/>
 <attribute NAME="delete" VALUE="${installationbase}/images/${name}-icon.svg"/>
 </node>
-<node TEXT="scripts" POSITION="bottom_or_right" ID="ID_684917236">
+<node TEXT="scripts" POSITION="bottom_or_right" ID="ID_684917236" CREATED="1685111823977" MODIFIED="1685111823977">
 <edge COLOR="#007c00"/>
 <richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
@@ -378,7 +378,7 @@
     </p>
   </body>
 </html></richcontent>
-<node TEXT="AskGPT.groovy" ID="ID_231711959">
+<node TEXT="AskGPT.groovy" ID="ID_231711959" CREATED="1685111823978" MODIFIED="1685111823978">
 <attribute_layout NAME_WIDTH="202.49999 pt" VALUE_WIDTH="156.75 pt"/>
 <attribute NAME="menuTitleKey" VALUE="addons.${name}.askGPT"/>
 <attribute NAME="menuLocation" VALUE="${addonsMenu}"/>
@@ -391,7 +391,7 @@
 <attribute NAME="execute_scripts_without_network_restriction" VALUE="true"/>
 </node>
 </node>
-<node TEXT="lib" POSITION="bottom_or_right" ID="ID_1845190577">
+<node TEXT="lib" POSITION="bottom_or_right" ID="ID_1845190577" CREATED="1685111823978" MODIFIED="1685111823978">
 <edge COLOR="#7c007c"/>
 <richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
@@ -429,7 +429,7 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="zips" POSITION="bottom_or_right" ID="ID_169986368">
+<node TEXT="zips" POSITION="bottom_or_right" ID="ID_169986368" CREATED="1685111823978" MODIFIED="1685111823978">
 <edge COLOR="#007c7c"/>
 <richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
@@ -467,7 +467,7 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="images" POSITION="bottom_or_right" ID="ID_295383454">
+<node TEXT="images" POSITION="bottom_or_right" ID="ID_295383454" CREATED="1685111823978" MODIFIED="1685111823978">
 <edge COLOR="#7c0000"/>
 <richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
@@ -501,10 +501,10 @@
   </body>
 </html></richcontent>
 <attribute_layout NAME_WIDTH="104.25 pt"/>
-<node TEXT="${name}.svg" ID="ID_1000617651">
+<node TEXT="${name}.svg" ID="ID_1000617651" CREATED="1685111823979" MODIFIED="1685111823979">
 <attribute_layout VALUE_WIDTH="100 pt"/>
 </node>
-<node TEXT="${name}-icon.svg" ID="ID_510373247">
+<node TEXT="${name}-icon.svg" ID="ID_510373247" CREATED="1685111823979" MODIFIED="1685111823979">
 <attribute_layout VALUE_WIDTH="100 pt"/>
 </node>
 </node>

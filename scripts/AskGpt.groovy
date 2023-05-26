@@ -11,6 +11,7 @@ import groovy.json.JsonSlurper
 String apiKey = config.getProperty('openai.key', '')
 String gptModel = config.getProperty('openai.gpt_model', 'gpt-3.5-turbo')
 int maxResponseLength = config.getProperty('openai.max_response_length', 1000)
+double temperature = config.getProperty('openai.temperature', 0.7)
 int selectedSystemMessageIndex = config.getProperty('openai.system_message_index', 0)
 int selectedUserMessageIndex = config.getProperty('openai.user_message_index', 0)
 
@@ -200,7 +201,7 @@ def expandMessage(String message) {
     return expandedMessage
 }
 
-def generateBranches(String apiKey, String systemMessage, String userMessage, String model, Integer maxTokens) {
+def generateBranches(String apiKey, String systemMessage, String userMessage, String model, Integer maxTokens, Double temperature) {
     if(apiKey.isEmpty()){
         java.awt.Desktop.desktop.browse(new URI("https://platform.openai.com/account/api-keys"))
         ui.errorMessage("Invalid authentication or incorrect API key provided.")
@@ -217,7 +218,7 @@ def generateBranches(String apiKey, String systemMessage, String userMessage, St
         owner: ui.currentFrame,
         modal: false,
         resizable: true,
-        defaultCloseOperation: WindowConstants.DO_NOTHING_ON_CLOSE) {
+        defaultCloseOperation: WindowConstants.DISPOSE_ON_CLOSE) {
             swingBuilder.scrollPane(constraints: BorderLayout.CENTER) {
                     swingBuilder.textArea(rows: 10, columns: 60, lineWrap: true, wrapStyleWord: true, editable: false, text: userMessage)
         }
@@ -227,7 +228,7 @@ def generateBranches(String apiKey, String systemMessage, String userMessage, St
     dialog.setVisible(true)
     logger.info(userMessage)
     def workerThread = new Thread({
-        def response = call_openai_chat(apiKey, messages, model, maxTokens)
+        def response = call_openai_chat(apiKey, messages, model, maxTokens, temperature)
         logger.info("GPT response: $response")
         SwingUtilities.invokeLater {
             dialog.dispose()
@@ -242,7 +243,7 @@ def generateBranches(String apiKey, String systemMessage, String userMessage, St
 def call_openai_chat(String apiKey, List<Map<String, String>> messages,
                      String model,
                      Integer max_tokens,
-                     Double temperature = 0.7,
+                     Double temperature,
                      Double top_p = 1, Integer n = 1, Boolean stream = false,
                      Integer logprobs = null, Boolean echo = false, List<String> stop = null,
                      Double presence_penalty = 0, Double frequency_penalty = 0,
@@ -308,7 +309,7 @@ def make_api_call(String apiKey, Map<String, Object> payloadMap) {
         } else if (postRC.equals(429)) {
             ui.errorMessage("Rate limit reached for requests or current quota exceeded.")
         } else {
-            ui.errorMessage("Unhandled error code returned from API.")
+            ui.errorMessage("Unhandled error code $postRC returned from API.")
         }
 
     } catch (Exception e) {
@@ -364,6 +365,14 @@ class MessageItem {
 class MessageArea {
     JTextArea textArea
     JComboBox comboBox
+
+    void updateSelectedItemFromTextArea(){
+        int selectedIndex = comboBox.selectedIndex
+        def text = textArea.text
+        comboBox.removeItemAt(selectedIndex)
+        comboBox.insertItemAt(new MessageItem(text), selectedIndex)
+        comboBox.selectedIndex = selectedIndex
+    }
 }
 
 MessageArea createMessageSection(def swingBuilder, def messages, def title, int initialIndex, def constraints, def weighty) {
@@ -390,8 +399,10 @@ MessageArea createMessageSection(def swingBuilder, def messages, def title, int 
             comboBoxModel.insertElementAt(new MessageItem(messages[selectedIndex]), selectedIndex)
         }
         selectedIndex = messageComboBox.selectedIndex
-        messageText.text = messages[selectedIndex]
-        messageText.caretPosition = 0
+        if(messageText.text != messages[selectedIndex]){
+            messageText.text = messages[selectedIndex]
+            messageText.caretPosition = 0
+        }
     }
     constraints.gridy++
     constraints.weighty = 0.0
@@ -420,7 +431,7 @@ MessageArea createMessageSection(def swingBuilder, def messages, def title, int 
 def swingBuilder = new SwingBuilder()
 swingBuilder.edt { // edt method makes sure the GUI is built on the Event Dispatch Thread.
     def dialog = swingBuilder.dialog(title: 'Chat GPT Communicator', owner: ui.currentFrame) {
-        panel(layout: new GridBagLayout()) {
+        swingBuilder.panel(layout: new GridBagLayout()) {
             def constraints = new GridBagConstraints()
             constraints.fill = GridBagConstraints.BOTH
             constraints.weightx = 1.0
@@ -431,23 +442,46 @@ swingBuilder.edt { // edt method makes sure the GUI is built on the Event Dispat
             MessageArea systemMessageArea = createMessageSection(swingBuilder, systemMessages, "System Message", selectedSystemMessageIndex, constraints, 4)
             MessageArea userMessageArea = createMessageSection(swingBuilder, userMessages, "User Message", selectedUserMessageIndex, constraints, 1)
             constraints.gridy++
+            def apiKeyField
+            def responseLengthField
+            def gptModelBox
+            def temperatureSlider
+            swingBuilder.panel(constraints: constraints, layout: new GridBagLayout()) {
+                def c = new GridBagConstraints()
+                c.fill = GridBagConstraints.BOTH
+                c.weightx = 1.0
+                c.weighty = 1.0
+                c.gridx = 0
+                c.gridy = 0
+                swingBuilder.panel(constraints: c, layout: new BorderLayout(), border: BorderFactory.createTitledBorder('API Key')) {
+                    apiKeyField = passwordField(columns: 10, text: apiKey)
+                }
+                c.gridx++
+                swingBuilder.panel(constraints: c, layout: new BorderLayout(), border: BorderFactory.createTitledBorder('Max Response Length'), toolTipText: 'Maximum Response Length') {
+                    responseLengthField = formattedTextField(columns: 5, value: maxResponseLength)
+                }
+                c.gridx++
+                 swingBuilder.panel(constraints: c, layout: new BorderLayout(), border: BorderFactory.createTitledBorder('GPT Model')) {
+                    gptModelBox = comboBox(items: ['gpt-3.5-turbo', 'gpt-4'], selectedItem: gptModel, prototypeDisplayValue: 'gpt-3.5-turbo-12345')
+                }
+                c.gridx++
+                swingBuilder.panel(constraints: c, layout: new BorderLayout(), border: BorderFactory.createTitledBorder('Randomness')) {
+                    temperatureSlider = slider(minimum: 0, maximum: 100, minorTickSpacing: 5, majorTickSpacing: 50, snapToTicks: true,
+                        paintTicks: true, paintLabels: true, value : (int) (temperature * 100.0 + 0.5))
+                }
+            }
+            constraints.gridy++
             swingBuilder.panel(constraints: constraints) {
-                layout = new FlowLayout()
-                label('API Key:')
-                def apiKeyField = passwordField(columns: 10, text: apiKey)
-                label('Maximum Response Length:')
-                def responseLengthField = formattedTextField(columns: 5, value: maxResponseLength)
-                label('GPT Model:')
-                def gptModelBox = comboBox(items: ['gpt-3.5-turbo', 'gpt-4'], selectedItem: gptModel)
-                def askGptButton = button(action: swingBuilder.action(name: 'Ask GPT') {
+                def askGptButton = swingBuilder.button(constraints: c, action: swingBuilder.action(name: 'Ask GPT') {
                     generateBranches(String.valueOf(apiKeyField.password),
                     systemMessageArea.textArea.text,
                     expandMessage(userMessageArea.textArea.text),
                     gptModelBox.selectedItem,
-                    responseLengthField.value)
+                    responseLengthField.value,
+                    temperatureSlider.value / 100.0)
                 })
                 askGptButton.rootPane.defaultButton = askGptButton
-                swingBuilder.button(action: swingBuilder.action(name: 'Save Changes') {
+                swingBuilder.button(constraints: c, action: swingBuilder.action(name: 'Save Changes') {
                     systemMessages[systemMessageArea.comboBox.selectedIndex] = systemMessageArea.textArea.text
                     userMessages[userMessageArea.comboBox.selectedIndex] = userMessageArea.textArea.text
                     saveMessagesToFile(systemMessagesFilePath, systemMessages)
@@ -455,11 +489,14 @@ swingBuilder.edt { // edt method makes sure the GUI is built on the Event Dispat
                     config.setProperty('openai.key', String.valueOf(apiKeyField.password))
                     config.setProperty('openai.gpt_model', gptModelBox.selectedItem)
                     config.setProperty('openai.max_response_length', responseLengthField.value)
+                    config.setProperty('openai.temperature', temperatureSlider.value / 100.0)
                     config.setProperty('openai.system_message_index', systemMessageArea.comboBox.selectedIndex)
                     config.setProperty('openai.user_message_index', userMessageArea.comboBox.selectedIndex)
-                    })
-                }
+                    systemMessageArea.updateSelectedItemFromTextArea()
+                    userMessageArea.updateSelectedItemFromTextArea()
+                })
             }
+        }
     }
     dialog.pack()
     ui.setDialogLocationRelativeTo(dialog, ui.currentFrame)
