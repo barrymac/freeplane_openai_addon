@@ -10,13 +10,8 @@ Communicator window
 Question sent
 ![screenshot question](images/ChatGptQuestion.png)
 -----------
-Answer come
+Answer comes
 ![screenshotanswer](images/ChatGptAnswer.png)
------------
-
-Demo video of the previous openai addon:
-
-![demo](demo/demo.gif)
 
 ## Known issue
 There's a mysterious network permissions issue that sometimes comes up that I'm still working out.
