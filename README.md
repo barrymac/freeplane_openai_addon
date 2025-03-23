@@ -1,8 +1,17 @@
 # An add-on for freeplane that uses OpenAI GPT API to brainstorm ideas from any selected node
 
-Demo video of the openai addon:
+##Screenshots
 
-![demo](demo/demo.gif)
+Communicator window
+
+![screenshot communicator](images/ChatGptCommunicator.png)
+-----------
+
+Question sent
+![screenshot question](images/ChatGptQuestion.png)
+-----------
+Answer comes
+![screenshotanswer](images/ChatGptAnswer.png)
 
 ## Known issue
 There's a mysterious network permissions issue that sometimes comes up that I'm still working out.
