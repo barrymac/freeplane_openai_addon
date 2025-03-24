@@ -176,3 +176,20 @@ Once you are done with a new add-on you can create a package for publication via
 
 Worked out example
 See scriptlib for a worked out example. It also contains some generic scripts and illustrates adding Help to your script.
+
+
+For developers
+Developer Tools
+by Volker Börchers
+
+This add-on collects some utilities that script and/or add-on developers will find useful.
+
+Build add-on: adds all standard nodes, attributes and notes to the current map. Can be used with an empty Map to create a basic add-on.
+Package add-on for release: It copies the .mm to -.mm and updates the script node's context from the files lying around.
+Generate add-on documentation: Creates a snippet for the Freeplane add-ons wiki page.
+Insert binary: Asks for a file to insert as text of the current node (BASE64 encoded).
+Extract binary: Asks for a file to extract the BASE64 encoded binary in the current node to.
+Encode translation: Encode non-ASCII characters so that they don't get scrambled while packaging or installation. This function is included in Package add-on for release so you don't need this function.
+Menu item info: Shows technical details about a selected menu item.
+freeplane.dsld: Adds Eclipse editor support for predefined script bindings such as node, c, ui, textUtils, ...
+

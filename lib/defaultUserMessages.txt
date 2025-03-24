@@ -1,0 +1,7 @@
+Known facts:
+$ancestorContents
+$siblingContents
+
+Topic: $nodeContent
+
+Language: English
