@@ -1,11 +1,15 @@
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 import groovy.swing.SwingBuilder
-import MessageExpander
 
 import javax.swing.*
 import java.awt.*
 import java.util.List
+
+// Load the message expander function from external file
+def expandMessage = new GroovyShell(this.class.classLoader).evaluate(
+    new File("${config.freeplaneUserDirectory}/addons/askGPTAddOn/lib/MessageExpander.groovy")
+)
 
 String apiKey = config.getProperty('openai.key', '')
 String gptModel = config.getProperty('openai.gpt_model', 'gpt-3.5-turbo')
