@@ -378,7 +378,7 @@
     </p>
   </body>
 </html></richcontent>
-<node TEXT="AskGPT.groovy" ID="ID_231711959" CREATED="1685111823978" MODIFIED="1685111823978">
+<node TEXT="AskGpt.groovy" ID="ID_231711959" CREATED="1685111823978" MODIFIED="1742830474533">
 <attribute_layout NAME_WIDTH="202.49999 pt" VALUE_WIDTH="156.75 pt"/>
 <attribute NAME="menuTitleKey" VALUE="addons.${name}.askGPT"/>
 <attribute NAME="menuLocation" VALUE="${addonsMenu}"/>
