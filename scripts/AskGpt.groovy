@@ -17,6 +17,8 @@ int selectedUserMessageIndex = config.getProperty('openai.user_message_index', 0
 
 String systemMessagesFilePath = "${config.freeplaneUserDirectory}/chatGptSystemMessages.txt"
 String userMessagesFilePath = "${config.freeplaneUserDirectory}/chatGptUserMessages.txt"
+String defaultSystemMessagesFilePath = "${config.freeplaneUserDirectory}/addons/askGPTAddOn/lib/defaultSystemMessages.txt"
+String defaultUserMessagesFilePath = "${config.freeplaneUserDirectory}/addons/askGPTAddOn/lib/defaultUserMessages.txt"
 
 String defaultSystemMessages = '''
 You are creative assistent.
