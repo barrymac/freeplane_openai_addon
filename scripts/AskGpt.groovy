@@ -18,21 +18,8 @@ String userMessagesFilePath = "${config.freeplaneUserDirectory}/chatGptUserMessa
 String defaultSystemMessagesFilePath = "${config.freeplaneUserDirectory}/addons/askGPTAddOn/lib/defaultSystemMessages.txt"
 String defaultUserMessagesFilePath = "${config.freeplaneUserDirectory}/addons/askGPTAddOn/lib/defaultUserMessages.txt"
 
-String defaultSystemMessages = '''
-You are creative assistent.
-Please generate ideas related to the topic given by user.
-Separate each idea with a newline.
-           '''.trim();
-
-def userSystemMessages = '''
-Known facts:
-$ancestorContents
-$siblingContents
-
-Topic: $nodeContent
-
-Language: English
-            '''.trim();
+String defaultSystemMessages = new File(defaultSystemMessagesFilePath).text.trim()
+def userSystemMessages = new File(defaultUserMessagesFilePath).text.trim()
 
 def expandMessage(String message) {
     def node = c.selected
