@@ -1,35 +1,7 @@
-import groovy.json.JsonOutput
-import groovy.json.JsonSlurper
 import groovy.swing.SwingBuilder
 
 import javax.swing.*
 import java.awt.*
-import java.util.List
-
-// Load the message expander function from external file
-def expandMessage = new GroovyShell(this.class.classLoader).evaluate(
-    new File("${config.freeplaneUserDirectory}/addons/askGPTAddOn/lib/MessageExpander.groovy")
-)
-
-// Load the branch generator function from external file
-def createBranchGenerator = new GroovyShell(this.class.classLoader).evaluate(
-    new File("${config.freeplaneUserDirectory}/addons/askGPTAddOn/lib/BranchGenerator.groovy")
-)
-
-// Load the API caller functions from external file
-def createApiCaller = new GroovyShell(this.class.classLoader).evaluate(
-    new File("${config.freeplaneUserDirectory}/addons/askGPTAddOn/lib/ApiCaller.groovy")
-)
-def apiCaller = createApiCaller([logger: logger, ui: ui, config: config])
-def make_openai_call = apiCaller.make_openai_call
-def make_openrouter_call = apiCaller.make_openrouter_call
-
-// Load the message file handler functions from external file
-def messageFileHandler = new GroovyShell(this.class.classLoader).evaluate(
-    new File("${config.freeplaneUserDirectory}/addons/askGPTAddOn/lib/MessageFileHandler.groovy")
-)
-def loadMessagesFromFile = messageFileHandler.loadMessagesFromFile
-def saveMessagesToFile = messageFileHandler.saveMessagesToFile
 
 String apiKey = config.getProperty('openai.key', '')
 String gptModel = config.getProperty('openai.gpt_model', 'gpt-3.5-turbo')
@@ -47,15 +19,40 @@ String defaultUserMessagesFilePath = "${config.freeplaneUserDirectory}/addons/as
 String defaultSystemMessages = new File(defaultSystemMessagesFilePath).text.trim()
 String userSystemMessages = new File(defaultUserMessagesFilePath).text.trim()
 
+// Load the message expander function from external file
+def expandMessage = new GroovyShell(this.class.classLoader).evaluate(
+        new File("${config.freeplaneUserDirectory}/addons/askGPTAddOn/lib/MessageExpander.groovy")
+)
+
+// Load the branch generator function from external file
+def createBranchGenerator = new GroovyShell(this.class.classLoader).evaluate(
+        new File("${config.freeplaneUserDirectory}/addons/askGPTAddOn/lib/BranchGenerator.groovy")
+)
+
+// Load the API caller functions from external file
+def createApiCaller = new GroovyShell(this.class.classLoader).evaluate(
+        new File("${config.freeplaneUserDirectory}/addons/askGPTAddOn/lib/ApiCaller.groovy")
+)
+def apiCaller = createApiCaller([logger: logger, ui: ui, config: config])
+def make_openai_call = apiCaller.make_openai_call
+def make_openrouter_call = apiCaller.make_openrouter_call
+
+// Load the message file handler functions from external file
+def messageFileHandler = new GroovyShell(this.class.classLoader).evaluate(
+        new File("${config.freeplaneUserDirectory}/addons/askGPTAddOn/lib/MessageFileHandler.groovy")
+)
+def loadMessagesFromFile = messageFileHandler.loadMessagesFromFile
+def saveMessagesToFile = messageFileHandler.saveMessagesToFile
+
+
 // Initialize the branch generator with necessary dependencies
 def generateBranches = createBranchGenerator([
-    c: c,
-    ui: ui,
-    logger: logger,
-    make_openai_call: make_openai_call,
-    make_openrouter_call: make_openrouter_call
+        c                   : c,
+        ui                  : ui,
+        logger              : logger,
+        make_openai_call    : make_openai_call,
+        make_openrouter_call: make_openrouter_call
 ])
-
 
 
 class MessageItem {
@@ -183,16 +180,16 @@ swingBuilder.edt { // edt method makes sure the GUI is built on the Event Dispat
                 c.gridx++
                 swingBuilder.panel(constraints: c, layout: new BorderLayout(), border: BorderFactory.createTitledBorder('Language Model')) {
                     gptModelBox = comboBox(items: [
-                        'meta-llama/llama-3.2-1b-instruct',
-                        'deepseek/deepseek-r1-zero:free',
-                        'deepseek/deepseek-r1',
-                        'anthropic/claude-3-opus',
-                        'anthropic/claude-3-sonnet',
-                        'anthropic/claude-3-haiku',
-                        'google/gemini-pro',
-                        'meta-llama/llama-3-70b-instruct',
-                        'gpt-3.5-turbo',
-                        'gpt-4',
+                            'meta-llama/llama-3.2-1b-instruct',
+                            'deepseek/deepseek-r1-zero:free',
+                            'deepseek/deepseek-r1',
+                            'anthropic/claude-3-opus',
+                            'anthropic/claude-3-sonnet',
+                            'anthropic/claude-3-haiku',
+                            'google/gemini-pro',
+                            'meta-llama/llama-3-70b-instruct',
+                            'gpt-3.5-turbo',
+                            'gpt-4',
                     ], selectedItem: gptModel, prototypeDisplayValue: 'anthropic/claude-3-opus-12345')
                 }
                 c.gridx++
