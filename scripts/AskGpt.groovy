@@ -52,56 +52,10 @@ def generateBranches = createBranchGenerator([
     c: c,
     ui: ui,
     logger: logger,
-    callChatApi: this.&call_chat_api
+    make_openai_call: make_openai_call,
+    make_openrouter_call: make_openrouter_call
 ])
 
-
-def call_chat_api(String apiKey, List<Map<String, String>> messages,
-                     String model,
-                     Integer max_tokens,
-                     Double temperature,
-                     String provider,
-                     Double top_p = 1, Integer n = 1, Boolean stream = false,
-                     Integer logprobs = null, Boolean echo = false, List<String> stop = null,
-                     Double presence_penalty = 0, Double frequency_penalty = 0,
-                     Integer best_of = 1, Map<String, Integer> logit_bias = null,
-                     String user = null) {
-
-    def payloadMap = [
-            'model'            : model,
-            'messages'         : messages,
-            'temperature'      : temperature,
-            'max_tokens'       : max_tokens,
-            'top_p'            : top_p,
-            'n'                : n,
-            'stream'           : stream,
-//            'echo'             : echo,
-            'presence_penalty' : presence_penalty,
-            'frequency_penalty': frequency_penalty,
-//            'best_of'          : best_of
-    ]
-
-    if (logprobs != null) payloadMap['logprobs'] = logprobs
-    if (stop != null) payloadMap['stop'] = stop
-    if (logit_bias != null) payloadMap['logit_bias'] = logit_bias
-    if (user != null) payloadMap['user'] = user
-
-    def responseText
-    if (provider == 'openrouter') {
-        responseText = make_openrouter_call(apiKey, payloadMap)
-    } else {
-        responseText = make_openai_call(apiKey, payloadMap)
-    }
-
-    if (responseText.isEmpty())
-        return ""
-
-    def jsonSlurper = new JsonSlurper()
-    def jsonResponse = jsonSlurper.parseText(responseText)
-    def assistantMessage = jsonResponse.choices[0].message.content
-    println(assistantMessage)
-    return assistantMessage
-}
 
 
 class MessageItem {

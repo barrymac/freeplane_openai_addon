@@ -9,7 +9,8 @@ def createGenerateBranches(closures) {
         def WindowConstants = javax.swing.WindowConstants
         def BorderLayout = java.awt.BorderLayout
         def SwingBuilder = groovy.swing.SwingBuilder
-        def callChatApi = closures.callChatApi
+        def make_openai_call = closures.make_openai_call
+        def make_openrouter_call = closures.make_openrouter_call
         
         if (apiKey.isEmpty()) {
             if (provider == 'openrouter') {
@@ -20,11 +21,6 @@ def createGenerateBranches(closures) {
             ui.errorMessage("Invalid authentication or incorrect API key provided.")
             return;
         }
-
-        List<Map<String, String>> messages = [
-                [role: 'system', content: systemMessage],
-                [role: 'user', content: userMessage]
-        ]
         def node = c.selected
         def swingBuilder = new SwingBuilder()
         def dialog = swingBuilder.dialog(title: 'I am asking your question. Wait for the response.',
@@ -41,11 +37,40 @@ def createGenerateBranches(closures) {
         dialog.setVisible(true)
         logger.info(userMessage)
         def workerThread = new Thread({
-            def response = callChatApi(apiKey, messages, model, maxTokens, temperature, provider)
-            logger.info("GPT response: $response")
-            SwingUtilities.invokeLater {
-                dialog.dispose()
-                node.appendTextOutlineAsBranch(response)
+            try {
+                def payloadMap = [
+                    'model': model,
+                    'messages': [
+                        [role: 'system', content: systemMessage],
+                        [role: 'user', content: userMessage]
+                    ],
+                    'temperature': temperature,
+                    'max_tokens': maxTokens
+                ]
+                
+                def responseText = (provider == 'openrouter') ? 
+                    make_openrouter_call(apiKey, payloadMap) :
+                    make_openai_call(apiKey, payloadMap)
+                
+                if (responseText.isEmpty()) {
+                    return
+                }
+                
+                def jsonSlurper = new groovy.json.JsonSlurper()
+                def jsonResponse = jsonSlurper.parseText(responseText)
+                def response = jsonResponse.choices[0].message.content
+                
+                logger.info("GPT response: $response")
+                SwingUtilities.invokeLater {
+                    dialog.dispose()
+                    node.appendTextOutlineAsBranch(response)
+                }
+            } catch (Exception e) {
+                logger.error("API call failed", e)
+                SwingUtilities.invokeLater {
+                    dialog.dispose()
+                    ui.errorMessage("API Error: ${e.message}")
+                }
             }
         })
         workerThread.setContextClassLoader(this.class.classLoader)
