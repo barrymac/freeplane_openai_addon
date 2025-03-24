@@ -19,7 +19,7 @@ String defaultSystemMessagesFilePath = "${config.freeplaneUserDirectory}/addons/
 String defaultUserMessagesFilePath = "${config.freeplaneUserDirectory}/addons/askGPTAddOn/lib/defaultUserMessages.txt"
 
 String defaultSystemMessages = new File(defaultSystemMessagesFilePath).text.trim()
-def userSystemMessages = new File(defaultUserMessagesFilePath).text.trim()
+String userSystemMessages = new File(defaultUserMessagesFilePath).text.trim()
 
 def expandMessage(String message) {
     def node = c.selected

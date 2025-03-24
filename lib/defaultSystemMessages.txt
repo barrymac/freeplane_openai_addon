@@ -17,3 +17,147 @@ Example:
 Go to the theater
 Go to the museum
 Stay at home
+======
+Learn the format "outline" from the example below and create similar outlines for topics given by the user.
+Strictly follow the format.  Use multiple nested levels. Start a new paragraph for each new sentence. Suppress any bullet points or other characters like - at the beginning of the list, use just the formatting as in the example
+
+Don't give it any title.
+
+Concentrate on the topic only. Cover as many aspects of the topic as possible as deeply as possible.
+
+Don't repeat known facts.
+
+Don't comment the task itself.
+
+Topis: Discovery of Space
+
+Example:
+Introduction
+    The discovery of space refers to the exploration of the universe beyond Earth, including celestial bodies such as planets, stars, and galaxies.
+Historical Background
+    The first known observation of space was made by ancient civilizations, including the Greeks and Egyptians, who used the stars for navigation and as a basis for their calendars.
+    In 1957, the Soviet Union launched the first artificial satellite, Sputnik 1, sparking the Space Race between the United States and the Soviet Union.
+Major Accomplishments
+    1961 - Yuri Gagarin becomes the first human to travel to space.
+    1969 - Neil Armstrong and Buzz Aldrin become the first humans to walk on the Moon.
+    1971 - The Soviet Union launches the first space station, Salyut 1.
+    1998 - The first components of the International Space Station (ISS) are launched into orbit.
+Space Agencies
+    National Aeronautics and Space Administration (NASA) - United States
+    Roscosmos - Russia
+    European Space Agency (ESA) - Europe
+    China National Space Administration (CNSA) - China
+    Indian Space Research Organisation (ISRO) - India
+Spacecraft and Technology
+    Satellites - used for communication, navigation, and observation of Earth and space.
+    Space Probes - used for exploration and data collection of celestial bodies.
+    Space Shuttles - reusable spacecraft used for carrying crew and cargo to and from space.
+    Rockets - used for launching spacecraft into orbit and beyond.
+Challenges and Risks
+    Space exploration poses various challenges and risks, including:
+        Exposure to radiation and microgravity can have negative effects on human health.
+        Space debris can pose a threat to spacecraft and astronauts.
+        The high cost of space exploration and the risk of equipment failure.
+Benefits and Impact
+    Space exploration has led to numerous scientific discoveries and technological advancements, including:
+        Improved weather forecasting and disaster management.
+        Development of new materials and technologies for use on Earth.
+        Advancements in medical research and technology.
+        Increased understanding of the universe and our place in it.
+    The space industry also provides economic benefits, generating jobs and revenue for countries involved in space exploration.
+======
+Learn the format "trigger word outline" from the example below and create similar trigger word outlines for topics given by the user.
+Strictly follow the format.  Use multiple nested levels. Always break sentences. Put each word on its own line. Use no '-' characters or bullet points.
+
+Don't give it any title.
+
+Concentrate on the topic only. Cover as many aspects of the topic as possible as deeply as possible.
+
+Don't repeat known facts.
+
+Don't comment the task itself.
+
+Split each sentence into multiple parts separating parts of the sentence as in the example.
+
+Topic: War on Another Planet
+
+Example:
+Time Line
+    2150
+        Humans
+            Discover
+                Planet Z
+                    Rich in Resources
+                        Gold
+                        Diamond
+                        Oil
+                    Inhabited by
+                        Aliens
+                            Peaceful at First
+                                Welcome Humans
+                            Later
+                                Start Claiming Resources
+    2155
+        Humans
+            Start Mining Operations
+                Aliens
+                    Protest
+                        Humans
+                            Ignore
+                                Tensions Rise
+    2160
+        Aliens
+            Attack
+                Human Mining Facilities
+                    Humans
+                        Respond with Force
+                            War Breaks Out
+Where
+    On Planet Z
+        Terrain
+            Mostly Desert
+                Harsh Conditions
+            Few Oases
+                Strategic Importance
+        Underground Tunnels
+            Used for
+                Transport
+                Communication
+                Hiding
+        Skies
+            Filled with
+                Alien Aircrafts
+                    Advanced Technology
+                        Hard to Defeat
+                Human Ships
+                    More Numerous
+                    Less Advanced
+                        Cheaply Produced
+    Other Planets
+        Allies
+            Humans
+                Seek Help from
+                    Other Colonized Planets
+                        Mostly Friendly
+        Enemies
+            Aliens
+                Also Have Allies
+                    Powerful and Dangerous
+        Space Battles
+            Happen in
+                Open Space
+                Near Planets
+                Near Moons
+Impact
+    Can Determine
+        The Outcome of the War
+        The Fate of the Galaxy
+           '''.trim();
+           def userSystemMessages = '''
+Known facts:
+$ancestorContents
+$siblingContents
+
+Topic: $nodeContent
+
+Language: English
