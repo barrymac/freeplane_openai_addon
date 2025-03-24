@@ -12,7 +12,7 @@ int maxResponseLength = config.getProperty('openai.max_response_length', 1000)
 double temperature = config.getProperty('openai.temperature', 0.7)
 int selectedSystemMessageIndex = config.getProperty('openai.system_message_index', 0)
 int selectedUserMessageIndex = config.getProperty('openai.user_message_index', 0)
-String apiProvider = config.getProperty('openai.api_provider', 'openai')
+String apiProvider = config.getProperty('openai.api_provider', 'openrouter')
 
 String systemMessagesFilePath = "${config.freeplaneUserDirectory}/chatGptSystemMessages.txt"
 String userMessagesFilePath = "${config.freeplaneUserDirectory}/chatGptUserMessages.txt"
@@ -349,18 +349,18 @@ swingBuilder.edt { // edt method makes sure the GUI is built on the Event Dispat
                     responseLengthField = formattedTextField(columns: 5, value: maxResponseLength)
                 }
                 c.gridx++
-                swingBuilder.panel(constraints: c, layout: new BorderLayout(), border: BorderFactory.createTitledBorder('GPT Model')) {
+                swingBuilder.panel(constraints: c, layout: new BorderLayout(), border: BorderFactory.createTitledBorder('Language Model')) {
                     gptModelBox = comboBox(items: [
-                        'gpt-3.5-turbo', 
-                        'gpt-4',
-                        'openai/gpt-3.5-turbo', 
-                        'openai/gpt-4',
-                        'openai/gpt-4o',
+                        'meta-llama/llama-3.2-1b-instruct',
+                        'deepseek/deepseek-r1-zero:free',
+                        'deepseek/deepseek-r1',
                         'anthropic/claude-3-opus',
                         'anthropic/claude-3-sonnet',
                         'anthropic/claude-3-haiku',
                         'google/gemini-pro',
-                        'meta-llama/llama-3-70b-instruct'
+                        'meta-llama/llama-3-70b-instruct',
+                        'gpt-3.5-turbo',
+                        'gpt-4',
                     ], selectedItem: gptModel, prototypeDisplayValue: 'anthropic/claude-3-opus-12345')
                 }
                 c.gridx++
