@@ -1,3 +1,4 @@
+import groovy.swing.SwingBuilder
 // Function to create a branch generator with necessary dependencies
 def createGenerateBranches(closures) {
     return { apiKey, systemMessage, userMessage, model, maxTokens, temperature, provider ->
