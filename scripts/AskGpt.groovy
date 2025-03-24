@@ -16,6 +16,21 @@ def createBranchGenerator = new GroovyShell(this.class.classLoader).evaluate(
     new File("${config.freeplaneUserDirectory}/addons/askGPTAddOn/lib/BranchGenerator.groovy")
 )
 
+// Load the API caller functions from external file
+def createApiCaller = new GroovyShell(this.class.classLoader).evaluate(
+    new File("${config.freeplaneUserDirectory}/addons/askGPTAddOn/lib/ApiCaller.groovy")
+)
+def apiCaller = createApiCaller([logger: logger, ui: ui, config: config])
+def make_openai_call = apiCaller.make_openai_call
+def make_openrouter_call = apiCaller.make_openrouter_call
+
+// Load the message file handler functions from external file
+def messageFileHandler = new GroovyShell(this.class.classLoader).evaluate(
+    new File("${config.freeplaneUserDirectory}/addons/askGPTAddOn/lib/MessageFileHandler.groovy")
+)
+def loadMessagesFromFile = messageFileHandler.loadMessagesFromFile
+def saveMessagesToFile = messageFileHandler.saveMessagesToFile
+
 String apiKey = config.getProperty('openai.key', '')
 String gptModel = config.getProperty('openai.gpt_model', 'gpt-3.5-turbo')
 int maxResponseLength = config.getProperty('openai.max_response_length', 1000)
@@ -88,102 +103,6 @@ def call_chat_api(String apiKey, List<Map<String, String>> messages,
     return assistantMessage
 }
 
-// Function to make the OpenAI API call
-def make_openai_call(String apiKey, Map<String, Object> payloadMap) {
-    def responseText = ""
-
-    try {
-        String apiUrl = 'https://api.openai.com/v1/chat/completions'
-        def post = new URL(apiUrl).openConnection()
-        post.setRequestMethod("POST")
-        post.setDoOutput(true)
-        post.setRequestProperty("Content-Type", "application/json")
-        post.setRequestProperty("Authorization", "Bearer " + apiKey)
-
-        def payload = JsonOutput.toJson(payloadMap)
-        post.getOutputStream().write(payload.getBytes("UTF-8"))
-
-        def postRC = post.getResponseCode()
-
-        if (postRC.equals(200)) {
-            responseText = post.getInputStream().getText("UTF-8")
-            logger.info("GPT response: $responseText")
-        } else if (postRC.equals(401)) {
-            java.awt.Desktop.desktop.browse(new URI("https://platform.openai.com/account/api-keys"))
-            ui.errorMessage("Invalid authentication or incorrect API key provided.")
-        } else if (postRC.equals(404)) {
-            ui.errorMessage("You must be a member of an organization to use the API.")
-        } else if (postRC.equals(429)) {
-            ui.errorMessage("Rate limit reached for requests or current quota exceeded.")
-        } else {
-            ui.errorMessage("Unhandled error code $postRC returned from API.")
-        }
-
-    } catch (Exception e) {
-        ui.errorMessage(e.toString())
-    }
-
-    return responseText
-}
-
-// Function to make the OpenRouter API call
-def make_openrouter_call(String apiKey, Map<String, Object> payloadMap) {
-    def responseText = ""
-
-    try {
-        String apiUrl = 'https://openrouter.ai/api/v1/chat/completions'
-        def post = new URL(apiUrl).openConnection()
-        post.setRequestMethod("POST")
-        post.setDoOutput(true)
-        post.setRequestProperty("Content-Type", "application/json")
-        post.setRequestProperty("Authorization", "Bearer " + apiKey)
-        post.setRequestProperty("HTTP-Referer", "${config.freeplaneUserDirectory}")
-        post.setRequestProperty("X-Title", "Freeplane GPT AddOn")
-
-        def payload = JsonOutput.toJson(payloadMap)
-        post.getOutputStream().write(payload.getBytes("UTF-8"))
-
-        def postRC = post.getResponseCode()
-
-        if (postRC.equals(200)) {
-            responseText = post.getInputStream().getText("UTF-8")
-            logger.info("OpenRouter response: $responseText")
-        } else if (postRC.equals(401)) {
-            java.awt.Desktop.desktop.browse(new URI("https://openrouter.ai/keys"))
-            ui.errorMessage("Invalid authentication or incorrect API key provided.")
-        } else if (postRC.equals(404)) {
-            ui.errorMessage("Endpoint not found. Check your OpenRouter configuration.")
-        } else if (postRC.equals(429)) {
-            ui.errorMessage("Rate limit reached for requests or current quota exceeded.")
-        } else {
-            ui.errorMessage("Unhandled error code $postRC returned from OpenRouter API.")
-        }
-
-    } catch (Exception e) {
-        ui.errorMessage(e.toString())
-    }
-
-    return responseText
-}
-
-
-def loadMessagesFromFile(String filePath, String fallback) {
-    def messages
-    def fileContent
-    try {
-        fileContent = new File(filePath).text
-    } catch (Exception e) {
-        fileContent = fallback
-        new File(filePath).write(fallback)
-    }
-    messages = fileContent.split(/======+\n/)*.trim()
-    return messages
-}
-
-def saveMessagesToFile(String filePath, List messages) {
-    def fileContent = messages.join("\n======\n")
-    new File(filePath).write(fileContent)
-}
 
 class MessageItem {
     String value
