@@ -12,6 +12,7 @@ int maxResponseLength = config.getProperty('openai.max_response_length', 1000)
 double temperature = config.getProperty('openai.temperature', 0.7)
 int selectedSystemMessageIndex = config.getProperty('openai.system_message_index', 0)
 int selectedUserMessageIndex = config.getProperty('openai.user_message_index', 0)
+String apiProvider = config.getProperty('openai.api_provider', 'openai')
 
 String systemMessagesFilePath = "${config.freeplaneUserDirectory}/chatGptSystemMessages.txt"
 String userMessagesFilePath = "${config.freeplaneUserDirectory}/chatGptUserMessages.txt"
@@ -38,9 +39,13 @@ def expandMessage(String message) {
     return expandedMessage
 }
 
-def generateBranches(String apiKey, String systemMessage, String userMessage, String model, Integer maxTokens, Double temperature) {
+def generateBranches(String apiKey, String systemMessage, String userMessage, String model, Integer maxTokens, Double temperature, String provider) {
     if (apiKey.isEmpty()) {
-        java.awt.Desktop.desktop.browse(new URI("https://platform.openai.com/account/api-keys"))
+        if (provider == 'openrouter') {
+            java.awt.Desktop.desktop.browse(new URI("https://openrouter.ai/keys"))
+        } else {
+            java.awt.Desktop.desktop.browse(new URI("https://platform.openai.com/account/api-keys"))
+        }
         ui.errorMessage("Invalid authentication or incorrect API key provided.")
         return;
     }
@@ -65,7 +70,7 @@ def generateBranches(String apiKey, String systemMessage, String userMessage, St
     dialog.setVisible(true)
     logger.info(userMessage)
     def workerThread = new Thread({
-        def response = call_openai_chat(apiKey, messages, model, maxTokens, temperature)
+        def response = call_chat_api(apiKey, messages, model, maxTokens, temperature, provider)
         logger.info("GPT response: $response")
         SwingUtilities.invokeLater {
             dialog.dispose()
@@ -77,10 +82,11 @@ def generateBranches(String apiKey, String systemMessage, String userMessage, St
 }
 
 
-def call_openai_chat(String apiKey, List<Map<String, String>> messages,
+def call_chat_api(String apiKey, List<Map<String, String>> messages,
                      String model,
                      Integer max_tokens,
                      Double temperature,
+                     String provider,
                      Double top_p = 1, Integer n = 1, Boolean stream = false,
                      Integer logprobs = null, Boolean echo = false, List<String> stop = null,
                      Double presence_penalty = 0, Double frequency_penalty = 0,
@@ -106,7 +112,12 @@ def call_openai_chat(String apiKey, List<Map<String, String>> messages,
     if (logit_bias != null) payloadMap['logit_bias'] = logit_bias
     if (user != null) payloadMap['user'] = user
 
-    def responseText = make_api_call(apiKey, payloadMap)
+    def responseText
+    if (provider == 'openrouter') {
+        responseText = make_openrouter_call(apiKey, payloadMap)
+    } else {
+        responseText = make_openai_call(apiKey, payloadMap)
+    }
 
     if (responseText.isEmpty())
         return ""
@@ -118,8 +129,8 @@ def call_openai_chat(String apiKey, List<Map<String, String>> messages,
     return assistantMessage
 }
 
-// Function to make the API call
-def make_api_call(String apiKey, Map<String, Object> payloadMap) {
+// Function to make the OpenAI API call
+def make_openai_call(String apiKey, Map<String, Object> payloadMap) {
     def responseText = ""
 
     try {
@@ -147,6 +158,46 @@ def make_api_call(String apiKey, Map<String, Object> payloadMap) {
             ui.errorMessage("Rate limit reached for requests or current quota exceeded.")
         } else {
             ui.errorMessage("Unhandled error code $postRC returned from API.")
+        }
+
+    } catch (Exception e) {
+        ui.errorMessage(e.toString())
+    }
+
+    return responseText
+}
+
+// Function to make the OpenRouter API call
+def make_openrouter_call(String apiKey, Map<String, Object> payloadMap) {
+    def responseText = ""
+
+    try {
+        String apiUrl = 'https://openrouter.ai/api/v1/chat/completions'
+        def post = new URL(apiUrl).openConnection()
+        post.setRequestMethod("POST")
+        post.setDoOutput(true)
+        post.setRequestProperty("Content-Type", "application/json")
+        post.setRequestProperty("Authorization", "Bearer " + apiKey)
+        post.setRequestProperty("HTTP-Referer", "${config.freeplaneUserDirectory}")
+        post.setRequestProperty("X-Title", "Freeplane GPT AddOn")
+
+        def payload = JsonOutput.toJson(payloadMap)
+        post.getOutputStream().write(payload.getBytes("UTF-8"))
+
+        def postRC = post.getResponseCode()
+
+        if (postRC.equals(200)) {
+            responseText = post.getInputStream().getText("UTF-8")
+            logger.info("OpenRouter response: $responseText")
+        } else if (postRC.equals(401)) {
+            java.awt.Desktop.desktop.browse(new URI("https://openrouter.ai/keys"))
+            ui.errorMessage("Invalid authentication or incorrect API key provided.")
+        } else if (postRC.equals(404)) {
+            ui.errorMessage("Endpoint not found. Check your OpenRouter configuration.")
+        } else if (postRC.equals(429)) {
+            ui.errorMessage("Rate limit reached for requests or current quota exceeded.")
+        } else {
+            ui.errorMessage("Unhandled error code $postRC returned from OpenRouter API.")
         }
 
     } catch (Exception e) {
@@ -299,7 +350,22 @@ swingBuilder.edt { // edt method makes sure the GUI is built on the Event Dispat
                 }
                 c.gridx++
                 swingBuilder.panel(constraints: c, layout: new BorderLayout(), border: BorderFactory.createTitledBorder('GPT Model')) {
-                    gptModelBox = comboBox(items: ['gpt-3.5-turbo', 'gpt-4'], selectedItem: gptModel, prototypeDisplayValue: 'gpt-3.5-turbo-12345')
+                    gptModelBox = comboBox(items: [
+                        'gpt-3.5-turbo', 
+                        'gpt-4',
+                        'openai/gpt-3.5-turbo', 
+                        'openai/gpt-4',
+                        'openai/gpt-4o',
+                        'anthropic/claude-3-opus',
+                        'anthropic/claude-3-sonnet',
+                        'anthropic/claude-3-haiku',
+                        'google/gemini-pro',
+                        'meta-llama/llama-3-70b-instruct'
+                    ], selectedItem: gptModel, prototypeDisplayValue: 'anthropic/claude-3-opus-12345')
+                }
+                c.gridx++
+                swingBuilder.panel(constraints: c, layout: new BorderLayout(), border: BorderFactory.createTitledBorder('API Provider')) {
+                    apiProviderBox = comboBox(items: ['openai', 'openrouter'], selectedItem: apiProvider)
                 }
                 c.gridx++
                 swingBuilder.panel(constraints: c, layout: new BorderLayout(), border: BorderFactory.createTitledBorder('Randomness')) {
@@ -315,7 +381,8 @@ swingBuilder.edt { // edt method makes sure the GUI is built on the Event Dispat
                             expandMessage(userMessageArea.textArea.text),
                             gptModelBox.selectedItem,
                             responseLengthField.value,
-                            temperatureSlider.value / 100.0)
+                            temperatureSlider.value / 100.0,
+                            apiProviderBox.selectedItem)
                 })
                 askGptButton.rootPane.defaultButton = askGptButton
                 swingBuilder.button(constraints: c, action: swingBuilder.action(name: 'Save Changes') {
@@ -329,6 +396,7 @@ swingBuilder.edt { // edt method makes sure the GUI is built on the Event Dispat
                     config.setProperty('openai.temperature', temperatureSlider.value / 100.0)
                     config.setProperty('openai.system_message_index', systemMessageArea.comboBox.selectedIndex)
                     config.setProperty('openai.user_message_index', userMessageArea.comboBox.selectedIndex)
+                    config.setProperty('openai.api_provider', apiProviderBox.selectedItem)
                     systemMessageArea.updateSelectedItemFromTextArea()
                     userMessageArea.updateSelectedItemFromTextArea()
                 })
