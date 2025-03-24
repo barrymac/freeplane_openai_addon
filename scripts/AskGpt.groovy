@@ -367,7 +367,7 @@ swingBuilder.edt { // edt method makes sure the GUI is built on the Event Dispat
                 def askGptButton = swingBuilder.button(constraints: c, action: swingBuilder.action(name: 'Ask GPT') {
                     generateBranches(String.valueOf(apiKeyField.password),
                             systemMessageArea.textArea.text,
-                            MessageExpander.expandMessage(userMessageArea.textArea.text, c.selected),
+                            expandMessage(userMessageArea.textArea.text, c.selected),
                             gptModelBox.selectedItem,
                             responseLengthField.value,
                             temperatureSlider.value / 100.0,
