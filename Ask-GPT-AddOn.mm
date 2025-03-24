@@ -264,6 +264,7 @@
 <attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/MessageExpander.groovy"/>
 <attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/defaultUserMessages.txt"/>
 <attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/defaultSystemMessages.txt"/>
+<attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/BranchGenerator.groovy"/>
 <attribute NAME="delete" VALUE="${installationbase}/addons/${name}/scripts/AskGpt.groovy"/>
 </node>
 <node TEXT="scripts" POSITION="bottom_or_right" ID="ID_684917236" CREATED="1685111823977" MODIFIED="1742834859980">
@@ -435,6 +436,7 @@
   </body>
 </html></richcontent>
 <node TEXT="MessageExpander.groovy" ID="ID_MESSAGE_EXPANDER" CREATED="1742845172650" MODIFIED="1742845172650"/>
+<node TEXT="BranchGenerator.groovy" ID="ID_BRANCH_GENERATOR" CREATED="1742845172655" MODIFIED="1742845172655"/>
 <node TEXT="defaultUserMessages.txt" ID="ID_369580043" CREATED="1742845172659" MODIFIED="1742845172659"/>
 <node TEXT="defaultSystemMessages.txt" ID="ID_1170696227" CREATED="1742845172678" MODIFIED="1742845172678"/>
 </node>

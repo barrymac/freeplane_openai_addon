@@ -11,6 +11,11 @@ def expandMessage = new GroovyShell(this.class.classLoader).evaluate(
     new File("${config.freeplaneUserDirectory}/addons/askGPTAddOn/lib/MessageExpander.groovy")
 )
 
+// Load the branch generator function from external file
+def createBranchGenerator = new GroovyShell(this.class.classLoader).evaluate(
+    new File("${config.freeplaneUserDirectory}/addons/askGPTAddOn/lib/BranchGenerator.groovy")
+)
+
 String apiKey = config.getProperty('openai.key', '')
 String gptModel = config.getProperty('openai.gpt_model', 'gpt-3.5-turbo')
 int maxResponseLength = config.getProperty('openai.max_response_length', 1000)
@@ -27,48 +32,13 @@ String defaultUserMessagesFilePath = "${config.freeplaneUserDirectory}/addons/as
 String defaultSystemMessages = new File(defaultSystemMessagesFilePath).text.trim()
 String userSystemMessages = new File(defaultUserMessagesFilePath).text.trim()
 
-
-def generateBranches(String apiKey, String systemMessage, String userMessage, String model, Integer maxTokens, Double temperature, String provider) {
-    if (apiKey.isEmpty()) {
-        if (provider == 'openrouter') {
-            java.awt.Desktop.desktop.browse(new URI("https://openrouter.ai/keys"))
-        } else {
-            java.awt.Desktop.desktop.browse(new URI("https://platform.openai.com/account/api-keys"))
-        }
-        ui.errorMessage("Invalid authentication or incorrect API key provided.")
-        return;
-    }
-
-    List<Map<String, String>> messages = [
-            [role: 'system', content: systemMessage],
-            [role: 'user', content: userMessage]
-    ]
-    def node = c.selected
-    def swingBuilder = new SwingBuilder()
-    def dialog = swingBuilder.dialog(title: 'I am asking your question. Wait for the response.',
-            owner: ui.currentFrame,
-            modal: false,
-            resizable: true,
-            defaultCloseOperation: WindowConstants.DISPOSE_ON_CLOSE) {
-        swingBuilder.scrollPane(constraints: BorderLayout.CENTER) {
-            swingBuilder.textArea(rows: 10, columns: 60, lineWrap: true, wrapStyleWord: true, editable: false, text: userMessage)
-        }
-    }
-    dialog.pack()
-    ui.setDialogLocationRelativeTo(dialog, node.delegate)
-    dialog.setVisible(true)
-    logger.info(userMessage)
-    def workerThread = new Thread({
-        def response = call_chat_api(apiKey, messages, model, maxTokens, temperature, provider)
-        logger.info("GPT response: $response")
-        SwingUtilities.invokeLater {
-            dialog.dispose()
-            node.appendTextOutlineAsBranch(response)
-        }
-    })
-    workerThread.setContextClassLoader(getClass().classLoader)
-    workerThread.start()
-}
+// Initialize the branch generator with necessary dependencies
+def generateBranches = createBranchGenerator([
+    c: c,
+    ui: ui,
+    logger: logger,
+    callChatApi: this.&call_chat_api
+])
 
 
 def call_chat_api(String apiKey, List<Map<String, String>> messages,
