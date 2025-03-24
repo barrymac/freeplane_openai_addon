@@ -1,6 +1,6 @@
 <map version="freeplane 1.11.1">
 <!--To view this file, download free mind mapping software Freeplane from https://www.freeplane.org -->
-<node TEXT="Ask-GPT-AddOn" FOLDED="false" ID="ID_696401721" CREATED="1685111823904" MODIFIED="1685272755665" LINK="https://github.com/dpolivaev/freeplane_openai_addon" BACKGROUND_COLOR="#97c7dc" STYLE="oval" MAX_WIDTH="20 cm">
+<node TEXT="Ask-GPT-AddOn" FOLDED="false" ID="ID_696401721" CREATED="1685111823904" MODIFIED="1742834853379" LINK="https://github.com/dpolivaev/freeplane_openai_addon" BACKGROUND_COLOR="#97c7dc" STYLE="oval" MAX_WIDTH="20 cm">
 <font SIZE="16" BOLD="true" ITALIC="true"/>
 <hook NAME="MapStyle">
     <properties show_icon_for_attributes="true" edgeColorConfiguration="#808080ff,#ff0000ff,#0000ffff,#00ff00ff,#ff00ffff,#00ffffff,#7c0000ff,#00007cff,#007c00ff,#7c007cff,#007c7cff,#7c7c00ff" mapUsesOwnSaveOptions="true" save_modification_times="false" save_last_visited_node="default" show_note_icons="true" associatedTemplateLocation="template:/standard-1.6.mm" save_folding="save_folding_if_map_is_changed" fit_to_viewport="false"/>
@@ -68,9 +68,9 @@
 </stylenode>
 </map_styles>
 </hook>
-<hook NAME="AutomaticEdgeColor" COUNTER="17" RULE="ON_BRANCH_CREATION"/>
+<hook NAME="AutomaticEdgeColor" COUNTER="18" RULE="ON_BRANCH_CREATION"/>
 <attribute_layout NAME_WIDTH="112.61538 pt" VALUE_WIDTH="333.23076 pt"/>
-<attribute NAME="name" VALUE="AskGPTAddOn"/>
+<attribute NAME="name" VALUE="askGPTAddOn"/>
 <attribute NAME="version" VALUE="v0.3.4"/>
 <attribute NAME="author" VALUE="barry, dpolivaev"/>
 <attribute NAME="freeplaneVersionFrom" VALUE="v1.11.3" OBJECT="org.freeplane.features.format.FormattedObject|java.lang.String&amp;#x7c;v1.11.3|number:decimal:#0.####"/>
@@ -114,7 +114,7 @@
     </ul>
   </body>
 </html></richcontent>
-<node TEXT="description" POSITION="top_or_left" ID="ID_365830098" CREATED="1685111823975" MODIFIED="1685111823975">
+<node TEXT="description" POSITION="top_or_left" ID="ID_365830098" CREATED="1685111823975" MODIFIED="1742834859965">
 <edge COLOR="#ff0000"/>
 <richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
@@ -126,7 +126,7 @@
       Description would be awkward to edit as an attribute.
     </p>
     <p>
-      So you have to put the add-on description as a child of the <i>'description'</i>&nbsp;node.
+      So you have to put the add-on description as a child of the <i>'description'</i>&#xa0;node.
     </p>
     <p>
       To translate the description you have to define a translation for the key 'addons.${name}.description'.
@@ -149,7 +149,7 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="license" FOLDED="true" POSITION="top_or_left" ID="ID_950695085" CREATED="1685111823976" MODIFIED="1685111823976">
+<node TEXT="license" FOLDED="true" POSITION="top_or_left" ID="ID_950695085" CREATED="1685111823976" MODIFIED="1742834859969">
 <edge COLOR="#00ff00"/>
 <richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
@@ -164,13 +164,13 @@
       
     </p>
     <p>
-      The License text has to be entered as a child of the <i>'license'</i>&nbsp;node, either as plain text or as HTML.
+      The License text has to be entered as a child of the <i>'license'</i>&#xa0;node, either as plain text or as HTML.
     </p>
   </body>
 </html></richcontent>
 <node TEXT="&#xa;This add-on is free software: you can redistribute it and/or modify&#xa;it under the terms of the GNU General Public License as published by&#xa;the Free Software Foundation, either version 2 of the License, or&#xa;(at your option) any later version.&#xa;&#xa;This program is distributed in the hope that it will be useful,&#xa;but WITHOUT ANY WARRANTY; without even the implied warranty of&#xa;MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the&#xa;GNU General Public License for more details.&#xa;" ID="ID_726417928" CREATED="1685111823976" MODIFIED="1685111823976"/>
 </node>
-<node TEXT="preferences.xml" POSITION="top_or_left" ID="ID_902316079" CREATED="1685111823976" MODIFIED="1685111823976">
+<node TEXT="preferences.xml" POSITION="top_or_left" ID="ID_902316079" CREATED="1685111823976" MODIFIED="1742834859971">
 <edge COLOR="#ff00ff"/>
 <richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
@@ -182,7 +182,7 @@
       <font color="#000000" face="SansSerif, sans-serif">The child node contains the add-on configuration as an extension to mindmapmodemenu.xml (in Tools-&gt;Preferences-&gt;Add-ons). </font>
     </p>
     <p>
-      <font color="#000000" face="SansSerif, sans-serif">Every property in the configuration should receive a default value in <i>default.properties</i>&nbsp;node.</font>
+      <font color="#000000" face="SansSerif, sans-serif">Every property in the configuration should receive a default value in <i>default.properties</i>&#xa0;node.</font>
     </p>
   </body>
 </html></richcontent>
@@ -235,13 +235,13 @@
     </ul>
   </body>
 </html></richcontent>
-<node TEXT="en" ID="ID_1097454652" CREATED="1685111823977" MODIFIED="1685111823977">
+<node TEXT="en" ID="ID_1097454652" CREATED="1685111823977" MODIFIED="1742847796035">
 <attribute_layout NAME_WIDTH="159 pt" VALUE_WIDTH="102 pt"/>
 <attribute NAME="addons.${name}" VALUE="Ask GPT AddOn"/>
 <attribute NAME="addons.${name}.askGPT" VALUE="AskGPT"/>
 </node>
 </node>
-<node TEXT="deinstall" POSITION="top_or_left" ID="ID_1927303474" CREATED="1685111823977" MODIFIED="1685111823977">
+<node TEXT="deinstall" POSITION="top_or_left" ID="ID_1927303474" CREATED="1685111823977" MODIFIED="1742847835642">
 <edge COLOR="#00007c"/>
 <richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
@@ -259,8 +259,12 @@
 <attribute NAME="delete" VALUE="${installationbase}/addons/${name}/scripts/AskGPT.groovy"/>
 <attribute NAME="delete" VALUE="${installationbase}/images/${name}.svg"/>
 <attribute NAME="delete" VALUE="${installationbase}/images/${name}-icon.svg"/>
+<attribute NAME="delete" VALUE="${installationbase}/resources/images/askGPTAddOn.svg"/>
+<attribute NAME="delete" VALUE="${installationbase}/resources/images/askGPTAddOn-icon.svg"/>
+<attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/defaultUserMessages.txt"/>
+<attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/defaultSystemMessages.txt"/>
 </node>
-<node TEXT="scripts" POSITION="bottom_or_right" ID="ID_684917236" CREATED="1685111823977" MODIFIED="1685111823977">
+<node TEXT="scripts" POSITION="bottom_or_right" ID="ID_684917236" CREATED="1685111823977" MODIFIED="1742834859980">
 <edge COLOR="#007c00"/>
 <richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
@@ -278,13 +282,13 @@
       * menuLocation: &lt;locationkey&gt;
     </p>
     <p>
-      &nbsp;&nbsp;&nbsp;- Defines the menu location, defaults a sub menu 'main_menu_scripting/addons.${name}'.
+      &#xa0;&#xa0;&#xa0;- Defines the menu location, defaults a sub menu 'main_menu_scripting/addons.${name}'.
     </p>
     <p>
-      &nbsp;&nbsp;&nbsp;-&nbsp;Use developer tool menuItemInfo to inspect menu location keys.
+      &#xa0;&#xa0;&#xa0;-&#xa0;Use developer tool menuItemInfo to inspect menu location keys.
     </p>
     <p>
-      &nbsp;&nbsp;&nbsp;- This attribute is mandatory
+      &#xa0;&#xa0;&#xa0;- This attribute is mandatory
     </p>
     <p>
       
@@ -293,10 +297,10 @@
       * menuTitleKey: &lt;key&gt;
     </p>
     <p>
-      &nbsp;&nbsp;&nbsp;- The menu item title will be looked up under the translation key &lt;key&gt; - don't forget to define its translation.
+      &#xa0;&#xa0;&#xa0;- The menu item title will be looked up under the translation key &lt;key&gt; - don't forget to define its translation.
     </p>
     <p>
-      &nbsp;&nbsp;&nbsp;- This attribute is mandatory
+      &#xa0;&#xa0;&#xa0;- This attribute is mandatory
     </p>
     <p>
       
@@ -305,22 +309,22 @@
       * executionMode: &lt;mode&gt;
     </p>
     <p>
-      &nbsp;&nbsp;&nbsp;- The execution mode as described in the Freeplane wiki (http://freeplane.sourceforge.net/wiki/index.php/Scripting)
+      &#xa0;&#xa0;&#xa0;- The execution mode as described in the Freeplane wiki (http://freeplane.sourceforge.net/wiki/index.php/Scripting)
     </p>
     <p>
-      &nbsp;&nbsp;&nbsp;- ON_SINGLE_NODE: Execute the script once. The <i>node</i>&nbsp;variable is set to the selected node.
+      &#xa0;&#xa0;&#xa0;- ON_SINGLE_NODE: Execute the script once. The <i>node</i>&#xa0;variable is set to the selected node.
     </p>
     <p>
-      &nbsp;&nbsp;&nbsp;- ON_SELECTED_NODE: Execute the script n times for n selected nodes, once for each node.
+      &#xa0;&#xa0;&#xa0;- ON_SELECTED_NODE: Execute the script n times for n selected nodes, once for each node.
     </p>
     <p>
-      &nbsp;&nbsp;&nbsp;- ON_SELECTED_NODE_RECURSIVELY: Execute the script on every selected node and recursively on all of its children.
+      &#xa0;&#xa0;&#xa0;- ON_SELECTED_NODE_RECURSIVELY: Execute the script on every selected node and recursively on all of its children.
     </p>
     <p>
-      &nbsp;&nbsp;&nbsp;- In doubt use ON_SINGLE_NODE.
+      &#xa0;&#xa0;&#xa0;- In doubt use ON_SINGLE_NODE.
     </p>
     <p>
-      &nbsp;&nbsp;&nbsp;- This attribute is mandatory
+      &#xa0;&#xa0;&#xa0;- This attribute is mandatory
     </p>
     <p>
       
@@ -329,52 +333,52 @@
       * keyboardShortcut: &lt;shortcut&gt;
     </p>
     <p>
-      &nbsp;&nbsp;&nbsp;- Optional: keyboard combination / accelerator for this script, e.g. control alt I
+      &#xa0;&#xa0;&#xa0;- Optional: keyboard combination / accelerator for this script, e.g. control alt I
     </p>
     <p>
-      &nbsp;&nbsp;&nbsp;- Use lowercase letters for modifiers and uppercase for letters. Use no + signs.
+      &#xa0;&#xa0;&#xa0;- Use lowercase letters for modifiers and uppercase for letters. Use no + signs.
     </p>
     <p>
-      &nbsp;&nbsp;&nbsp;- The available key names are listed at http://download.oracle.com/javase/1.4.2/docs/api/java/awt/event/KeyEvent.html#VK_0
+      &#xa0;&#xa0;&#xa0;- The available key names are listed at http://download.oracle.com/javase/1.4.2/docs/api/java/awt/event/KeyEvent.html#VK_0
     </p>
     <p>
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;In the list only entries with a 'VK_' prefix count. Omit the prefix in the shortcut definition.
+      &#xa0;&#xa0;&#xa0;&#xa0;&#xa0;In the list only entries with a 'VK_' prefix count. Omit the prefix in the shortcut definition.
     </p>
     <p>
       
     </p>
     <p>
-      * Permissions&nbsp;that the script(s) require, each either false or true:
+      * Permissions&#xa0;that the script(s) require, each either false or true:
     </p>
     <p>
-      &nbsp;&nbsp;&nbsp;- execute_scripts_without_asking
+      &#xa0;&#xa0;&#xa0;- execute_scripts_without_asking
     </p>
     <p>
-      &nbsp;&nbsp;&nbsp;- execute_scripts_without_file_restriction: permission to read files
+      &#xa0;&#xa0;&#xa0;- execute_scripts_without_file_restriction: permission to read files
     </p>
     <p>
-      &nbsp;&nbsp;&nbsp;- execute_scripts_without_write_restriction: permission to create/change/delete files
+      &#xa0;&#xa0;&#xa0;- execute_scripts_without_write_restriction: permission to create/change/delete files
     </p>
     <p>
-      &nbsp;&nbsp;&nbsp;- execute_scripts_without_exec_restriction: permission to execute other programs
+      &#xa0;&#xa0;&#xa0;- execute_scripts_without_exec_restriction: permission to execute other programs
     </p>
     <p>
-      &nbsp;&nbsp;&nbsp;- execute_scripts_without_network_restriction: permission to access the network
+      &#xa0;&#xa0;&#xa0;- execute_scripts_without_network_restriction: permission to access the network
     </p>
     <p>
-      &nbsp;&nbsp;Notes:
+      &#xa0;&#xa0;Notes:
     </p>
     <p>
-      &nbsp;&nbsp;- The set of permissions is fixed.
+      &#xa0;&#xa0;- The set of permissions is fixed.
     </p>
     <p>
-      &nbsp;&nbsp;- Don't change the attribute names, don't omit one.
+      &#xa0;&#xa0;- Don't change the attribute names, don't omit one.
     </p>
     <p>
-      &nbsp;&nbsp;- Set the values either to true or to false
+      &#xa0;&#xa0;- Set the values either to true or to false
     </p>
     <p>
-      &nbsp;&nbsp;- In any case set execute_scripts_without_asking to true unless you want to annoy users.
+      &#xa0;&#xa0;- In any case set execute_scripts_without_asking to true unless you want to annoy users.
     </p>
   </body>
 </html></richcontent>
@@ -391,7 +395,7 @@
 <attribute NAME="execute_scripts_without_network_restriction" VALUE="true"/>
 </node>
 </node>
-<node TEXT="lib" POSITION="bottom_or_right" ID="ID_1845190577" CREATED="1685111823978" MODIFIED="1685111823978">
+<node TEXT="lib" POSITION="bottom_or_right" ID="ID_1845190577" CREATED="1685111823978" MODIFIED="1742834860055">
 <edge COLOR="#7c007c"/>
 <richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
@@ -406,25 +410,53 @@
       
     </p>
     <p>
-      &nbsp;- The immediate child nodes contain the name of the file, e.g. 'mysql-connector-java-5.1.25.jar'). Put the file into a 'lib' subdirectory of the add-on base directory.
+      &#xa0;- The immediate child nodes contain the name of the file, e.g. 'mysql-connector-java-5.1.25.jar'). Put the file into a 'lib' subdirectory of the add-on base directory.
     </p>
     <p>
       
     </p>
     <p>
-      &nbsp;- The child nodes of these nodes contain the actual files.
+      &#xa0;- The child nodes of these nodes contain the actual files.
     </p>
     <p>
       
     </p>
     <p>
-      &nbsp;- Any lib file will be extracted in &lt;installationbase&gt;/&lt;addonname&gt;/lib.
+      &#xa0;- Any lib file will be extracted in &lt;installationbase&gt;/&lt;addonname&gt;/lib.
     </p>
     <p>
       
     </p>
     <p>
-      &nbsp;- The files will be processed in the sequence as seen in the map.
+      &#xa0;- The files will be processed in the sequence as seen in the map.
+    </p>
+  </body>
+</html></richcontent>
+<node TEXT="defaultUserMessages.txt" ID="ID_369580043" CREATED="1742845172659" MODIFIED="1742845172659"/>
+<node TEXT="defaultSystemMessages.txt" ID="ID_1170696227" CREATED="1742845172678" MODIFIED="1742845172678"/>
+</node>
+<node TEXT="resources" POSITION="bottom_or_right" ID="ID_RESOURCES" CREATED="1742836000000" MODIFIED="1742836000000">
+<edge COLOR="#7c7c00"/>
+<richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      An add-on may contain resource files that will be copied to the add-on's resources directory.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      &#xa0;- The immediate child nodes contain the name of the resource file.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      &#xa0;- Any resource file will be extracted in &lt;installationbase&gt;/&lt;addonname&gt;/resources.
     </p>
   </body>
 </html></richcontent>
@@ -467,7 +499,7 @@
   </body>
 </html></richcontent>
 </node>
-<node TEXT="images" POSITION="bottom_or_right" ID="ID_295383454" CREATED="1685111823978" MODIFIED="1685111823978">
+<node TEXT="images" POSITION="bottom_or_right" ID="ID_295383454" CREATED="1685111823978" MODIFIED="1742834860064">
 <edge COLOR="#7c0000"/>
 <richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
@@ -479,7 +511,7 @@
       An add-on may define any number of images as child nodes of the images node. The actual image data has to be placed as base64 encoded binary data into the text of a subnode.
     </p>
     <p>
-      The images are saved to the <i>${installationbase}/resources/images</i>&nbsp;directory.
+      The images are saved to the <i>${installationbase}/resources/images</i>&#xa0;directory.
     </p>
     <p>
       
@@ -496,7 +528,7 @@
       </li>
     </ul>
     <p>
-      Images can be added automatically by releaseAddOn.groovy or must be uploaded into the map via the script <i>Tools-&gt;Scripts-&gt;Insert Binary</i>&nbsp;since they have to be (base64) encoded as simple strings.
+      Images can be added automatically by releaseAddOn.groovy or must be uploaded into the map via the script <i>Tools-&gt;Scripts-&gt;Insert Binary</i>&#xa0;since they have to be (base64) encoded as simple strings.
     </p>
   </body>
 </html></richcontent>
