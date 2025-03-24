@@ -1,6 +1,7 @@
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 import groovy.swing.SwingBuilder
+import MessageExpander
 
 import javax.swing.*
 import java.awt.*
@@ -22,22 +23,6 @@ String defaultUserMessagesFilePath = "${config.freeplaneUserDirectory}/addons/as
 String defaultSystemMessages = new File(defaultSystemMessagesFilePath).text.trim()
 String userSystemMessages = new File(defaultUserMessagesFilePath).text.trim()
 
-def expandMessage(String message) {
-    def node = c.selected
-    def pathToRoot = node.pathToRoot
-    pathToRoot = pathToRoot.take(pathToRoot.size() - 1)
-    String ancestorContents = pathToRoot*.plainText.join('\n')
-    String siblingContents = node.isRoot() ? '' : node.parent.children.findAll { it != node }*.plainText.join('\n')
-    def binding = [
-            nodeContent     : node.plainText,
-            ancestorContents: ancestorContents,
-            siblingContents : siblingContents
-    ]
-    def engine = new groovy.text.SimpleTemplateEngine()
-    def template = engine.createTemplate(message).make(binding)
-    def expandedMessage = template.toString()
-    return expandedMessage
-}
 
 def generateBranches(String apiKey, String systemMessage, String userMessage, String model, Integer maxTokens, Double temperature, String provider) {
     if (apiKey.isEmpty()) {
@@ -378,7 +363,7 @@ swingBuilder.edt { // edt method makes sure the GUI is built on the Event Dispat
                 def askGptButton = swingBuilder.button(constraints: c, action: swingBuilder.action(name: 'Ask GPT') {
                     generateBranches(String.valueOf(apiKeyField.password),
                             systemMessageArea.textArea.text,
-                            expandMessage(userMessageArea.textArea.text),
+                            MessageExpander.expandMessage(userMessageArea.textArea.text, c.selected),
                             gptModelBox.selectedItem,
                             responseLengthField.value,
                             temperatureSlider.value / 100.0,
