@@ -17,7 +17,7 @@ Answer comes
 There's a mysterious network permissions issue that sometimes comes up that I'm still working out.
 
 ### Setup
-Install add-on using the Gpt-AddOn-v0.2.addon.mm file. Other files are used for development only.
+Install add-on using the Ask-GPT-AddOn-v0.3.5.addon.mm file. Other files are used for development only.
 
 # Pre-requisites
 Check-list before starting
@@ -68,5 +68,4 @@ Prompt suggestions are very welcome, this is only a start!!
 
 ### Work in progress / future release
 - [ ] Add preferences to set more GPT parameters
-- [ ] Add features for research task execution, like how AutoGPT, Baby AGI, Agent-LLM etc work.
 
