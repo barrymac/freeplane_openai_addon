@@ -13,25 +13,25 @@ String apiProvider = config.getProperty('openai.api_provider', 'openrouter')
 
 String systemMessagesFilePath = "${config.freeplaneUserDirectory}/chatGptSystemMessages.txt"
 String userMessagesFilePath = "${config.freeplaneUserDirectory}/chatGptUserMessages.txt"
-String defaultSystemMessagesFilePath = "${config.freeplaneUserDirectory}/addons/askGPTAddOn/lib/defaultSystemMessages.txt"
-String defaultUserMessagesFilePath = "${config.freeplaneUserDirectory}/addons/askGPTAddOn/lib/defaultUserMessages.txt"
+String defaultSystemMessagesFilePath = "${config.freeplaneUserDirectory}/addons/promptLlmAddOn/lib/defaultSystemMessages.txt"
+String defaultUserMessagesFilePath = "${config.freeplaneUserDirectory}/addons/promptLlmAddOn/lib/defaultUserMessages.txt"
 
 String defaultSystemMessages = new File(defaultSystemMessagesFilePath).text.trim()
 String userSystemMessages = new File(defaultUserMessagesFilePath).text.trim()
 
 // Load the message expander function from external file
 def expandMessage = new GroovyShell(this.class.classLoader).evaluate(
-        new File("${config.freeplaneUserDirectory}/addons/askGPTAddOn/lib/MessageExpander.groovy")
+        new File("${config.freeplaneUserDirectory}/addons/promptLlmAddOn/lib/MessageExpander.groovy")
 )
 
 // Load the branch generator function from external file
 def createBranchGenerator = new GroovyShell(this.class.classLoader).evaluate(
-        new File("${config.freeplaneUserDirectory}/addons/askGPTAddOn/lib/BranchGenerator.groovy")
+        new File("${config.freeplaneUserDirectory}/addons/promptLlmAddOn/lib/BranchGenerator.groovy")
 )
 
 // Load the API caller functions from external file
 def createApiCaller = new GroovyShell(this.class.classLoader).evaluate(
-        new File("${config.freeplaneUserDirectory}/addons/askGPTAddOn/lib/ApiCaller.groovy")
+        new File("${config.freeplaneUserDirectory}/addons/promptLlmAddOn/lib/ApiCaller.groovy")
 )
 def apiCaller = createApiCaller([logger: logger, ui: ui, config: config])
 def make_openai_call = apiCaller.make_openai_call
@@ -39,7 +39,7 @@ def make_openrouter_call = apiCaller.make_openrouter_call
 
 // Load the message file handler functions from external file
 def messageFileHandler = new GroovyShell(this.class.classLoader).evaluate(
-        new File("${config.freeplaneUserDirectory}/addons/askGPTAddOn/lib/MessageFileHandler.groovy")
+        new File("${config.freeplaneUserDirectory}/addons/promptLlmAddOn/lib/MessageFileHandler.groovy")
 )
 def loadMessagesFromFile = messageFileHandler.loadMessagesFromFile
 def saveMessagesToFile = messageFileHandler.saveMessagesToFile
@@ -204,7 +204,7 @@ swingBuilder.edt { // edt method makes sure the GUI is built on the Event Dispat
             }
             constraints.gridy++
             swingBuilder.panel(constraints: constraints) {
-                def askGptButton = swingBuilder.button(constraints: c, action: swingBuilder.action(name: 'Ask GPT') {
+                def askGptButton = swingBuilder.button(constraints: c, action: swingBuilder.action(name: 'Prompt LLM') {
                     generateBranches(String.valueOf(apiKeyField.password),
                             systemMessageArea.textArea.text,
                             expandMessage(userMessageArea.textArea.text, c.selected),

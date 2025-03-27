@@ -1,6 +1,6 @@
 <map version="freeplane 1.11.1">
 <!--To view this file, download free mind mapping software Freeplane from https://www.freeplane.org -->
-<node TEXT="Ask-GPT-AddOn" FOLDED="false" ID="ID_696401721" CREATED="1685111823904" MODIFIED="1742853015543" LINK="https://github.com/dpolivaev/freeplane_openai_addon" BACKGROUND_COLOR="#97c7dc" STYLE="oval" MAX_WIDTH="20 cm">
+<node TEXT="Prompt-LLM-AddOn" FOLDED="false" ID="ID_696401721" CREATED="1685111823904" MODIFIED="1743044511407" LINK="https://github.com/dpolivaev/freeplane_openai_addon" BACKGROUND_COLOR="#97c7dc" STYLE="oval" MAX_WIDTH="20 cm">
 <font SIZE="16" BOLD="true" ITALIC="true"/>
 <hook NAME="MapStyle">
     <properties show_icon_for_attributes="true" edgeColorConfiguration="#808080ff,#ff0000ff,#0000ffff,#00ff00ff,#ff00ffff,#00ffffff,#7c0000ff,#00007cff,#007c00ff,#7c007cff,#007c7cff,#7c7c00ff" mapUsesOwnSaveOptions="true" save_modification_times="false" save_last_visited_node="default" show_note_icons="true" associatedTemplateLocation="template:/standard-1.6.mm" save_folding="save_folding_if_map_is_changed" fit_to_viewport="false"/>
@@ -70,7 +70,7 @@
 </hook>
 <hook NAME="AutomaticEdgeColor" COUNTER="18" RULE="ON_BRANCH_CREATION"/>
 <attribute_layout NAME_WIDTH="112.61538 pt" VALUE_WIDTH="333.23076 pt"/>
-<attribute NAME="name" VALUE="askGPTAddOn"/>
+<attribute NAME="name" VALUE="promptLlmAddOn"/>
 <attribute NAME="version" VALUE="v0.3.5"/>
 <attribute NAME="author" VALUE="barry, dpolivaev"/>
 <attribute NAME="freeplaneVersionFrom" VALUE="v1.11.3" OBJECT="org.freeplane.features.format.FormattedObject|java.lang.String&amp;#x7c;v1.11.3|number:decimal:#0.####"/>
@@ -78,7 +78,7 @@
 <attribute NAME="homepage" VALUE="github.com/dpolivaev/freeplane_openai_addon"/>
 <attribute NAME="downloadUrl" VALUE="https://${homepage}/releases/download/${version}/Ask-GPT-AddOn-${version}.addon.mm"/>
 <attribute NAME="changelogUrl" VALUE="https://${homepage}/commits/main"/>
-<attribute NAME="addonsMenu" VALUE="/menu_bar/OpenAI"/>
+<attribute NAME="addonsMenu" VALUE="/menu_bar/LLM"/>
 <attribute NAME="updateUrl" VALUE="https://raw.githubusercontent.com/dpolivaev/freeplane_openai_addon/release/version.properties"/>
 <richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
@@ -133,7 +133,7 @@
     </p>
   </body>
 </html></richcontent>
-<node TEXT="Add on to use OpenAI GPT API to generate mind map content" ID="ID_110054152" CREATED="1685111823976" MODIFIED="1685111823976"/>
+<node TEXT="Add on to use Language model APIs to generate mind map content" ID="ID_110054152" CREATED="1685111823976" MODIFIED="1743044046669"/>
 </node>
 <node TEXT="changes" POSITION="top_or_left" ID="ID_138977336" CREATED="1685111823976" MODIFIED="1685111823976">
 <edge COLOR="#0000ff"/>
@@ -237,11 +237,11 @@
 </html></richcontent>
 <node TEXT="en" ID="ID_1097454652" CREATED="1685111823977" MODIFIED="1742847796035">
 <attribute_layout NAME_WIDTH="159 pt" VALUE_WIDTH="102 pt"/>
-<attribute NAME="addons.${name}" VALUE="Ask GPT AddOn"/>
-<attribute NAME="addons.${name}.askGPT" VALUE="AskGPT"/>
+<attribute NAME="addons.${name}" VALUE="LLM AddOn"/>
+<attribute NAME="addons.${name}.askGPT" VALUE="Prompt Model"/>
 </node>
 </node>
-<node TEXT="deinstall" POSITION="top_or_left" ID="ID_1927303474" CREATED="1685111823977" MODIFIED="1742850127609">
+<node TEXT="deinstall" POSITION="top_or_left" ID="ID_1927303474" CREATED="1685111823977" MODIFIED="1743044537834">
 <edge COLOR="#00007c"/>
 <richcontent TYPE="NOTE" CONTENT-TYPE="xml/">
 <html>
@@ -259,8 +259,6 @@
 <attribute NAME="delete" VALUE="${installationbase}/addons/${name}/scripts/AskGPT.groovy"/>
 <attribute NAME="delete" VALUE="${installationbase}/images/${name}.svg"/>
 <attribute NAME="delete" VALUE="${installationbase}/images/${name}-icon.svg"/>
-<attribute NAME="delete" VALUE="${installationbase}/resources/images/askGPTAddOn.svg"/>
-<attribute NAME="delete" VALUE="${installationbase}/resources/images/askGPTAddOn-icon.svg"/>
 <attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/MessageExpander.groovy"/>
 <attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/defaultUserMessages.txt"/>
 <attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/defaultSystemMessages.txt"/>
@@ -268,6 +266,8 @@
 <attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/ApiCaller.groovy"/>
 <attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/MessageFileHandler.groovy"/>
 <attribute NAME="delete" VALUE="${installationbase}/addons/${name}/scripts/AskGpt.groovy"/>
+<attribute NAME="delete" VALUE="${installationbase}/resources/images/promptLlmAddOn.svg"/>
+<attribute NAME="delete" VALUE="${installationbase}/resources/images/promptLlmAddOn-icon.svg"/>
 </node>
 <node TEXT="scripts" POSITION="bottom_or_right" ID="ID_684917236" CREATED="1685111823977" MODIFIED="1742834859980">
 <edge COLOR="#007c00"/>

@@ -21,13 +21,20 @@ Install add-on using the Gpt-AddOn-v0.2.addon.mm file. Other files are used for 
 
 # Pre-requisites
 Check-list before starting
-- [ ] I have an **Open AI account**
+- [ ] I have an **OpenRouter or Open AI account**
 - [ ] **Freeplane app is installed** on my computer
-- [ ] **Open AI add-on is installed** in Freeplane.
+- [ ] **LLM add-on is installed** in Freeplane.
 
 # Step by step configuration of Freeplane Open AI add-on
 
-## In your Open AI Account
+## In your Open Router Account
+
+1. **Go to** web page https://openrouter.ai/settings/keys
+2. **Log in** using MetaMask or other method
+3. **Add credit** to your account using crypto currency or other method
+4. **Create Key** by clicking on "Create Key" button like shown bellow and finally **copy this newly generated key**.
+
+## Alternatively, in your Open AI Account
 
 1. **Go to** web page https://platform.openai.com/account/api-keys
 2. **Log in** using your ChatGPT account
