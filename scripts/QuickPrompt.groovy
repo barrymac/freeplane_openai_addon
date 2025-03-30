@@ -1,21 +1,23 @@
 import groovy.swing.SwingBuilder
 import javax.swing.JOptionPane
 
-// Reuse existing dependencies from main script
-def generateBranches = new GroovyShell(this.class.classLoader).evaluate(
-    new File("${config.freeplaneUserDirectory}/addons/promptLlmAddOn/lib/BranchGenerator.groovy")
-)
+// Load dependencies from external files
 def expandMessage = new GroovyShell(this.class.classLoader).evaluate(
     new File("${config.freeplaneUserDirectory}/addons/promptLlmAddOn/lib/MessageExpander.groovy")
 )
 
-// Load the API caller functions from external file
+// Load the API caller functions
 def createApiCaller = new GroovyShell(this.class.classLoader).evaluate(
     new File("${config.freeplaneUserDirectory}/addons/promptLlmAddOn/lib/ApiCaller.groovy")
 )
 def apiCaller = createApiCaller([logger: logger, ui: ui, config: config])
 def make_openai_call = apiCaller.make_openai_call
 def make_openrouter_call = apiCaller.make_openrouter_call
+
+// Load the branch generator function
+def createBranchGenerator = new GroovyShell(this.class.classLoader).evaluate(
+    new File("${config.freeplaneUserDirectory}/addons/promptLlmAddOn/lib/BranchGenerator.groovy")
+)
 
 // Initialize the branch generator with necessary dependencies
 def generateBranches = createBranchGenerator([
