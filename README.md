@@ -13,6 +13,7 @@ Question sent
 Answer comes
 ![screenshotanswer](images/ChatGptAnswer.png)
 
+
 ## Known issue
 There's a mysterious network permissions issue that sometimes comes up that I'm still working out.
 
@@ -20,6 +21,7 @@ There's a mysterious network permissions issue that sometimes comes up that I'm 
 Install add-on using the Ask-GPT-AddOn-v0.3.5.addon.mm file. Other files are used for development only.
 
 # Pre-requisites
+
 Check-list before starting
 - [ ] I have an **OpenRouter or Open AI account**
 - [ ] **Freeplane app is installed** on my computer
@@ -50,6 +52,15 @@ Check-list before starting
 
 ... you're done.
 
+## New Features in v0.3.6
+- **Quick Prompt Shortcut**: Use `Ctrl+Alt+G` to instantly generate content using your saved settings
+- **Persistent Configuration**: Settings are remembered between sessions when "Remember settings" is checked
+- **Direct API Access**: Choose between OpenAI and OpenRouter providers
+
+To modify saved settings:
+1. Go to **Tools > LLM > Prompt Model**
+2. Adjust settings and click "Save Changes"
+
 ## Prompt template
 The default prompt should be found in the add-on configuration. It is a good starting point for brainstorming ideas. You can change it to suit your needs. The default prompt is:
 
@@ -67,5 +78,9 @@ The `node` variable is rendered by a groovy template and comes from the groovy s
 Prompt suggestions are very welcome, this is only a start!!
 
 ### Work in progress / future release
-- [ ] Add preferences to set more GPT parameters
+- [x] Add preferences to set GPT parameters
+- [ ] Add comparative analysis between connected nodes
+- [ ] Implement batch processing of multiple nodes
+
+For latest updates check the [project roadmap](docs/ROADMAP.md)
 
