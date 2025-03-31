@@ -59,14 +59,17 @@ To modify saved settings:
 2. Adjust settings and click "Save Changes"
 
 ## Prompt template
-The default prompt should be found in the add-on configuration. It is a good starting point for brainstorming ideas. You can change it to suit your needs. 
-The default prompt is found in lib/defaultSystemMessages.txt here and 
+The default prompt should be found in the add-on configuration. 
+It is a good starting point for brainstorming ideas. You can change it to suit your needs. 
 
-Where the following variables are replaced by the add-on:
-- `${node.getText()}` is replaced by the text of the selected node
-- `${node.mindMap.root.text}` is replaced by the text of the root node of the mindmap
+The following variables are replaced by the add-on:
+- `$nodeContent` is replaced with the text of the selected node
+- `$siblingContents` is replaced with the sibling branches of the selected node
+- `$ancestorContents` is replaced with the child branches of the selected node
 
-So the LLM will be asked to generate ideas related to the selected node, in the context of the root node of the mindmap.
+- `$rootText` can also be used to ground the model in the root context of the map
+
+Using that default template LLM will be asked to generate ideas related to the selected node.
 
 The `node` variable is rendered by a groovy template and comes from the groovy script DSL within freeplane. There are probably many more useful variables that can be used, but I haven't found them yet.  
 
