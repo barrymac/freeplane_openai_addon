@@ -245,7 +245,7 @@
 <node TEXT="en" ID="ID_1097454652" CREATED="1685111823977" MODIFIED="1742847796035">
 <attribute_layout NAME_WIDTH="159 pt" VALUE_WIDTH="102 pt"/>
 <attribute NAME="addons.${name}" VALUE="LLM AddOn"/>
-<attribute NAME="addons.${name}.askGPT" VALUE="Prompt Model"/>
+<attribute NAME="addons.${name}.askGPT" VALUE="Configure Prompts and Model"/>
 <attribute NAME="addons.${name}.quickPrompt" VALUE="Quick Prompt (Ctrl+Alt+G)"/>
 </node>
 </node>
