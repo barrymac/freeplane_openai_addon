@@ -1,7 +1,7 @@
 import groovy.text.SimpleTemplateEngine
 
 // Function to expand message templates with node context
-def expandMessage(String message, def node) {
+static def expandMessage(String message, def node) {
     def pathToRoot = node.pathToRoot
     def rootText = node.mindMap.root.text
     pathToRoot = pathToRoot.take(pathToRoot.size() - 1)
