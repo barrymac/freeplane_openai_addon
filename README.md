@@ -1,4 +1,4 @@
-# An add-on for freeplane that uses OpenAI GPT API to brainstorm ideas from any selected node
+# An add-on for freeplane that uses LLM APIs to brainstorm ideas from any selected node
 
 ##Screenshots
 
