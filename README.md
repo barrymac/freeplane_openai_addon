@@ -15,7 +15,7 @@ Response returned
 ![screenshotanswer](images/ChatGptAnswer.png)
 
 ### Setup
-Install add-on using the Ask-GPT-AddOn-v0.3.6.addon.mm file. Other files are used for development only.
+Install add-on using the LLM-AddOn-v0.3.7.addon.mm file. Other files are used for development only.
 
 # Pre-requisites
 
