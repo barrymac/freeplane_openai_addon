@@ -7,11 +7,11 @@ Communicator window
 ![screenshot communicator](images/ChatGptCommunicator.png)
 -----------
 
-Question sent
+Prompt sent
 ![screenshot question](images/ChatGptQuestion.png)
 
 -----------
-Answer comes
+Response returned
 ![screenshotanswer](images/ChatGptAnswer.png)
 
 ### Setup
