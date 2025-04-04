@@ -1,4 +1,5 @@
 import groovy.swing.SwingBuilder
+import groovy.swing.SwingBuilder
 import javax.swing.JOptionPane
 import javax.swing.SwingUtilities
 import javax.swing.WindowConstants
@@ -18,12 +19,33 @@ def apiCallerFunctions = createApiCaller([logger: logger, ui: ui, config: config
 def make_openai_call = apiCallerFunctions.make_openai_call
 def make_openrouter_call = apiCallerFunctions.make_openrouter_call
 
+// Load the message expander function from external file
+def expandMessageLoader = new GroovyShell(this.class.classLoader).evaluate(
+    new File("${config.freeplaneUserDirectory}/addons/promptLlmAddOn/lib/MessageExpander.groovy")
+)
+def expandMessage = expandMessageLoader.expandMessage
+def getBindingMap = expandMessageLoader.getBindingMap // Get the new helper function
+
+// Load the message file handler functions from external file
+def messageFileHandler = new GroovyShell(this.class.classLoader).evaluate(
+    new File("${config.freeplaneUserDirectory}/addons/promptLlmAddOn/lib/MessageFileHandler.groovy")
+)
+def loadMessagesFromFile = messageFileHandler.loadMessagesFromFile
+
 // Load saved configuration
 def apiKey = config.getProperty('openai.key', '')
 def model = config.getProperty('openai.gpt_model', 'gpt-3.5-turbo')
 def maxTokens = config.getProperty('openai.max_response_length', 1000) as int
 def temperature = config.getProperty('openai.temperature', 0.7) as double
 def provider = config.getProperty('openai.api_provider', 'openrouter')
+def systemMessageIndex = config.getProperty('openai.system_message_index', 0) as int
+def userMessageIndex = config.getProperty('openai.user_message_index', 0) as int
+
+// Define message file paths
+def systemMessagesFilePath = "${config.freeplaneUserDirectory}/chatGptSystemMessages.txt"
+def userMessagesFilePath = "${config.freeplaneUserDirectory}/chatGptUserMessages.txt"
+def defaultSystemMessagesFilePath = "${config.freeplaneUserDirectory}/addons/promptLlmAddOn/lib/defaultSystemMessages.txt"
+def defaultUserMessagesFilePath = "${config.freeplaneUserDirectory}/addons/promptLlmAddOn/lib/defaultUserMessages.txt"
 
 // --- Helper Functions ---
 
@@ -124,6 +146,16 @@ def addAnalysisToNode(NodeModel node, Map analysisMap, String comparisonType) {
 
 // --- Main Script Logic ---
 
+// Load message templates using the handler
+def defaultSystemMessages = new File(defaultSystemMessagesFilePath).text.trim()
+def defaultUserMessages = new File(defaultUserMessagesFilePath).text.trim()
+def systemMessages = loadMessagesFromFile(systemMessagesFilePath, defaultSystemMessages)
+def userMessages = loadMessagesFromFile(userMessagesFilePath, defaultUserMessages)
+
+// Select the configured templates (with fallback)
+def systemMessageTemplate = systemMessageIndex < systemMessages.size() ? systemMessages[systemMessageIndex] : (systemMessages.isEmpty() ? "" : systemMessages[0])
+def userMessageTemplate = userMessageIndex < userMessages.size() ? userMessages[userMessageIndex] : (userMessages.isEmpty() ? "" : userMessages[0])
+
 // 1. Check API Key
 if (apiKey.isEmpty()) {
     if (provider == 'openrouter') {
@@ -133,6 +165,12 @@ if (apiKey.isEmpty()) {
     }
     ui.errorMessage("API key is missing. Please configure it first via the LLM menu.")
     return
+}
+
+// Check if templates are loaded
+if (systemMessageTemplate.isEmpty() || userMessageTemplate.isEmpty()) {
+    ui.errorMessage("System or User message templates are missing or empty. Please check configuration or files.")
+    return;
 }
 
 // 2. Get Selected Connector and Nodes
@@ -168,26 +206,28 @@ if (comparisonType == null || comparisonType.trim().isEmpty()) {
 }
 comparisonType = comparisonType.trim()
 
-// 4. Prepare Prompts (using a simple system message)
-def systemMessage = """
-You are an analytical assistant. Analyze the provided topic based on the requested comparison type.
-Structure your response clearly using the comparison terms as headings (e.g., "Pros:", "Cons:").
-Provide concise points under each heading.
-"""
+// 4. Prepare Prompts using loaded templates
+// System message is used directly
+def systemPrompt = systemMessageTemplate
 
-def sourceUserMessage = """
-Analyze the following topic based on the comparison type "${comparisonType}".
+// Expand the user message template separately for source and target nodes
+// We need to add the comparisonType to the binding for the expander
+def expandComparisonMessage(String template, def node, String compType) {
+    def binding = getBindingMap(node) // Use helper to get standard binding
+    binding['comparisonType'] = compType // Add our specific variable
+    def engine = new groovy.text.SimpleTemplateEngine()
+    return engine.createTemplate(template).make(binding).toString()
+}
 
-Topic:
-${sourceNode.plainText}
-"""
+// Add a placeholder for comparisonType in the default user message if it's not there
+// Ensure the template is mutable if it comes directly from the list
+def mutableUserMessageTemplate = userMessageTemplate as String
+if (!mutableUserMessageTemplate.contains('$comparisonType')) {
+    mutableUserMessageTemplate += "\n\nComparison Type: \$comparisonType"
+}
+def sourceUserPrompt = expandComparisonMessage(mutableUserMessageTemplate, sourceNode, comparisonType)
+def targetUserPrompt = expandComparisonMessage(mutableUserMessageTemplate, targetNode, comparisonType)
 
-def targetUserMessage = """
-Analyze the following topic based on the comparison type "${comparisonType}".
-
-Topic:
-${targetNode.plainText}
-"""
 
 // 5. Show Progress Dialog
 def swingBuilder = new SwingBuilder()
@@ -215,8 +255,8 @@ def workerThread = new Thread({
         def sourcePayloadMap = [
             'model': model,
             'messages': [
-                [role: 'system', content: systemMessage],
-                [role: 'user', content: sourceUserMessage]
+                [role: 'system', content: systemPrompt],
+                [role: 'user', content: sourceUserPrompt]
             ],
             'temperature': temperature,
             'max_tokens': maxTokens
@@ -234,8 +274,8 @@ def workerThread = new Thread({
          def targetPayloadMap = [
             'model': model,
             'messages': [
-                [role: 'system', content: systemMessage],
-                [role: 'user', content: targetUserMessage]
+                [role: 'system', content: systemPrompt],
+                [role: 'user', content: targetUserPrompt]
             ],
             'temperature': temperature,
             'max_tokens': maxTokens

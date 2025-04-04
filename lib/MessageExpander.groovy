@@ -20,5 +20,25 @@ static def expandMessage(String message, def node) {
     return template.toString()
 }
 
-// Return the function as closure
-return this.&expandMessage
+// Add this function inside the file, alongside the existing expandMessage function
+
+static def getBindingMap(def node) {
+    def pathToRoot = node.pathToRoot
+    def rootText = node.mindMap.root.text
+    pathToRoot = pathToRoot.take(pathToRoot.size() - 1) // Exclude the node itself
+    String ancestorContents = pathToRoot*.plainText.join('\n')
+    String siblingContents = node.isRoot() ? '' : node.parent.children.findAll { it != node }*.plainText.join('\n')
+
+    return [
+        rootText        : rootText,
+        nodeContent     : node.plainText,
+        ancestorContents: ancestorContents,
+        siblingContents : siblingContents
+    ]
+}
+
+// Make sure the return statement exports this new function too
+return [
+    expandMessage: this.&expandMessage,
+    getBindingMap: this.&getBindingMap // Add this line
+]
