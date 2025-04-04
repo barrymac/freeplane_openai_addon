@@ -1,10 +1,7 @@
 import groovy.swing.SwingBuilder
-import groovy.swing.SwingBuilder
-import groovy.swing.SwingBuilder
-import javax.swing.JOptionPane
-import javax.swing.SwingUtilities
-import javax.swing.WindowConstants
 import org.freeplane.features.map.NodeModel
+
+import javax.swing.*
 
 // --- Configuration and Dependencies ---
 
