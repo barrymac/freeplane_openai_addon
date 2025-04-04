@@ -329,8 +329,8 @@ def workerThread = new Thread({
                 ui.informationMessage("The LLM analysis did not yield structured results for either node.")
            } else {
                // Call the standalone function, passing the node proxy
-               binding.getVariable('addAnalysisToNodeAsBranch')(sourceNode, sourceAnalysis, comparisonType)
-               binding.getVariable('addAnalysisToNodeAsBranch')(targetNode, targetAnalysis, comparisonType)
+               addAnalysisToNodeAsBranch(sourceNode, sourceAnalysis, comparisonType) // Call function directly
+               addAnalysisToNodeAsBranch(targetNode, targetAnalysis, comparisonType) // Call function directly
 
                ui.informationMessage("Comparison analysis added to both nodes.")
            }
