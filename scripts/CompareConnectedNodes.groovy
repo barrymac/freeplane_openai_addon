@@ -185,6 +185,7 @@ def targetNode = node2
 // --- Debugging Output ---
 logger.info("CompareNodes: ui object type: ${ui.getClass().getName()}")
 logger.info("CompareNodes: sourceNode object type: ${sourceNode.getClass().getName()}, value: ${sourceNode}")
+logger.info("CompareNodes: sourceNode.delegate object type: ${sourceNode.delegate?.getClass()?.getName()}, value: ${sourceNode.delegate}") // Log delegate type
 logger.info("CompareNodes: targetNode object type: ${targetNode.getClass().getName()}, value: ${targetNode}")
 def dialogMessage = "Nodes '${sourceNode.text}' and '${targetNode.text}' are connected.\nEnter the type of comparison (e.g., 'Pros and Cons'):"
 logger.info("CompareNodes: Dialog message: ${dialogMessage}")
@@ -193,8 +194,8 @@ logger.info("CompareNodes: Dialog message: ${dialogMessage}")
 // 3. Get Comparison Type from User
 // Use the simpler signature: showInputDialog(NodeModel contextNode, String message, String title, int messageType)
 String comparisonType = ui.showInputDialog(
-    sourceNode, // Provide NodeModel context instead of JFrame
-    dialogMessage, // The message to display
+    sourceNode.delegate, // Use the underlying NodeModel via .delegate
+    dialogMessage.toString(), // Convert GString to String
     "Define Comparison Type", // Title
     JOptionPane.PLAIN_MESSAGE // Message type (Information, Warning, Error, Plain)
     // We cannot provide an initial value with this signature
