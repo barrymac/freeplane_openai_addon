@@ -127,9 +127,9 @@ def addAnalysisToNodeAsBranch(def nodeProxy, Map analysisMap, String comparisonT
         // Optionally, inform the user via ui.errorMessage if needed, but logging might be sufficient
     }
 }
-
+ 
 // --- Function to show custom comparison type dialog ---
-def showComparisonDialog(NodeModel contextNode, String message, List<String> defaultTypes, String configKey) {
+def showComparisonDialog(NodeModel contextNode, String message, java.util.List<String> defaultTypes, String configKey) { // Use fully qualified java.util.List
     // Load previously saved custom types
     def savedTypesString = config.getProperty(configKey, '')
     def customTypes = savedTypesString ? savedTypesString.split('\\|').toList() : []
