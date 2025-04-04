@@ -182,15 +182,22 @@ logger.info("Found connector between selected nodes: ${node1.text} and ${node2.t
 def sourceNode = node1
 def targetNode = node2
 
+// --- Debugging Output ---
+logger.info("CompareNodes: ui object type: ${ui.getClass().getName()}")
+logger.info("CompareNodes: sourceNode object type: ${sourceNode.getClass().getName()}, value: ${sourceNode}")
+logger.info("CompareNodes: targetNode object type: ${targetNode.getClass().getName()}, value: ${targetNode}")
+def dialogMessage = "Nodes '${sourceNode.text}' and '${targetNode.text}' are connected.\nEnter the type of comparison (e.g., 'Pros and Cons'):"
+logger.info("CompareNodes: Dialog message: ${dialogMessage}")
+// --- End Debugging Output ---
+
 // 3. Get Comparison Type from User
+// Use the simpler signature: showInputDialog(NodeModel contextNode, String message, String title, int messageType)
 String comparisonType = ui.showInputDialog(
-    ui.currentFrame, // Parent window context
-    "Nodes '${sourceNode.text}' and '${targetNode.text}' are connected.\nEnter the type of comparison (e.g., 'Pros and Cons'):", // Updated message
+    sourceNode, // Provide NodeModel context instead of JFrame
+    dialogMessage, // The message to display
     "Define Comparison Type", // Title
-    JOptionPane.PLAIN_MESSAGE, // Message type
-    null, // Icon (null for default)
-    null, // Selection values (null for free text)
-    "Pros and Cons" // Initial value
+    JOptionPane.PLAIN_MESSAGE // Message type (Information, Warning, Error, Plain)
+    // We cannot provide an initial value with this signature
 )
 
 if (comparisonType == null || comparisonType.trim().isEmpty()) {
