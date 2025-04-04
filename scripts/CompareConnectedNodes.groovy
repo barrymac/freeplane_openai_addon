@@ -2,6 +2,7 @@ import groovy.swing.SwingBuilder
 import org.freeplane.features.map.NodeModel
 
 import javax.swing.*
+import java.awt.* // Needed for BorderLayout, GridBagLayout etc.
 
 // --- Configuration and Dependencies ---
 
@@ -127,6 +128,69 @@ def addAnalysisToNodeAsBranch(def nodeProxy, Map analysisMap, String comparisonT
     }
 }
 
+// --- Function to show custom comparison type dialog ---
+def showComparisonDialog(NodeModel contextNode, String message, List<String> defaultTypes, String configKey) {
+    // Load previously saved custom types
+    def savedTypesString = config.getProperty(configKey, '')
+    def customTypes = savedTypesString ? savedTypesString.split('\\|').toList() : []
+    customTypes = customTypes.findAll { !it.trim().isEmpty() } // Remove empty entries
+
+    // Combine defaults and custom, ensuring defaults come first and no duplicates
+    def allTypes = (defaultTypes + customTypes).unique()
+
+    def selectedType = null // Variable to store the result
+    def swing = new SwingBuilder()
+
+    // Build the dialog
+    def dialog = swing.dialog(
+        title: "Define Comparison Type",
+        modal: true, // Make it modal
+        owner: ui.currentFrame, // Parent frame
+        pack: true, // Size based on content
+        locationRelativeTo: ui.currentFrame // Center on frame
+    ) {
+        panel(layout: new BorderLayout(5, 5), border: BorderFactory.createEmptyBorder(10, 10, 10, 10)) {
+            // Message Label
+            label(text: "<html>${message.replaceAll('\n', '<br>')}</html>", constraints: BorderLayout.NORTH) // Use HTML for multi-line
+
+            // Editable ComboBox
+            comboBox(id: 'typeCombo',
+                     items: allTypes,
+                     editable: true,
+                     selectedItem: allTypes.isEmpty() ? "" : allTypes[0], // Select first item or empty
+                     constraints: BorderLayout.CENTER)
+
+            // Button Panel
+            panel(layout: new FlowLayout(FlowLayout.RIGHT), constraints: BorderLayout.SOUTH) {
+                button(text: 'OK', defaultButton: true, actionPerformed: {
+                    // Get selected/entered item
+                    selectedType = typeCombo.editor.item?.toString()?.trim() ?: ""
+                    if (!selectedType.isEmpty()) {
+                        // Check if it's a new custom type
+                        if (!defaultTypes.contains(selectedType) && !customTypes.contains(selectedType)) {
+                            customTypes.add(selectedType)
+                            // Save updated custom types list
+                            config.setProperty(configKey, customTypes.join('|'))
+                            logger.info("Saved new custom comparison type: ${selectedType}")
+                        }
+                    }
+                    dialog.dispose() // Close dialog
+                })
+                button(text: 'Cancel', actionPerformed: {
+                    selectedType = null // Indicate cancellation
+                    dialog.dispose() // Close dialog
+                })
+            }
+        }
+    }
+
+    // Show the dialog (it's modal, so execution waits here)
+    dialog.visible = true
+
+    // Return the selected type (or null if cancelled)
+    return selectedType
+}
+
 
 // --- Main Script Logic ---
 
@@ -203,16 +267,20 @@ logger.info("CompareNodes: sourceNode.delegate object type: ${sourceNode.delegat
 logger.info("CompareNodes: targetNode object type: ${targetNode.getClass().getName()}, value: ${targetNode}")
 def dialogMessage = "Nodes '${sourceNode.text}' and '${targetNode.text}' are connected.\nEnter the type of comparison (e.g., 'Pros and Cons', 'Compare and Contrast', 'Strengths vs Weaknesses'):"
 logger.info("CompareNodes: Dialog message: ${dialogMessage.toString()}") // Ensure it's logged as String
+
+// Define default comparison types and config key
+def defaultComparisonTypes = ["Pros and Cons", "Compare and Contrast", "Strengths vs Weaknesses", "Advantages and Disadvantages"]
+def comparisonTypesConfigKey = "promptLlmAddOn.comparisonTypes"
+
 // --- End Debugging Output ---
 
 // 3. Get Comparison Type from User
-// Use the simpler signature: showInputDialog(NodeModel contextNode, String message, String title, int messageType)
-String comparisonType = ui.showInputDialog(
-    sourceNode.delegate, // Use the underlying NodeModel via .delegate
-    dialogMessage.toString(), // Convert GString to String
-    "Define Comparison Type", // Title
-    JOptionPane.PLAIN_MESSAGE // Message type (Information, Warning, Error, Plain)
-    // We cannot provide an initial value with this signature
+// Use the custom dialog
+String comparisonType = showComparisonDialog(
+    sourceNode.delegate, // Provide NodeModel context (though not strictly used by custom dialog)
+    dialogMessage.toString(),
+    defaultComparisonTypes,
+    comparisonTypesConfigKey
 )
 
 if (comparisonType == null || comparisonType.trim().isEmpty()) {
