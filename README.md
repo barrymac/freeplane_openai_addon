@@ -4,7 +4,7 @@
 - **Quick Prompt (Ctrl+Alt+G):** Generate ideas or expand nodes using a pre-configured prompt with a single shortcut.
 - **Compare Connected Nodes (v0.4.0):** Analyze linked nodes using custom comparison types (e.g., Pros/Cons, Strengths/Weaknesses) and add structured results as child nodes.
 - **Customizable Prompts:** Configure system and user message templates to tailor LLM interactions.
-- **Multiple LLM Providers:** Supports OpenAI and OpenRouter APIs.
+- **Multiple LLM Providers:** Supports OpenRouter API for multi-model support and OpenAI.
 - **Branch Generation:** Automatically appends LLM responses as mind map branches.
 
 Communicator window
@@ -39,7 +39,7 @@ The add-on will:
 - Save any newly entered custom comparison types for quick reuse in the dropdown next time.
 
 ### Setup
-Install add-on using the LLM-AddOn-v0.3.7.addon.mm file. Other files are used for development only.
+Install add-on using the LLM-AddOn-v0.4.0.addon.mm file. Other files are used for development only.
 
 # Pre-requisites
 
@@ -101,7 +101,7 @@ Using that default template LLM will be asked to generate ideas related to the s
 The `node` variable is rendered by a groovy template and comes from the groovy script DSL within freeplane. There are probably many more useful variables that can be used, but I haven't found them yet.  
 
 ## Improvements
-Prompt and feature suggestions are very welcome, this is only a start!
+Prompt and feature suggestions are very welcome!
 
 ### Work in progress / future release
 - [x] Add preferences to set GPT parameters
