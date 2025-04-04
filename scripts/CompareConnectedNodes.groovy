@@ -1,13 +1,10 @@
 import groovy.swing.SwingBuilder
 import groovy.swing.SwingBuilder
+import groovy.swing.SwingBuilder
 import javax.swing.JOptionPane
 import javax.swing.SwingUtilities
 import javax.swing.WindowConstants
-import java.awt.BorderLayout
 import org.freeplane.features.map.NodeModel
-import org.freeplane.features.map.mindmap.MindMapController
-import org.freeplane.features.mode.Controller
-import org.freeplane.features.undo.mindmap.AddNodeTransaction
 
 // --- Configuration and Dependencies ---
 
@@ -101,46 +98,27 @@ def parseAnalysis(String analysisText) {
 }
 
 /**
- * Adds the parsed analysis map as child nodes to the given node.
+ * Formats the analysis map into an indented string and adds it as a branch.
  */
-def addAnalysisToNode(NodeModel node, Map analysisMap, String comparisonType) {
+def addAnalysisToNodeAsBranch(NodeModel node, Map analysisMap, String comparisonType) {
     if (analysisMap.isEmpty()) {
         logger.warn("No analysis data to add for node: ${node.text}")
         return
     }
 
-    // Use transaction for undo support
-    MindMapController mmc = Controller.currentModeController.mindMapController
-    mmc.changeSupport.fireMapChanging(mmc.map)
-    AddNodeTransaction transaction = new AddNodeTransaction(node.mindMap)
-    try {
-        // Create a root node for this comparison
-        NodeModel comparisonRoot = node.createChild()
-        comparisonRoot.text = "Comparison (${comparisonType})"
-        comparisonRoot.style = 'bubble' // Optional styling
-        transaction.addNode(comparisonRoot, node, node.children.size(), false)
-
-        analysisMap.each { category, points ->
-            if (!points.isEmpty()) {
-                NodeModel categoryNode = comparisonRoot.createChild()
-                categoryNode.text = category
-                transaction.addNode(categoryNode, comparisonRoot, comparisonRoot.children.size(), false)
-                points.each { point ->
-                    NodeModel pointNode = categoryNode.createChild()
-                    pointNode.text = point
-                    transaction.addNode(pointNode, categoryNode, categoryNode.children.size(), false)
-                }
-            }
+    // Format the map into an indented string
+    def builder = new StringBuilder()
+    builder.append("Comparison (${comparisonType})\n") // Root of the new branch
+    analysisMap.each { category, points ->
+        builder.append("    ${category}\n") // Indent level 1 for category
+        points.each { point ->
+            builder.append("        ${point}\n") // Indent level 2 for points
         }
-        transaction.commit()
-        c.select(comparisonRoot) // Select the newly added comparison root
-    } catch (Exception e) {
-        logger.error("Failed to add analysis nodes transactionally", e)
-        transaction.rollback()
-        ui.errorMessage("Failed to add analysis nodes: ${e.message}")
-    } finally {
-        mmc.changeSupport.fireMapChanged(mmc.map)
     }
+    def formattedAnalysis = builder.toString().trim()
+
+    // Add the formatted string as a new branch (this is undoable)
+    node.appendTextOutlineAsBranch(formattedAnalysis)
 }
 
 
@@ -231,6 +209,7 @@ def targetUserPrompt = expandComparisonMessage(mutableUserMessageTemplate, targe
 
 // 5. Show Progress Dialog
 def swingBuilder = new SwingBuilder()
+def BorderLayout = java.awt.BorderLayout // Define locally since import was removed
 def dialog = swingBuilder.dialog(title: "Analyzing Nodes with LLM...",
         owner: ui.currentFrame,
         modal: false, // Non-modal
