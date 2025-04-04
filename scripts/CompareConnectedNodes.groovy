@@ -209,14 +209,13 @@ def targetUserPrompt = expandComparisonMessage(mutableUserMessageTemplate, targe
 
 // 5. Show Progress Dialog
 def swingBuilder = new SwingBuilder()
-def BorderLayout = java.awt.BorderLayout // Define locally since import was removed
 def dialog = swingBuilder.dialog(title: "Analyzing Nodes with LLM...",
         owner: ui.currentFrame,
         modal: false, // Non-modal
         resizable: false,
-        defaultCloseOperation: WindowConstants.DO_NOTHING_ON_CLOSE) { // Prevent manual closing
-    swingBuilder.panel(layout: new BorderLayout()) {
-        label(text: "Requesting analysis for '${sourceNode.text}' and '${targetNode.text}' based on '${comparisonType}'. Please wait...", constraints: BorderLayout.CENTER)
+        defaultCloseOperation: javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE) { // Prevent manual closing - Use fully qualified name
+    swingBuilder.panel(layout: new java.awt.BorderLayout()) { // Use fully qualified name
+        label(text: "Requesting analysis for '${sourceNode.text}' and '${targetNode.text}' based on '${comparisonType}'. Please wait...", constraints: java.awt.BorderLayout.CENTER) // Use fully qualified name
     }
 }
 dialog.pack()
