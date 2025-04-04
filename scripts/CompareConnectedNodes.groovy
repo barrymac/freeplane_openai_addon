@@ -97,9 +97,9 @@ def parseAnalysis(String analysisText) {
 /**
  * Formats the analysis map into an indented string and adds it as a branch.
  */
-def addAnalysisToNodeAsBranch(NodeModel node, Map analysisMap, String comparisonType) {
+def addAnalysisToNodeAsBranch(def nodeProxy, Map analysisMap, String comparisonType) { // Accept NodeProxy
     if (analysisMap.isEmpty()) {
-        logger.warn("No analysis data to add for node: ${node.text}")
+        logger.warn("No analysis data to add for node: ${nodeProxy.text}")
         return
     }
 
@@ -115,7 +115,7 @@ def addAnalysisToNodeAsBranch(NodeModel node, Map analysisMap, String comparison
     def formattedAnalysis = builder.toString().trim()
 
     // Add the formatted string as a new branch (this is undoable)
-    node.appendTextOutlineAsBranch(formattedAnalysis)
+    nodeProxy.appendTextOutlineAsBranch(formattedAnalysis) // Call method on the NodeProxy
 }
 
 
@@ -128,8 +128,11 @@ def systemMessages = loadMessagesFromFile(systemMessagesFilePath, defaultSystemM
 def userMessages = loadMessagesFromFile(userMessagesFilePath, defaultUserMessages)
 
 // Select the configured templates (with fallback)
+logger.info("CompareNodes: Configured systemMessageIndex: ${systemMessageIndex}, userMessageIndex: ${userMessageIndex}")
 def systemMessageTemplate = systemMessageIndex < systemMessages.size() ? systemMessages[systemMessageIndex] : (systemMessages.isEmpty() ? "" : systemMessages[0])
 def userMessageTemplate = userMessageIndex < userMessages.size() ? userMessages[userMessageIndex] : (userMessages.isEmpty() ? "" : userMessages[0])
+logger.info("CompareNodes: Selected systemMessageTemplate:\n---\n${systemMessageTemplate}\n---")
+logger.info("CompareNodes: Selected userMessageTemplate:\n---\n${userMessageTemplate}\n---")
 
 // 1. Check API Key
 if (apiKey.isEmpty()) {
@@ -216,12 +219,15 @@ def systemPrompt = systemMessageTemplate
 // Ensure the template is mutable if it comes directly from the list
 def mutableUserMessageTemplate = userMessageTemplate as String
 if (!mutableUserMessageTemplate.contains('$comparisonType')) {
+    logger.warn("CompareNodes: Adding missing '\$comparisonType' placeholder to user template.")
     mutableUserMessageTemplate += "\n\nComparison Type: \$comparisonType"
 }
+logger.info("CompareNodes: Final userMessageTemplate for expansion:\n---\n${mutableUserMessageTemplate}\n---")
 
 // --- Inline expansion for source node ---
 def sourceBinding = getBindingMap(sourceNode) // Call the standalone function
 sourceBinding['comparisonType'] = comparisonType // Add specific variable
+logger.info("CompareNodes: Source Binding Map: ${sourceBinding}")
 def sourceEngine = new groovy.text.SimpleTemplateEngine()
 def sourceUserPrompt = sourceEngine.createTemplate(mutableUserMessageTemplate).make(sourceBinding).toString()
 logger.info("CompareNodes: Source User Prompt:\n${sourceUserPrompt}") // Log generated prompt
@@ -229,6 +235,7 @@ logger.info("CompareNodes: Source User Prompt:\n${sourceUserPrompt}") // Log gen
 // --- Inline expansion for target node ---
 def targetBinding = getBindingMap(targetNode) // Call the standalone function
 targetBinding['comparisonType'] = comparisonType // Add specific variable
+logger.info("CompareNodes: Target Binding Map: ${targetBinding}")
 def targetEngine = new groovy.text.SimpleTemplateEngine()
 def targetUserPrompt = targetEngine.createTemplate(mutableUserMessageTemplate).make(targetBinding).toString()
 logger.info("CompareNodes: Target User Prompt:\n${targetUserPrompt}") // Log generated prompt
@@ -314,14 +321,16 @@ def workerThread = new Thread({
         // --- Update Map on EDT ---
         SwingUtilities.invokeLater {
             dialog.dispose() // Close progress dialog first
-            if (sourceAnalysis.isEmpty() && targetAnalysis.isEmpty()) {
-                 ui.informationMessage("The LLM analysis did not yield structured results for either node.")
-            } else {
-                addAnalysisToNodeAsBranch(sourceNode, sourceAnalysis, comparisonType)
-                addAnalysisToNodeAsBranch(targetNode, targetAnalysis, comparisonType)
-                ui.informationMessage("Comparison analysis added to both nodes.")
-            }
-        }
+           if (sourceAnalysis.isEmpty() && targetAnalysis.isEmpty()) {
+                ui.informationMessage("The LLM analysis did not yield structured results for either node.")
+           } else {
+               // Call the standalone function, passing the node proxy
+               binding.getVariable('addAnalysisToNodeAsBranch')(sourceNode, sourceAnalysis, comparisonType)
+               binding.getVariable('addAnalysisToNodeAsBranch')(targetNode, targetAnalysis, comparisonType)
+
+               ui.informationMessage("Comparison analysis added to both nodes.")
+           }
+       }
 
     } catch (Exception e) {
         logger.error("LLM Comparison failed", e)
