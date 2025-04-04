@@ -149,7 +149,7 @@ if (systemMessageTemplate.isEmpty() || userMessageTemplate.isEmpty()) {
 }
 
 // 2. Get Selected Nodes and Find Connector Between Them
-def selectedNodes = c.selectedNodes
+def selectedNodes = c.selecteds // Use 'selecteds' (plural) to get the list of selected nodes
 if (selectedNodes.size() != 2) {
     ui.errorMessage("Please select exactly two nodes to compare.")
     return
