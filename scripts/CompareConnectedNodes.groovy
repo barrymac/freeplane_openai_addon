@@ -129,8 +129,12 @@ def userMessages = loadMessagesFromFile(userMessagesFilePath, defaultUserMessage
 
 // Select the configured templates (with fallback)
 logger.info("CompareNodes: Configured systemMessageIndex: ${systemMessageIndex}, userMessageIndex: ${userMessageIndex}")
+// System prompt uses the configured index
 def systemMessageTemplate = systemMessageIndex < systemMessages.size() ? systemMessages[systemMessageIndex] : (systemMessages.isEmpty() ? "" : systemMessages[0])
-def userMessageTemplate = userMessageIndex < userMessages.size() ? userMessages[userMessageIndex] : (userMessages.isEmpty() ? "" : userMessages[0])
+// *** For CompareNodes, specifically try to use User Prompt Index 1 (the comparison template) ***
+def comparisonUserMessageIndex = 1 // Target index for comparison prompt
+def userMessageTemplate = comparisonUserMessageIndex < userMessages.size() ? userMessages[comparisonUserMessageIndex] : (userMessages.isEmpty() ? "" : userMessages[0])
+logger.info("CompareNodes: Forcing use of User Prompt Index ${comparisonUserMessageIndex < userMessages.size() ? comparisonUserMessageIndex : 0} for comparison.")
 logger.info("CompareNodes: Selected systemMessageTemplate:\n---\n${systemMessageTemplate}\n---")
 logger.info("CompareNodes: Selected userMessageTemplate:\n---\n${userMessageTemplate}\n---")
 
@@ -190,8 +194,8 @@ logger.info("CompareNodes: ui object type: ${ui.getClass().getName()}")
 logger.info("CompareNodes: sourceNode object type: ${sourceNode.getClass().getName()}, value: ${sourceNode}")
 logger.info("CompareNodes: sourceNode.delegate object type: ${sourceNode.delegate?.getClass()?.getName()}, value: ${sourceNode.delegate}") // Log delegate type
 logger.info("CompareNodes: targetNode object type: ${targetNode.getClass().getName()}, value: ${targetNode}")
-def dialogMessage = "Nodes '${sourceNode.text}' and '${targetNode.text}' are connected.\nEnter the type of comparison (e.g., 'Pros and Cons'):"
-logger.info("CompareNodes: Dialog message: ${dialogMessage}")
+def dialogMessage = "Nodes '${sourceNode.text}' and '${targetNode.text}' are connected.\nEnter the type of comparison (e.g., 'Pros and Cons', 'Compare and Contrast', 'Strengths vs Weaknesses'):"
+logger.info("CompareNodes: Dialog message: ${dialogMessage.toString()}") // Ensure it's logged as String
 // --- End Debugging Output ---
 
 // 3. Get Comparison Type from User
