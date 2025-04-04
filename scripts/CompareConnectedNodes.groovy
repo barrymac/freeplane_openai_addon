@@ -292,8 +292,8 @@ def workerThread = new Thread({
             if (sourceAnalysis.isEmpty() && targetAnalysis.isEmpty()) {
                  ui.informationMessage("The LLM analysis did not yield structured results for either node.")
             } else {
-                addAnalysisToNode(sourceNode, sourceAnalysis, comparisonType)
-                addAnalysisToNode(targetNode, targetAnalysis, comparisonType)
+                addAnalysisToNodeAsBranch(sourceNode, sourceAnalysis, comparisonType)
+                addAnalysisToNodeAsBranch(targetNode, targetAnalysis, comparisonType)
                 ui.informationMessage("Comparison analysis added to both nodes.")
             }
         }
