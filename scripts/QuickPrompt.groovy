@@ -1,8 +1,8 @@
 import groovy.swing.SwingBuilder
 import javax.swing.JOptionPane
 
-// Load dependencies from external files
-def expandMessage = new GroovyShell(this.class.classLoader).evaluate(
+// Load the message expander *map* from external file
+def expandMessageLoader = new GroovyShell(this.class.classLoader).evaluate(
     new File("${config.freeplaneUserDirectory}/addons/promptLlmAddOn/lib/MessageExpander.groovy")
 )
 
@@ -13,6 +13,9 @@ def createApiCaller = new GroovyShell(this.class.classLoader).evaluate(
 def apiCaller = createApiCaller([logger: logger, ui: ui, config: config])
 def make_openai_call = apiCaller.make_openai_call
 def make_openrouter_call = apiCaller.make_openrouter_call
+
+// Extract the actual expandMessage function from the map
+def expandMessage = expandMessageLoader.expandMessage
 
 // Load the branch generator function
 def createBranchGenerator = new GroovyShell(this.class.classLoader).evaluate(
