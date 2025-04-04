@@ -1,22 +1,26 @@
 import groovy.swing.SwingBuilder
+
+import javax.swing.*
+import java.awt.*
+
 // Function to create a branch generator with necessary dependencies
 def createGenerateBranches(closures) {
     return { apiKey, systemMessage, userMessage, model, maxTokens, temperature, provider ->
         def c = closures.c
         def ui = closures.ui
         def logger = closures.logger
-        def SwingUtilities = javax.swing.SwingUtilities
-        def WindowConstants = javax.swing.WindowConstants
-        def BorderLayout = java.awt.BorderLayout
-        def SwingBuilder = groovy.swing.SwingBuilder
+        def SwingUtilities = SwingUtilities
+        def WindowConstants = WindowConstants
+        def BorderLayout = BorderLayout
+        def SwingBuilder = SwingBuilder
         def make_openai_call = closures.make_openai_call
         def make_openrouter_call = closures.make_openrouter_call
         
         if (apiKey.isEmpty()) {
             if (provider == 'openrouter') {
-                java.awt.Desktop.desktop.browse(new URI("https://openrouter.ai/keys"))
+                Desktop.desktop.browse(new URI("https://openrouter.ai/keys"))
             } else {
-                java.awt.Desktop.desktop.browse(new URI("https://platform.openai.com/account/api-keys"))
+                Desktop.desktop.browse(new URI("https://platform.openai.com/account/api-keys"))
             }
             ui.errorMessage("Invalid authentication or incorrect API key provided.")
             return;
