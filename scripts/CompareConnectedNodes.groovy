@@ -96,6 +96,18 @@ def parseAnalysis(String analysisText) {
     return results
 }
 
+// Helper function to recursively add a tag to a node and its children
+def addTagRecursively(node, tagName, logger) { // Added logger parameter
+    if (node == null) return
+    try {
+        node.tags.add(tagName)
+        node.children.each { child -> addTagRecursively(child, tagName, logger) } // Pass logger recursively
+    } catch (Exception e) {
+        // Log error if tagging fails for any reason
+        logger.error("Failed to add tag '${tagName}' to node ${node.text}", e)
+    }
+}
+
 /**
  * Formats the analysis map into an indented string and adds it as a branch.
  */
@@ -120,10 +132,12 @@ def addAnalysisToNodeAsBranch(def nodeProxy, Map analysisMap, String comparisonT
 
     // Add the formatted string as a new branch (this is undoable)
     try {
-        nodeProxy.appendTextOutlineAsBranch(formattedAnalysis) // Call method on the NodeProxy
+        // Capture the root node of the added branch
+        def addedBranchRoot = nodeProxy.appendTextOutlineAsBranch(formattedAnalysis) // Call method on the NodeProxy
         logger.info("Successfully called appendTextOutlineAsBranch for node: ${nodeProxy.text}")
+        addTagRecursively(addedBranchRoot, "LLM_Generated", logger) // Add tag recursively, passing logger
     } catch (Exception e) {
-        logger.error("Error calling appendTextOutlineAsBranch for node ${nodeProxy.text}", e)
+        logger.error("Error calling appendTextOutlineAsBranch or tagging for node ${nodeProxy.text}", e) // Updated error message
         // Optionally, inform the user via ui.errorMessage if needed, but logging might be sufficient
     }
 }

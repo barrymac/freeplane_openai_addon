@@ -3,6 +3,18 @@ import groovy.swing.SwingBuilder
 import javax.swing.*
 import java.awt.*
 
+// Helper function to recursively add a tag to a node and its children
+def addTagRecursively(node, tagName, logger) { // Added logger parameter
+    if (node == null) return
+    try {
+        node.tags.add(tagName)
+        node.children.each { child -> addTagRecursively(child, tagName, logger) } // Pass logger recursively
+    } catch (Exception e) {
+        // Log error if tagging fails for any reason
+        logger.error("Failed to add tag '${tagName}' to node ${node.text}", e)
+    }
+}
+
 // Function to create a branch generator with necessary dependencies
 def createGenerateBranches(closures) {
     return { apiKey, systemMessage, userMessage, model, maxTokens, temperature, provider ->
@@ -67,7 +79,10 @@ def createGenerateBranches(closures) {
                 logger.info("GPT response: $response")
                 SwingUtilities.invokeLater {
                     dialog.dispose()
-                    node.appendTextOutlineAsBranch(response)
+                    // Capture the root node of the added branch
+                    def addedBranchRoot = node.appendTextOutlineAsBranch(response)
+                    // Recursively add the tag, passing the logger
+                    addTagRecursively(addedBranchRoot, "LLM_Generated", logger)
                 }
             } catch (Exception e) {
                 logger.error("API call failed", e)
