@@ -33,13 +33,14 @@ def maxTokens = config.getProperty('openai.max_response_length', 1000) as int
 def temperature = config.getProperty('openai.temperature', 0.7) as double
 def provider = config.getProperty('openai.api_provider', 'openrouter')
 def systemMessageIndex = config.getProperty('openai.system_message_index', 0) as int
-def userMessageIndex = config.getProperty('openai.user_message_index', 0) as int
+// userMessageIndex is no longer needed here
 
 // Define message file paths
 def systemMessagesFilePath = "${config.freeplaneUserDirectory}/chatGptSystemMessages.txt"
-def userMessagesFilePath = "${config.freeplaneUserDirectory}/chatGptUserMessages.txt"
+// userMessagesFilePath is no longer needed here
 def defaultSystemMessagesFilePath = "${config.freeplaneUserDirectory}/addons/promptLlmAddOn/lib/defaultSystemMessages.txt"
-def defaultUserMessagesFilePath = "${config.freeplaneUserDirectory}/addons/promptLlmAddOn/lib/defaultUserMessages.txt"
+// defaultUserMessagesFilePath is no longer needed here
+def compareNodesUserMessageFilePath = "${config.freeplaneUserDirectory}/addons/promptLlmAddOn/lib/compareNodesUserMessage.txt"
 
 // --- Helper Functions ---
 
@@ -131,20 +132,18 @@ def addAnalysisToNodeAsBranch(def nodeProxy, Map analysisMap, String comparisonT
 
 // Load message templates using the handler
 def defaultSystemMessages = new File(defaultSystemMessagesFilePath).text.trim()
-def defaultUserMessages = new File(defaultUserMessagesFilePath).text.trim()
+// Load system messages as before (user might want to configure the general system persona)
 def systemMessages = loadMessagesFromFile(systemMessagesFilePath, defaultSystemMessages)
-def userMessages = loadMessagesFromFile(userMessagesFilePath, defaultUserMessages)
+// Load the specific user message template for this script directly
+def compareNodesUserMessageTemplate = new File(compareNodesUserMessageFilePath).text.trim()
 
-// Select the configured templates (with fallback)
-logger.info("CompareNodes: Configured systemMessageIndex: ${systemMessageIndex}, userMessageIndex: ${userMessageIndex}")
-// System prompt uses the configured index
+
+// Select the configured system template (with fallback)
+logger.info("CompareNodes: Configured systemMessageIndex: ${systemMessageIndex}")
 def systemMessageTemplate = systemMessageIndex < systemMessages.size() ? systemMessages[systemMessageIndex] : (systemMessages.isEmpty() ? "" : systemMessages[0])
-// *** For CompareNodes, specifically try to use User Prompt Index 1 (the comparison template) ***
-def comparisonUserMessageIndex = 1 // Target index for comparison prompt
-def userMessageTemplate = comparisonUserMessageIndex < userMessages.size() ? userMessages[comparisonUserMessageIndex] : (userMessages.isEmpty() ? "" : userMessages[0])
-logger.info("CompareNodes: Forcing use of User Prompt Index ${comparisonUserMessageIndex < userMessages.size() ? comparisonUserMessageIndex : 0} for comparison.")
+
 logger.info("CompareNodes: Selected systemMessageTemplate:\n---\n${systemMessageTemplate}\n---")
-logger.info("CompareNodes: Selected userMessageTemplate:\n---\n${userMessageTemplate}\n---")
+logger.info("CompareNodes: Using dedicated userMessageTemplate from ${compareNodesUserMessageFilePath}:\n---\n${compareNodesUserMessageTemplate}\n---")
 
 // 1. Check API Key
 if (apiKey.isEmpty()) {
@@ -158,8 +157,8 @@ if (apiKey.isEmpty()) {
 }
 
 // Check if templates are loaded
-if (systemMessageTemplate.isEmpty() || userMessageTemplate.isEmpty()) {
-    ui.errorMessage("System or User message templates are missing or empty. Please check configuration or files.")
+if (systemMessageTemplate.isEmpty() || compareNodesUserMessageTemplate.isEmpty()) {
+    ui.errorMessage("System message template or the dedicated compareNodesUserMessage.txt is missing or empty. Please check configuration or files.")
     return;
 }
 
@@ -227,13 +226,9 @@ comparisonType = comparisonType.trim()
 // System message is used directly
 def systemPrompt = systemMessageTemplate
 
-// Add a placeholder for comparisonType in the user message template if it's not there
-// Ensure the template is mutable if it comes directly from the list
-def mutableUserMessageTemplate = userMessageTemplate as String
-if (!mutableUserMessageTemplate.contains('$comparisonType')) {
-    logger.warn("CompareNodes: Adding missing '\$comparisonType' placeholder to user template.")
-    mutableUserMessageTemplate += "\n\nComparison Type: \$comparisonType"
-}
+// Use the specific template loaded earlier
+def mutableUserMessageTemplate = compareNodesUserMessageTemplate as String
+// No need to check for $comparisonType placeholder, as we control this file.
 logger.info("CompareNodes: Final userMessageTemplate for expansion:\n---\n${mutableUserMessageTemplate}\n---")
 
 // --- Inline expansion for source node ---
