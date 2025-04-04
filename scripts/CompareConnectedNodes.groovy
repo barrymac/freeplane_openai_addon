@@ -148,25 +148,44 @@ if (systemMessageTemplate.isEmpty() || userMessageTemplate.isEmpty()) {
     return;
 }
 
-// 2. Get Selected Connector and Nodes
-def connectors = c.getSelectedConnectors()
-if (connectors.size() != 1) {
-    ui.errorMessage("Please select exactly one connector between two nodes.")
+// 2. Get Selected Nodes and Find Connector Between Them
+def selectedNodes = c.selectedNodes
+if (selectedNodes.size() != 2) {
+    ui.errorMessage("Please select exactly two nodes to compare.")
     return
 }
-def connector = connectors.get(0)
-def sourceNode = connector.getSource()
-def targetNode = connector.getTarget()
 
-if (sourceNode == null || targetNode == null) {
-    ui.errorMessage("The selected connector is not properly linked between two nodes.")
+def node1 = selectedNodes[0]
+def node2 = selectedNodes[1]
+
+// Find connectors between node1 and node2 (in either direction)
+def connectorsOut = node1.connectorsOut.findAll { it.target == node2 }
+def connectorsIn = node1.connectorsIn.findAll { it.source == node2 }
+def allConnectorsBetween = connectorsOut + connectorsIn
+
+if (allConnectorsBetween.size() == 0) {
+    ui.errorMessage("The two selected nodes are not connected. Please add a connector between them.")
     return
 }
+
+if (allConnectorsBetween.size() > 1) {
+    ui.errorMessage("There are multiple connectors between the selected nodes. Please ensure there is only one.")
+    return
+}
+
+// We have exactly one connector, proceed. We don't strictly need the connector object itself
+// for the current logic, but we've validated the connection exists.
+def connector = allConnectorsBetween[0] // Optional: if we need connector info later (e.g., label)
+logger.info("Found connector between selected nodes: ${node1.text} and ${node2.text}")
+
+// Assign source/target based on selection order for consistency in prompts/output
+def sourceNode = node1
+def targetNode = node2
 
 // 3. Get Comparison Type from User
 String comparisonType = ui.showInputDialog(
     ui.currentFrame, // Parent window context
-    "Enter the type of comparison (e.g., 'Pros and Cons', 'Compare and Contrast', 'Strengths vs Weaknesses'):", // Message
+    "Nodes '${sourceNode.text}' and '${targetNode.text}' are connected.\nEnter the type of comparison (e.g., 'Pros and Cons'):", // Updated message
     "Define Comparison Type", // Title
     JOptionPane.PLAIN_MESSAGE, // Message type
     null, // Icon (null for default)
@@ -194,7 +213,7 @@ def expandComparisonMessage(String template, def node, String compType) {
     return engine.createTemplate(template).make(binding).toString()
 }
 
-// Add a placeholder for comparisonType in the default user message if it's not there
+// Add a placeholder for comparisonType in the user message template if it's not there
 // Ensure the template is mutable if it comes directly from the list
 def mutableUserMessageTemplate = userMessageTemplate as String
 if (!mutableUserMessageTemplate.contains('$comparisonType')) {
