@@ -174,11 +174,13 @@ def showComparisonDialog(NodeModel contextNode, String message, java.util.List<S
                             logger.info("Saved new custom comparison type: ${selectedType}")
                         }
                     }
-                    dialog.dispose() // Close dialog
+                    // Get the button source, find its window (the dialog), and dispose it
+                    SwingUtilities.getWindowAncestor(it.source).dispose()
                 })
                 button(text: 'Cancel', actionPerformed: {
                     selectedType = null // Indicate cancellation
-                    dialog.dispose() // Close dialog
+                    // Get the button source, find its window (the dialog), and dispose it
+                    SwingUtilities.getWindowAncestor(it.source).dispose()
                 })
             }
         }
