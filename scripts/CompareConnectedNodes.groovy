@@ -212,24 +212,26 @@ comparisonType = comparisonType.trim()
 // System message is used directly
 def systemPrompt = systemMessageTemplate
 
-// Expand the user message template separately for source and target nodes
-// We need to add the comparisonType to the binding for the expander
-def expandComparisonMessage(String template, def node, String compType) {
-    def binding = getBindingMap(node) // Use the function variable directly
-    binding['comparisonType'] = compType // Add our specific variable
-    def engine = new groovy.text.SimpleTemplateEngine()
-    return engine.createTemplate(template).make(binding).toString()
-}
-
 // Add a placeholder for comparisonType in the user message template if it's not there
 // Ensure the template is mutable if it comes directly from the list
 def mutableUserMessageTemplate = userMessageTemplate as String
 if (!mutableUserMessageTemplate.contains('$comparisonType')) {
     mutableUserMessageTemplate += "\n\nComparison Type: \$comparisonType"
 }
-def sourceUserPrompt = expandComparisonMessage(mutableUserMessageTemplate, sourceNode, comparisonType)
-def targetUserPrompt = expandComparisonMessage(mutableUserMessageTemplate, targetNode, comparisonType)
 
+// --- Inline expansion for source node ---
+def sourceBinding = getBindingMap(sourceNode) // Call the standalone function
+sourceBinding['comparisonType'] = comparisonType // Add specific variable
+def sourceEngine = new groovy.text.SimpleTemplateEngine()
+def sourceUserPrompt = sourceEngine.createTemplate(mutableUserMessageTemplate).make(sourceBinding).toString()
+logger.info("CompareNodes: Source User Prompt:\n${sourceUserPrompt}") // Log generated prompt
+
+// --- Inline expansion for target node ---
+def targetBinding = getBindingMap(targetNode) // Call the standalone function
+targetBinding['comparisonType'] = comparisonType // Add specific variable
+def targetEngine = new groovy.text.SimpleTemplateEngine()
+def targetUserPrompt = targetEngine.createTemplate(mutableUserMessageTemplate).make(targetBinding).toString()
+logger.info("CompareNodes: Target User Prompt:\n${targetUserPrompt}") // Log generated prompt
 
 // 5. Show Progress Dialog
 def swingBuilder = new SwingBuilder()
