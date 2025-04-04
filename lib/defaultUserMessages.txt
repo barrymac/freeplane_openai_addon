@@ -2,6 +2,10 @@ Known facts:
 $ancestorContents
 $siblingContents
 
+Known facts:
+$ancestorContents
+$siblingContents
+
 Topic: $nodeContent
 
 Language: English

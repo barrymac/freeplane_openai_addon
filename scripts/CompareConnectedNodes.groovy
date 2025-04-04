@@ -98,6 +98,7 @@ def parseAnalysis(String analysisText) {
  * Formats the analysis map into an indented string and adds it as a branch.
  */
 def addAnalysisToNodeAsBranch(def nodeProxy, Map analysisMap, String comparisonType) { // Accept NodeProxy
+    logger.info("Attempting to add analysis to node: ${nodeProxy.text}")
     if (analysisMap.isEmpty()) {
         logger.warn("No analysis data to add for node: ${nodeProxy.text}")
         return
@@ -113,9 +114,16 @@ def addAnalysisToNodeAsBranch(def nodeProxy, Map analysisMap, String comparisonT
         }
     }
     def formattedAnalysis = builder.toString().trim()
+    logger.info("Formatted analysis string for node ${nodeProxy.text}:\n---\n${formattedAnalysis}\n---")
 
     // Add the formatted string as a new branch (this is undoable)
-    nodeProxy.appendTextOutlineAsBranch(formattedAnalysis) // Call method on the NodeProxy
+    try {
+        nodeProxy.appendTextOutlineAsBranch(formattedAnalysis) // Call method on the NodeProxy
+        logger.info("Successfully called appendTextOutlineAsBranch for node: ${nodeProxy.text}")
+    } catch (Exception e) {
+        logger.error("Error calling appendTextOutlineAsBranch for node ${nodeProxy.text}", e)
+        // Optionally, inform the user via ui.errorMessage if needed, but logging might be sufficient
+    }
 }
 
 
@@ -328,11 +336,16 @@ def workerThread = new Thread({
            if (sourceAnalysis.isEmpty() && targetAnalysis.isEmpty()) {
                 ui.informationMessage("The LLM analysis did not yield structured results for either node.")
            } else {
-               // Call the standalone function, passing the node proxy
-               addAnalysisToNodeAsBranch(sourceNode, sourceAnalysis, comparisonType) // Call function directly
-               addAnalysisToNodeAsBranch(targetNode, targetAnalysis, comparisonType) // Call function directly
-
-               ui.informationMessage("Comparison analysis added to both nodes.")
+                try {
+                    // Call the standalone function, passing the node proxy
+                    addAnalysisToNodeAsBranch(sourceNode, sourceAnalysis, comparisonType) // Call function directly
+                    addAnalysisToNodeAsBranch(targetNode, targetAnalysis, comparisonType) // Call function directly
+                    ui.informationMessage("Comparison analysis added to both nodes.") // Show success only if no exceptions during add
+                } catch (Exception e) {
+                    // Catch any unexpected errors during the add process on the EDT
+                    logger.error("Error during addAnalysisToNodeAsBranch calls on EDT", e)
+                    ui.errorMessage("Failed to add analysis results to the map. Check logs. Error: ${e.message}")
+                }
            }
        }
 
