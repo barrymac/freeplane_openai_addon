@@ -215,7 +215,7 @@ def systemPrompt = systemMessageTemplate
 // Expand the user message template separately for source and target nodes
 // We need to add the comparisonType to the binding for the expander
 def expandComparisonMessage(String template, def node, String compType) {
-    def binding = expandMessageLoader.getBindingMap(node) // Call via the loader map explicitly
+    def binding = getBindingMap(node) // Use the function variable directly
     binding['comparisonType'] = compType // Add our specific variable
     def engine = new groovy.text.SimpleTemplateEngine()
     return engine.createTemplate(template).make(binding).toString()
