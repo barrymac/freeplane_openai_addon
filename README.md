@@ -1,6 +1,13 @@
 # An add-on for freeplane that uses LLM APIs to brainstorm ideas from any selected node
 
-##Screenshots
+## Features
+- **Quick Prompt (Ctrl+Alt+G):** Generate ideas or expand nodes using a pre-configured prompt with a single shortcut.
+- **Compare Connected Nodes (v0.4.0):** Analyze linked nodes using custom comparison types (e.g., Pros/Cons, Strengths/Weaknesses) and add structured results as child nodes.
+- **Customizable Prompts:** Configure system and user message templates to tailor LLM interactions.
+- **Multiple LLM Providers:** Supports OpenAI and OpenRouter APIs.
+- **Branch Generation:** Automatically appends LLM responses as mind map branches.
+
+Communicator window
 
 Communicator window
 
@@ -13,6 +20,23 @@ Prompt sent
 -----------
 Response returned
 ![screenshotanswer](images/ChatGptAnswer.png)
+
+## Compare Connected Nodes (v0.4.0+)
+Analyze relationships between two connected nodes using structured comparisons:
+
+1. **Create Connection** - Add a connector between two nodes
+2. **Select Both Nodes** - Select the two connected nodes
+3. **Invoke Comparison**:
+   - Menu: `Tools > LLM AddOn > Compare Connected Nodes`
+   - Shortcut: None (configurable via preferences)
+4. **Choose Comparison Type**:
+   - Select from common types (Pros/Cons, Strengths/Weaknesses etc.) from the dropdown.
+   - Or enter a custom comparison type (e.g., "Cost vs Benefits") directly into the box.
+
+The add-on will:
+- Query the LLM to analyze both nodes based on your comparison type using a dedicated prompt.
+- Add structured results as child nodes under each of the selected nodes.
+- Save any newly entered custom comparison types for quick reuse in the dropdown next time.
 
 ### Setup
 Install add-on using the LLM-AddOn-v0.3.7.addon.mm file. Other files are used for development only.
@@ -50,7 +74,10 @@ Check-list before starting
 
 ... you're done.
 
-## Recent Features in v0.3.6
+## Recent Features
+### v0.4.0
+- Added "Compare Connected Nodes" feature for analyzing node relationships using a dedicated prompt and custom comparison types.
+### v0.3.6
 - **Quick Prompt Shortcut**: Use `Ctrl+Alt+G` to instantly generate content using your saved settings
 - **Direct API Access**: Choose between OpenAI and OpenRouter providers
 
@@ -78,7 +105,7 @@ Prompt and feature suggestions are very welcome, this is only a start!
 
 ### Work in progress / future release
 - [x] Add preferences to set GPT parameters
-- [ ] Add comparative analysis between connected nodes
+- [x] Add comparative analysis between connected nodes (v0.4.0)
 
 For other feature ideas check the [project roadmap](docs/ROADMAP.md)
 
