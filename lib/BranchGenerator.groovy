@@ -83,6 +83,8 @@ def createGenerateBranches(closures) {
                     def addedBranchRoot = node.appendTextOutlineAsBranch(response)
                     // Recursively add the tag, passing the logger
                     addTagRecursively(addedBranchRoot, "LLM_Generated", logger)
+                    // Add logging to confirm tagging for Quick Prompt
+                    logger.info("BranchGenerator: Tag 'LLM_Generated' applied to branch starting with node: ${addedBranchRoot?.text}")
                 }
             } catch (Exception e) {
                 logger.error("API call failed", e)
