@@ -37,12 +37,16 @@ def dialogHelper = new GroovyShell(this.class.classLoader).evaluate(
     new File("${addonsDir}/lib/DialogHelper.groovy")
 )
 
+// Load custom exceptions
+def exceptions = new GroovyShell(this.class.classLoader).evaluate(
+    new File("${addonsDir}/lib/Exceptions.groovy")
+)
+def ValidationException = exceptions.ValidationException
+
 // Load the NodeHelper
-def nodeHelperResult = new GroovyShell(this.class.classLoader).evaluate(
+def nodeHelper = new GroovyShell(this.class.classLoader).evaluate(
     new File("${addonsDir}/lib/NodeHelper.groovy")
 )
-def nodeHelper = nodeHelperResult.NodeHelper
-def ValidationException = nodeHelperResult.ValidationException
 
 // Load the MessageLoader
 def messageLoader = new GroovyShell(this.class.classLoader).evaluate(
@@ -235,7 +239,7 @@ try {
     workerThread.start()
 
 } catch (ValidationException e) {
-    // Handle validation errors (user-facing errors)
+    // Handle expected validation errors
     ui.errorMessage(e.message)
 } catch (Exception e) {
     // Handle unexpected errors
