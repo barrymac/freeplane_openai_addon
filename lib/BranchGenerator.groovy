@@ -94,7 +94,7 @@ def createGenerateBranches(closures) {
                     logger.info("BranchGenerator: Tag 'LLM:${model.replace('/','_')}' applied to ${newlyAddedNodes.size()} newly added top-level node(s).") // Update log message
                 }
             } catch (Exception e) {
-                logger.error("API call failed", e)
+                logger.error("API call failed", e as Throwable)
                 SwingUtilities.invokeLater {
                     dialog.dispose()
                     ui.errorMessage("API Error: ${e.message}")
