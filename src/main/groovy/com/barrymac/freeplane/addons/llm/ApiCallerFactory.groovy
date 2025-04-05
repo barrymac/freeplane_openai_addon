@@ -81,7 +81,7 @@ class ApiCallerFactory {
                 }
 
             } catch (Exception e) {
-                logger.error("Exception during API call to ${provider}", e as Throwable)
+                logger.error("Exception during API call to ${provider}".toString(), e as Throwable)
                 ui.errorMessage("Network or processing error during API call: ${e.message}")
             }
 

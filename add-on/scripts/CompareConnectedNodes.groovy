@@ -252,14 +252,14 @@ try {
                         addAnalysisToNodeAsBranch(targetNode, targetAnalysis, comparativeDimension, model, logger, addModelTagRecursively)
                         ui.informationMessage("Comparison analysis using '${comparativeDimension}' framework added to both nodes.")
                     } catch (Exception e) {
-                        logger.error("Error during addAnalysisToNodeAsBranch calls on EDT", e as Throwable)
+                        logger.error("Error during addAnalysisToNodeAsBranch calls on EDT".toString(), e as Throwable)
                         ui.errorMessage("Failed to add analysis results to the map. Check logs. Error: ${e.message}")
                     }
                 }
             }
 
         } catch (Exception e) {
-            logger.error("LLM Comparison failed: ${e.message}", e as Throwable)
+            logger.error("LLM Comparison failed: ${e.message}".toString(), e as Throwable)
             errorMessage = "Comparison Error: ${e.message.split('\n').head()}"
             // Ensure dialog is closed and error shown on EDT
             SwingUtilities.invokeLater {

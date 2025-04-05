@@ -84,7 +84,7 @@ class NodeHelperClass {
                     addModelTagRecursivelyFunc(addedBranchRoot, model, logger)
                     logger.info("CompareNodes: Tag 'LLM:${model.replace('/','_')}' applied to comparison branch starting with node: ${addedBranchRoot.text}")
                 } catch (Exception e) {
-                    logger.warn("Failed to apply node tagger function", e as Throwable)
+                    logger.warn("Failed to apply node tagger function".toString(), e as Throwable)
                 }
             } else if (addModelTagRecursivelyFunc == null) {
                 logger.warn("CompareNodes: Node tagging function was not provided for node: ${nodeProxy.text}")

@@ -96,7 +96,7 @@ class BranchGeneratorFactory {
                             logger.info("BranchGenerator: Tag 'LLM:${model.replace('/','_')}' applied to ${newlyAddedNodes.size()} newly added top-level node(s).")
                         }
                     } catch (Exception e) {
-                        logger.error("API call failed", e as Throwable)
+                        logger.error("API call failed".toString(), e as Throwable)
                         SwingUtilities.invokeLater {
                             dialog.dispose()
                             ui.errorMessage("API Error: ${e.message}")
