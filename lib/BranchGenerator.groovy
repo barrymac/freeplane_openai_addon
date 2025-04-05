@@ -3,17 +3,11 @@ import groovy.swing.SwingBuilder
 import javax.swing.*
 import java.awt.*
 
-// Helper function to recursively add a tag to a node and its children
-def addTagRecursively(node, tagName, logger) { // Added logger parameter
-    if (node == null) return
-    try {
-        node.tags.add(tagName)
-        node.children.each { child -> addTagRecursively(child, tagName, logger) } // Pass logger recursively
-    } catch (Exception e) {
-        // Log error if tagging fails for any reason
-        logger.error("Failed to add tag '${tagName}' to node ${node.text}", e)
-    }
-}
+// Load the tagging function
+def nodeTaggerLoader = new GroovyShell(this.class.classLoader).evaluate(
+    new File("${config.freeplaneUserDirectory}/addons/promptLlmAddOn/lib/NodeTagger.groovy")
+)
+def addModelTagRecursively = nodeTaggerLoader.addModelTagRecursively
 
 // Function to create a branch generator with necessary dependencies
 def createGenerateBranches(closures) {
@@ -90,10 +84,10 @@ def createGenerateBranches(closures) {
 
                     if (!newlyAddedNodes.isEmpty()) {
                         // Recursively add the tag, passing the logger
-                        newlyAddedNodes.each { newNode -> addTagRecursively(newNode, "LLM_Generated", logger) }
+                        newlyAddedNodes.each { newNode -> addModelTagRecursively(newNode, model, logger) } // Pass model name
                     }
                     // Add logging to confirm tagging for Quick Prompt
-                    logger.info("BranchGenerator: Tag 'LLM_Generated' applied to ${newlyAddedNodes.size()} newly added top-level node(s).")
+                    logger.info("BranchGenerator: Tag 'LLM:${model.replace('/','_')}' applied to ${newlyAddedNodes.size()} newly added top-level node(s).") // Update log message
                 }
             } catch (Exception e) {
                 logger.error("API call failed", e)

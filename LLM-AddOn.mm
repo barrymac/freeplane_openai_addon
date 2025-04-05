@@ -276,6 +276,7 @@
 <attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/MessageFileHandler.groovy"/>
 <attribute NAME="delete" VALUE="${installationbase}/addons/${name}/scripts/AskGpt.groovy"/>
 <attribute NAME="delete" VALUE="${installationbase}/addons/${name}/scripts/QuickPrompt.groovy"/>
+<attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/NodeTagger.groovy"/>
 <attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/compareNodesUserMessage.txt"/>
 <attribute NAME="delete" VALUE="${installationbase}/addons/${name}/scripts/CompareConnectedNodes.groovy"/>
 <attribute NAME="delete" VALUE="${installationbase}/resources/images/promptLlmAddOn.svg"/>
@@ -480,6 +481,7 @@
 <node TEXT="defaultUserMessages.txt" ID="ID_369580043" CREATED="1742845172659" MODIFIED="1742845172659"/>
 <node TEXT="defaultSystemMessages.txt" ID="ID_1170696227" CREATED="1742845172678" MODIFIED="1742845172678"/>
 <node TEXT="compareNodesUserMessage.txt" ID="ID_COMPARE_USER_MSG" CREATED="1743739999999" MODIFIED="1743739999999"/>
+<node TEXT="NodeTagger.groovy" ID="ID_NODE_TAGGER" CREATED="1743814000000" MODIFIED="1743814000000"/>
 </node>
 <node TEXT="resources" POSITION="bottom_or_right" ID="ID_RESOURCES" CREATED="1742836000000" MODIFIED="1742836000000">
 <edge COLOR="#7c7c00"/>

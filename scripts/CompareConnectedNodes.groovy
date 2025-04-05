@@ -27,6 +27,12 @@ def messageFileHandler = new GroovyShell(this.class.classLoader).evaluate(
 )
 def loadMessagesFromFile = messageFileHandler.loadMessagesFromFile
 
+// Load the tagging function
+def nodeTaggerLoader = new GroovyShell(this.class.classLoader).evaluate(
+    new File("${config.freeplaneUserDirectory}/addons/promptLlmAddOn/lib/NodeTagger.groovy")
+)
+def addModelTagRecursively = nodeTaggerLoader.addModelTagRecursively
+
 // Load saved configuration
 def apiKey = config.getProperty('openai.key', '')
 def model = config.getProperty('openai.gpt_model', 'gpt-3.5-turbo')
@@ -96,18 +102,6 @@ def parseAnalysis(String analysisText) {
     return results
 }
 
-// Helper function to recursively add a tag to a node and its children
-def addTagRecursively(node, tagName, logger) { // Added logger parameter
-    if (node == null) return
-    try {
-        node.tags.add(tagName)
-        node.children.each { child -> addTagRecursively(child, tagName, logger) } // Pass logger recursively
-    } catch (Exception e) {
-        // Log error if tagging fails for any reason
-        logger.error("Failed to add tag '${tagName}' to node ${node.text}", e)
-    }
-}
-
 /**
  * Formats the analysis map into an indented string and adds it as a branch.
  */
@@ -142,8 +136,9 @@ def addAnalysisToNodeAsBranch(def nodeProxy, Map analysisMap, String comparisonT
 
         logger.info("Successfully called appendTextOutlineAsBranch for node: ${nodeProxy.text}")
         if (addedBranchRoot) {
-            addTagRecursively(addedBranchRoot, "LLM_Generated", logger) // Add tag recursively, passing logger
-            logger.info("CompareNodes: Tag 'LLM_Generated' applied to comparison branch starting with node: ${addedBranchRoot.text}")
+            // Use the loaded function and pass the model name
+            addModelTagRecursively(addedBranchRoot, model, logger)
+            logger.info("CompareNodes: Tag 'LLM:${model.replace('/','_')}' applied to comparison branch starting with node: ${addedBranchRoot.text}") // Update log message
         } else {
             logger.warn("CompareNodes: Could not identify newly added comparison branch root for tagging on node: ${nodeProxy.text}")
         }
