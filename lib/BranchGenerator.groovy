@@ -3,7 +3,7 @@ import javax.swing.*
 import java.awt.*
 
 // Function to create a branch generator with necessary dependencies
-def createGenerateBranches(closures) {
+def createGenerateBranches(closures, deps) { // Add 'deps' parameter
     return { apiKey, systemMessage, userMessage, model, maxTokens, temperature, provider ->
         def c = closures.c
         def ui = closures.ui
@@ -12,26 +12,17 @@ def createGenerateBranches(closures) {
         def WindowConstants = WindowConstants
         def BorderLayout = BorderLayout
         def SwingBuilder = SwingBuilder
-        def make_openai_call = closures.make_openai_call
-        def make_openrouter_call = closures.make_openrouter_call
-        def addonsDir = closures.addonsDir // Get add-on directory from closures
+        
+        // Get functions/classes from deps map
+        def make_api_call = deps.apiCaller.make_api_call
+        def addModelTagRecursively = deps.nodeTagger.addModelTagRecursively
+        def DialogHelper = deps.dialogHelper
+        def ConfigManager = deps.configManager
+        
+        // Get addonsDir from ConfigManager
+        def addonsDir = ConfigManager.getAddonsDir(closures.config)
 
         try {
-            // Load configuration manager
-            def ConfigManager = new GroovyShell(this.class.classLoader).evaluate(
-                new File("${addonsDir}/lib/ConfigLoader.groovy")
-            )
-            
-            // Load the tagging function using the provided addonsDir
-            def nodeTaggerLoader = new GroovyShell(this.class.classLoader).evaluate(
-                new File("${addonsDir}/lib/NodeTagger.groovy")
-            )
-            def addModelTagRecursively = nodeTaggerLoader.addModelTagRecursively
-            
-            // Load DialogHelper for consistent UI
-            def dialogHelper = new GroovyShell(this.class.classLoader).evaluate(
-                new File("${addonsDir}/lib/DialogHelper.groovy")
-            )
 
             // Validate API key
             if (apiKey.isEmpty()) {
@@ -47,7 +38,7 @@ def createGenerateBranches(closures) {
             def node = c.selected
             
             // Create progress dialog
-            def dialog = dialogHelper.createProgressDialog(
+            def dialog = DialogHelper.createProgressDialog(
                 ui, 
                 'I am asking your question. Wait for the response.',
                 userMessage
@@ -69,9 +60,8 @@ def createGenerateBranches(closures) {
                         'max_tokens': maxTokens
                     ]
                     
-                    def responseText = (provider == 'openrouter') ? 
-                        make_openrouter_call(apiKey, payloadMap) :
-                        make_openai_call(apiKey, payloadMap)
+                    // Use the unified API call function
+                    def responseText = make_api_call(provider, apiKey, payloadMap)
                     
                     if (responseText.isEmpty()) {
                         return

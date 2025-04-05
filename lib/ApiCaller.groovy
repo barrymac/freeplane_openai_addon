@@ -3,83 +3,96 @@ def createApiCaller(closures) {
     def ui = closures.ui
     def config = closures.config
     
-    def make_openai_call = { String apiKey, Map<String, Object> payloadMap ->
+    def make_api_call = { String provider, String apiKey, Map<String, Object> payloadMap ->
         def responseText = ""
+        String apiUrl
+        Map<String, String> headers = [:]
 
-        try {
-            String apiUrl = 'https://api.openai.com/v1/chat/completions'
-            def post = new URL(apiUrl).openConnection()
-            post.setRequestMethod("POST")
-            post.setDoOutput(true)
-            post.setRequestProperty("Content-Type", "application/json")
-            post.setRequestProperty("Authorization", "Bearer " + apiKey)
-
-            def payload = groovy.json.JsonOutput.toJson(payloadMap)
-            post.getOutputStream().write(payload.getBytes("UTF-8"))
-
-            def postRC = post.getResponseCode()
-
-            if (postRC.equals(200)) {
-                responseText = post.getInputStream().getText("UTF-8")
-                logger.info("GPT response: $responseText")
-            } else if (postRC.equals(401)) {
-                java.awt.Desktop.desktop.browse(new URI("https://platform.openai.com/account/api-keys"))
-                ui.errorMessage("Invalid authentication or incorrect API key provided.")
-            } else if (postRC.equals(404)) {
-                ui.errorMessage("You must be a member of an organization to use the API.")
-            } else if (postRC.equals(429)) {
-                ui.errorMessage("Rate limit reached for requests or current quota exceeded.")
-            } else {
-                ui.errorMessage("Unhandled error code $postRC returned from API.")
-            }
-
-        } catch (Exception e) {
-            ui.errorMessage(e.toString())
+        if (provider == 'openai') {
+            apiUrl = 'https://api.openai.com/v1/chat/completions'
+            headers["Authorization"] = "Bearer " + apiKey
+        } else if (provider == 'openrouter') {
+            apiUrl = 'https://openrouter.ai/api/v1/chat/completions'
+            headers["Authorization"] = "Bearer " + apiKey
+            // Add OpenRouter specific headers
+            headers["HTTP-Referer"] = "${config.freeplaneUserDirectory}"
+            headers["X-Title"] = "Freeplane GPT AddOn"
+        } else {
+            ui.errorMessage("Unsupported API provider: ${provider}")
+            return "" // Or throw an exception
         }
 
-        return responseText
-    }
-
-    def make_openrouter_call = { String apiKey, Map<String, Object> payloadMap ->
-        def responseText = ""
-
         try {
-            String apiUrl = 'https://openrouter.ai/api/v1/chat/completions'
             def post = new URL(apiUrl).openConnection()
             post.setRequestMethod("POST")
             post.setDoOutput(true)
             post.setRequestProperty("Content-Type", "application/json")
-            post.setRequestProperty("Authorization", "Bearer " + apiKey)
-            post.setRequestProperty("HTTP-Referer", "${config.freeplaneUserDirectory}")
-            post.setRequestProperty("X-Title", "Freeplane GPT AddOn")
+            // Apply all headers
+            headers.each { key, value -> post.setRequestProperty(key, value) }
 
             def payload = groovy.json.JsonOutput.toJson(payloadMap)
             post.getOutputStream().write(payload.getBytes("UTF-8"))
 
             def postRC = post.getResponseCode()
+            logger.info("API Call to ${provider} (${apiUrl}) - Response Code: ${postRC}")
 
             if (postRC.equals(200)) {
                 responseText = post.getInputStream().getText("UTF-8")
-                logger.info("OpenRouter response: $responseText")
-            } else if (postRC.equals(401)) {
-                java.awt.Desktop.desktop.browse(new URI("https://openrouter.ai/keys"))
-                ui.errorMessage("Invalid authentication or incorrect API key provided.")
-            } else if (postRC.equals(404)) {
-                ui.errorMessage("Endpoint not found. Check your OpenRouter configuration.")
-            } else if (postRC.equals(429)) {
-                ui.errorMessage("Rate limit reached for requests or current quota exceeded.")
+                logger.info("${provider} response: ${responseText.take(200)}...") // Log truncated response
             } else {
-                ui.errorMessage("Unhandled error code $postRC returned from OpenRouter API.")
+                // Handle common error codes centrally
+                String errorMsg = "API Error (${provider}): Code ${postRC}"
+                String browseUrl = null
+                switch (postRC) {
+                    case 401:
+                        errorMsg = "Invalid authentication or incorrect API key provided for ${provider}."
+                        browseUrl = (provider == 'openrouter') ? "https://openrouter.ai/keys" : "https://platform.openai.com/account/api-keys"
+                        break
+                    case 404:
+                        errorMsg = (provider == 'openrouter') ? "Endpoint not found. Check your OpenRouter configuration." : "You might need organization membership for OpenAI API."
+                        break
+                    case 429:
+                        errorMsg = "Rate limit reached or quota exceeded for ${provider}."
+                        break
+                    default:
+                        errorMsg = "Unhandled error code ${postRC} returned from ${provider} API."
+                }
+                if (browseUrl) {
+                    try {
+                        java.awt.Desktop.desktop.browse(new URI(browseUrl))
+                    } catch (Exception browseEx) {
+                        logger.warn("Failed to open browser for URL: ${browseUrl}", browseEx as Throwable)
+                    }
+                }
+                ui.errorMessage(errorMsg)
+                // Optionally log the full error response body if available
+                try {
+                    def errorStream = post.getErrorStream()
+                    if (errorStream) {
+                        logger.error("Error response body: ${errorStream.getText('UTF-8')}")
+                    }
+                } catch (Exception ignored) {}
             }
 
         } catch (Exception e) {
-            ui.errorMessage(e.toString())
+            logger.error("Exception during API call to ${provider}", e as Throwable)
+            ui.errorMessage("Network or processing error during API call: ${e.message}")
         }
 
         return responseText
     }
     
+    // For backward compatibility
+    def make_openai_call = { String apiKey, Map<String, Object> payloadMap ->
+        return make_api_call('openai', apiKey, payloadMap)
+    }
+    
+    def make_openrouter_call = { String apiKey, Map<String, Object> payloadMap ->
+        return make_api_call('openrouter', apiKey, payloadMap)
+    }
+    
     return [
+        make_api_call: make_api_call,
         make_openai_call: make_openai_call,
         make_openrouter_call: make_openrouter_call
     ]

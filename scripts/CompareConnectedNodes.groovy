@@ -6,53 +6,35 @@ import java.awt.*
 // --- Load Core Dependencies ---
 def addonsDir = "${config.freeplaneUserDirectory}/addons/promptLlmAddOn"
 
-// Load the ConfigLoader
-def ConfigManager = new GroovyShell(this.class.classLoader).evaluate(
-    new File("${addonsDir}/lib/ConfigLoader.groovy")
-)
-// Get configuration values
-def configMap = ConfigManager.loadBaseConfig(config)
-def apiKey = configMap.apiKey
-def model = configMap.model
-def maxTokens = configMap.maxTokens
-def temperature = configMap.temperature
-def provider = configMap.provider
-def systemMessageIndex = configMap.systemMessageIndex
-
-// Load the DependencyLoader
+// Load DependencyLoader first
 def dependencyLoader = new GroovyShell(this.class.classLoader).evaluate(
     new File("${addonsDir}/lib/DependencyLoader.groovy")
 )
 // Load all dependencies
 def deps = dependencyLoader.loadDependencies(config, logger, ui)
 
-// Extract specific functions from dependencies
-def make_openai_call = deps.apiCaller.make_openai_call
-def make_openrouter_call = deps.apiCaller.make_openrouter_call
+// Extract needed functions/classes from deps
+def ConfigManager = deps.configManager
+def make_api_call = deps.apiCaller.make_api_call
 def getBindingMap = deps.messageExpander.getBindingMap
 def parseAnalysis = deps.responseParser.parseAnalysis
+def DialogHelper = deps.dialogHelper
+def ValidationException = deps.exceptions.ValidationException
+def NodeHelper = deps.nodeHelperUtils.NodeHelper
+def addAnalysisToNodeAsBranch = deps.nodeHelperUtils.NodeHelper.&addAnalysisToNodeAsBranch
+def MessageLoader = deps.messageLoader
+def addModelTagRecursively = deps.nodeTagger.addModelTagRecursively
 
-// Load the DialogHelper
-def DialogHelper = new GroovyShell(this.class.classLoader).evaluate(
-    new File("${addonsDir}/lib/DialogHelper.groovy")
-)
+// Load configuration using ConfigManager
+def configMap = ConfigManager.loadBaseConfig(config)
+def apiKey = configMap.apiKey
+def model = configMap.model
+def maxTokens = configMap.maxTokens
+def temperature = configMap.temperature
+def provider = configMap.provider
 
-// Load custom exceptions
-def exceptions = new GroovyShell(this.class.classLoader).evaluate(
-    new File("${addonsDir}/lib/Exceptions.groovy")
-)
-def ValidationException = exceptions.ValidationException
-
-// Load the NodeHelper
-def nodeHelper = new GroovyShell(this.class.classLoader).evaluate(
-    new File("${addonsDir}/lib/NodeHelper.groovy")
-)
-
-// Load the MessageLoader
-def messageLoader = new GroovyShell(this.class.classLoader).evaluate(
-    new File("${addonsDir}/lib/MessageLoader.groovy")
-)
-def messages = messageLoader.loadComparisonMessages(config)
+// Load comparison messages using MessageLoader from deps
+def messages = MessageLoader.loadComparisonMessages(config)
 def systemMessageTemplate = messages.systemTemplate
 def compareNodesUserMessageTemplate = messages.userTemplate
 
@@ -75,29 +57,11 @@ try {
         throw new ValidationException("System message template or the dedicated compareNodesUserMessage.txt is missing or empty. Please check configuration or files.")
     }
 
-    // 2. Get Selected Nodes and Find Connector Between Them
+    // 2. Get Selected Nodes and Validate Connection (Use NodeHelper class from deps)
     def selectedNodes = c.selecteds
-    if (selectedNodes.size() != 2) {
-        throw new ValidationException("Please select exactly two nodes to compare.")
-    }
+    // Use the static method directly via the class obtained from deps
+    def (sourceNode, targetNode) = NodeHelper.validateAndGetConnectedNodes(selectedNodes) // This might throw ValidationException
 
-    def sourceNode = selectedNodes[0]
-    def targetNode = selectedNodes[1]
-
-    // Find connectors between nodes (in either direction)
-    def connectorsOut = sourceNode.connectorsOut.findAll { it.target == targetNode }
-    def connectorsIn = sourceNode.connectorsIn.findAll { it.source == targetNode }
-    def allConnectorsBetween = connectorsOut + connectorsIn
-
-    if (allConnectorsBetween.size() == 0) {
-        throw new ValidationException("The two selected nodes are not connected. Please add a connector between them.")
-    }
-
-    if (allConnectorsBetween.size() > 1) {
-        throw new ValidationException("There are multiple connectors between the selected nodes. Please ensure there is only one.")
-    }
-
-    // Log successful connection validation
     logger.info("Found connector between selected nodes: ${sourceNode.text} and ${targetNode.text}")
 
     // 3. Get Comparison Type from User
@@ -162,9 +126,8 @@ try {
                 'max_tokens': maxTokens
             ]
             logger.info("Requesting analysis for source node: ${sourceNode.text}")
-            sourceApiResponse = (provider == 'openrouter') ?
-                make_openrouter_call(apiKey, sourcePayloadMap) :
-                make_openai_call(apiKey, sourcePayloadMap)
+            // Use the unified API call function from deps
+            sourceApiResponse = make_api_call(provider, apiKey, sourcePayloadMap)
 
             if (sourceApiResponse == null || sourceApiResponse.isEmpty()) {
                 throw new Exception("Received empty or null response for source node.")
@@ -181,9 +144,8 @@ try {
                 'max_tokens': maxTokens
             ]
             logger.info("Requesting analysis for target node: ${targetNode.text}")
-            targetApiResponse = (provider == 'openrouter') ?
-                make_openrouter_call(apiKey, targetPayloadMap) :
-                make_openai_call(apiKey, targetPayloadMap)
+            // Use the unified API call function from deps
+            targetApiResponse = make_api_call(provider, apiKey, targetPayloadMap)
 
             if (targetApiResponse == null || targetApiResponse.isEmpty()) {
                 throw new Exception("Received empty or null response for target node.")
@@ -214,9 +176,9 @@ try {
                     ui.informationMessage("The LLM analysis did not yield structured results for either node.")
                 } else {
                     try {
-                        // Add analysis branches to nodes
-                        nodeHelper.addAnalysisToNodeAsBranch(sourceNode, sourceAnalysis, comparisonType, model, logger)
-                        nodeHelper.addAnalysisToNodeAsBranch(targetNode, targetAnalysis, comparisonType, model, logger)
+                        // Add analysis branches, passing the tagging function
+                        addAnalysisToNodeAsBranch(sourceNode, sourceAnalysis, comparisonType, model, logger, addModelTagRecursively)
+                        addAnalysisToNodeAsBranch(targetNode, targetAnalysis, comparisonType, model, logger, addModelTagRecursively)
                         ui.informationMessage("Comparison analysis added to both nodes.")
                     } catch (Exception e) {
                         logger.error("Error during addAnalysisToNodeAsBranch calls on EDT", e as Throwable)

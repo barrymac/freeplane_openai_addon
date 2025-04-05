@@ -3,13 +3,34 @@ import groovy.swing.SwingBuilder
 import javax.swing.*
 import java.awt.*
 
-String apiKey = config.getProperty('openai.key', '')
-String gptModel = config.getProperty('openai.gpt_model', 'gpt-3.5-turbo')
-int maxResponseLength = config.getProperty('openai.max_response_length', 1000)
-double temperature = config.getProperty('openai.temperature', 0.7)
-int selectedSystemMessageIndex = config.getProperty('openai.system_message_index', 0)
-int selectedUserMessageIndex = config.getProperty('openai.user_message_index', 0)
-String apiProvider = config.getProperty('openai.api_provider', 'openrouter')
+// Load DependencyLoader first
+def addonsDir = "${config.freeplaneUserDirectory}/addons/promptLlmAddOn"
+def dependencyLoader = new GroovyShell(this.class.classLoader).evaluate(
+    new File("${addonsDir}/lib/DependencyLoader.groovy")
+)
+// Load all dependencies
+def deps = dependencyLoader.loadDependencies(config, logger, ui)
+
+// Extract needed functions/classes from deps
+def ConfigManager = deps.configManager
+def expandMessageFunction = deps.messageExpander.expandMessage
+def loadMessagesFromFile = deps.messageFileHandler.loadMessagesFromFile
+def saveMessagesToFile = deps.messageFileHandler.saveMessagesToFile
+
+// Load the branch generator function
+def createBranchGenerator = new GroovyShell(this.class.classLoader).evaluate(
+    new File("${addonsDir}/lib/BranchGenerator.groovy")
+)
+
+// Load configuration using ConfigManager
+def configMap = ConfigManager.loadBaseConfig(config)
+def apiKey = configMap.apiKey
+def gptModel = configMap.model
+def maxResponseLength = configMap.maxTokens
+def temperature = configMap.temperature
+def apiProvider = configMap.provider
+def selectedSystemMessageIndex = config.getProperty('openai.system_message_index', 0) as int
+def selectedUserMessageIndex = config.getProperty('openai.user_message_index', 0) as int
 
 String systemMessagesFilePath = "${config.freeplaneUserDirectory}/chatGptSystemMessages.txt"
 String userMessagesFilePath = "${config.freeplaneUserDirectory}/chatGptUserMessages.txt"
@@ -19,43 +40,13 @@ String defaultUserMessagesFilePath = "${config.freeplaneUserDirectory}/addons/pr
 String defaultSystemMessages = new File(defaultSystemMessagesFilePath).text.trim()
 String userSystemMessages = new File(defaultUserMessagesFilePath).text.trim()
 
-// Load the message expander *map* from external file
-def expandMessageLoader = new GroovyShell(this.class.classLoader).evaluate(
-        new File("${config.freeplaneUserDirectory}/addons/promptLlmAddOn/lib/MessageExpander.groovy")
-)
-// Extract the actual expandMessage function from the map
-def expandMessageFunction = expandMessageLoader.expandMessage
-
-// Load the branch generator function from external file
-def createBranchGenerator = new GroovyShell(this.class.classLoader).evaluate(
-        new File("${config.freeplaneUserDirectory}/addons/promptLlmAddOn/lib/BranchGenerator.groovy")
-)
-
-// Load the API caller functions from external file
-def createApiCaller = new GroovyShell(this.class.classLoader).evaluate(
-        new File("${config.freeplaneUserDirectory}/addons/promptLlmAddOn/lib/ApiCaller.groovy")
-)
-def apiCaller = createApiCaller([logger: logger, ui: ui, config: config])
-def make_openai_call = apiCaller.make_openai_call
-def make_openrouter_call = apiCaller.make_openrouter_call
-
-// Load the message file handler functions from external file
-def messageFileHandler = new GroovyShell(this.class.classLoader).evaluate(
-        new File("${config.freeplaneUserDirectory}/addons/promptLlmAddOn/lib/MessageFileHandler.groovy")
-)
-def loadMessagesFromFile = messageFileHandler.loadMessagesFromFile
-def saveMessagesToFile = messageFileHandler.saveMessagesToFile
-
-
 // Initialize the branch generator with necessary dependencies
 def generateBranches = createBranchGenerator([
-        c                   : c,
-        ui                  : ui,
-        logger              : logger,
-        make_openai_call    : make_openai_call,
-        make_openrouter_call: make_openrouter_call,
-        addonsDir           : "${config.freeplaneUserDirectory}/addons/promptLlmAddOn" // Pass add-on directory
-])
+        c      : c,
+        ui     : ui,
+        logger : logger,
+        config : config
+], deps) // Pass the loaded dependencies map
 
 
 class MessageItem {

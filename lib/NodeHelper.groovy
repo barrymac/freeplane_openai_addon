@@ -42,8 +42,9 @@ class NodeHelper {
      * @param comparisonType The type of comparison performed
      * @param model The LLM model used
      * @param logger The logger instance
+     * @param addModelTagRecursivelyFunc Optional function to tag nodes with model info
      */
-    static void addAnalysisToNodeAsBranch(nodeProxy, Map analysisMap, String comparisonType, String model, logger) {
+    static void addAnalysisToNodeAsBranch(nodeProxy, Map analysisMap, String comparisonType, String model, logger, addModelTagRecursivelyFunc = null) {
         logger.info("Attempting to add analysis to node: ${nodeProxy.text}")
         if (analysisMap.isEmpty()) {
             logger.warn("No analysis data to add for node: ${nodeProxy.text}")
@@ -74,23 +75,19 @@ class NodeHelper {
 
             logger.info("Successfully called appendTextOutlineAsBranch for node: ${nodeProxy.text}")
             
-            // Load the tagging function
-            def addonsDir = "${System.getProperty('user.home')}/.config/freeplane/1.11.x/addons/promptLlmAddOn"
-            try {
-                def nodeTaggerLoader = new GroovyShell(NodeHelper.class.classLoader).evaluate(
-                    new File("${addonsDir}/lib/NodeTagger.groovy")
-                )
-                def addModelTagRecursively = nodeTaggerLoader.addModelTagRecursively
-                
-                if (addedBranchRoot) {
-                    // Use the loaded function and pass the model name
-                    addModelTagRecursively(addedBranchRoot, model, logger)
+            // Use the passed-in tagging function
+            if (addedBranchRoot && addModelTagRecursivelyFunc != null) {
+                try {
+                    // Use the passed function reference
+                    addModelTagRecursivelyFunc(addedBranchRoot, model, logger)
                     logger.info("CompareNodes: Tag 'LLM:${model.replace('/','_')}' applied to comparison branch starting with node: ${addedBranchRoot.text}")
-                } else {
-                    logger.warn("CompareNodes: Could not identify newly added comparison branch root for tagging on node: ${nodeProxy.text}")
+                } catch (Exception e) {
+                    logger.warn("Failed to apply node tagger function", e as Throwable)
                 }
-            } catch (Exception e) {
-                logger.warn("Failed to load or apply node tagger", e as Throwable)
+            } else if (addModelTagRecursivelyFunc == null) {
+                logger.warn("CompareNodes: Node tagging function was not provided for node: ${nodeProxy.text}")
+            } else {
+                logger.warn("CompareNodes: Could not identify newly added comparison branch root for tagging on node: ${nodeProxy.text}")
             }
         } catch (Exception e) {
             // Force message to String and ensure exception is Throwable
