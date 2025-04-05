@@ -106,7 +106,6 @@ class DialogHelperClass {
                         lineWrap: true,
                         wrapStyleWord: true,
                         editable: false,
-                        background: background, // Match dialog background
                         margin: new Insets(5, 5, 5, 5),
                         font: new Font(Font.SANS_SERIF, Font.PLAIN, 12)
                     )
