@@ -105,7 +105,7 @@ def parseAnalysis(String analysisText) {
 /**
  * Formats the analysis map into an indented string and adds it as a branch.
  */
-def addAnalysisToNodeAsBranch(def nodeProxy, Map analysisMap, String comparisonType, def logger) { // Add logger parameter
+def addAnalysisToNodeAsBranch(def nodeProxy, Map analysisMap, String comparisonType, String model, def logger) {
     logger.info("Attempting to add analysis to node: ${nodeProxy.text}")
     if (analysisMap.isEmpty()) {
         logger.warn("No analysis data to add for node: ${nodeProxy.text}")
@@ -424,8 +424,8 @@ def workerThread = new Thread({
            } else {
                 try {
                     // Call the standalone function, passing the node proxy
-                    addAnalysisToNodeAsBranch(sourceNode, sourceAnalysis, comparisonType, logger) // Add logger parameter
-                    addAnalysisToNodeAsBranch(targetNode, targetAnalysis, comparisonType, logger) // Add logger parameter
+                    addAnalysisToNodeAsBranch(sourceNode, sourceAnalysis, comparisonType, model, logger)
+                    addAnalysisToNodeAsBranch(targetNode, targetAnalysis, comparisonType, model, logger)
                     ui.informationMessage("Comparison analysis added to both nodes.") // Show success only if no exceptions during add
                 } catch (Exception e) {
                     // Catch any unexpected errors during the add process on the EDT
