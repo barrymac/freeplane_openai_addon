@@ -11,9 +11,9 @@ class NodeHelperClass {
      * @return A tuple containing [sourceNode, targetNode] if valid
      * @throws ValidationException if validation fails
      */
-    static def validateAndGetConnectedNodes(selectedNodes) throws ValidationException {
+    static def validateAndGetConnectedNodes(selectedNodes) {
         if (selectedNodes.size() != 2) {
-            throw new ValidationException("Please select exactly two nodes to compare.")
+            throw new Exception("Please select exactly two nodes to compare.")
         }
 
         def node1 = selectedNodes[0]
@@ -25,11 +25,11 @@ class NodeHelperClass {
         def allConnectorsBetween = connectorsOut + connectorsIn
 
         if (allConnectorsBetween.size() == 0) {
-            throw new ValidationException("The two selected nodes are not connected. Please add a connector between them.")
+            throw new Exception("The two selected nodes are not connected. Please add a connector between them.")
         }
 
         if (allConnectorsBetween.size() > 1) {
-            throw new ValidationException("There are multiple connectors between the selected nodes. Please ensure there is only one.")
+            throw new Exception("There are multiple connectors between the selected nodes. Please ensure there is only one.")
         }
 
         // Return the nodes in selection order
