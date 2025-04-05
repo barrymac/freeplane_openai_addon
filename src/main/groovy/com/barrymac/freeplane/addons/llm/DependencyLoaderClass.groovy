@@ -2,6 +2,7 @@ package com.barrymac.freeplane.addons.llm
 
 // Helper class to centralize dependency loading
 import com.barrymac.freeplane.addons.llm.MessageFileHandler
+import com.barrymac.freeplane.addons.llm.ResponseParserClass
 import com.barrymac.freeplane.addons.llm.NodeHelperClass
 
 class DependencyLoaderClass {
@@ -28,9 +29,8 @@ class DependencyLoaderClass {
                 new File("${addonsDir}/lib/NodeTagger.groovy")
             ),
             
-            responseParser: new GroovyShell(classLoader).evaluate(
-                new File("${addonsDir}/lib/ResponseParser.groovy")
-            ),
+            // Provide ResponseParserClass directly
+            responseParser: ResponseParserClass,
             
             // Add new ones
             dialogHelper: DialogHelperClass,
