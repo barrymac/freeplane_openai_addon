@@ -6,6 +6,9 @@
 - **Customizable Prompts:** Configure system and user message templates to tailor LLM interactions.
 - **Multiple LLM Providers:** Supports OpenRouter API for multi-model support and OpenAI.
 - **Branch Generation:** Automatically appends LLM responses as mind map branches.
+- **Automatic Tagging:** Generated branches are automatically tagged with the model name used (e.g. `LLM:gpt-4`) for easy tracking of AI-generated content
+- **Model Identification:** Tags appear in node notes showing which LLM model generated each branch
+- **Recursive Tagging:** Tags are applied to all child nodes in generated branches for complete provenance
 
 Communicator window
 
@@ -108,4 +111,22 @@ Prompt and feature suggestions are very welcome!
 - [x] Add comparative analysis between connected nodes (v0.4.0)
 
 For other feature ideas check the [project roadmap](docs/ROADMAP.md)
+
+## Tagging
+All AI-generated branches are automatically tagged with:
+- Model name in format `LLM:<model_name>` (e.g. `LLM:gpt-4` or `LLM:claude-2`)
+- Full model identifier in node notes
+- Tags applied recursively through all child nodes
+
+Example tagged node:
+```
+[LLM:gpt-4] 
+<!-- Model: gpt-4-0613 -->
+Generated content here...
+```
+
+This helps:
+1. Track which model version generated content
+2. Identify AI-generated nodes at a glance
+3. Maintain transparency about content origins
 
