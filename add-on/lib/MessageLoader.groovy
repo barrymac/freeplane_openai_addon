@@ -3,17 +3,17 @@
  */
 class MessageLoaderClass {
     /**
-     * Loads a template file and returns its contents
+     * Load resource from JAR classpath
      * 
-     * @param path Path to the template file
-     * @return String containing the template content
+     * @param path Path to the resource in the classpath
+     * @return String containing the resource content
      */
-    private static String loadTemplate(String path) {
-        def file = new File(path)
-        if (!file.exists()) {
-            throw new Exception("Prompt template missing: ${file.name}")
+    private static String getResourceContent(String path) {
+        def stream = MessageLoaderClass.class.getResourceAsStream(path)
+        if (!stream) {
+            throw new Exception("Missing required resource: ${path}")
         }
-        return file.text.trim()
+        return stream.getText("UTF-8").trim()
     }
 
     /**
@@ -23,14 +23,15 @@ class MessageLoaderClass {
      * @return Map containing system and user message templates
      */
     static Map loadComparisonMessages(config) {
-        def addonsDir = "${config.freeplaneUserDirectory}/addons/promptLlmAddOn"
-        def libPath = "${addonsDir}/lib"
-        
-        return [
-            systemTemplate: loadTemplate("${libPath}/compareNodesSystem.txt"),
-            userTemplate: loadTemplate("${libPath}/compareNodesUserMessage.txt"),
-            dimensionSystemTemplate: loadTemplate("${libPath}/generateComparativeDimensionSystem.txt")
-        ]
+        try {
+            return [
+                systemTemplate: getResourceContent("/compareNodesSystem.txt"),
+                userTemplate: getResourceContent("/compareNodesUserMessage.txt"),
+                dimensionSystemTemplate: getResourceContent("/generateComparativeDimensionSystem.txt")
+            ]
+        } catch (Exception e) {
+            throw new Exception("Failed to load comparison templates: ${e.message}")
+        }
     }
 }
 
