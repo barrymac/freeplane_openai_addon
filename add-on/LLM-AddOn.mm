@@ -268,9 +268,6 @@
 <attribute NAME="delete" VALUE="${installationbase}/addons/${name}/scripts/AskGPT.groovy"/>
 <attribute NAME="delete" VALUE="${installationbase}/images/${name}.svg"/>
 <attribute NAME="delete" VALUE="${installationbase}/images/${name}-icon.svg"/>
-<attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/MessageExpander.groovy"/>
-<attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/BranchGenerator.groovy"/>
-<attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/ApiCaller.groovy"/>
 <attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/MessageFileHandler.groovy"/>
 <attribute NAME="delete" VALUE="${installationbase}/addons/${name}/scripts/AskGpt.groovy"/>
 <attribute NAME="delete" VALUE="${installationbase}/addons/${name}/scripts/QuickPrompt.groovy"/>
@@ -476,9 +473,6 @@
     </p>
   </body>
 </html></richcontent>
-<node TEXT="MessageExpander.groovy" ID="ID_MESSAGE_EXPANDER" CREATED="1742845172650" MODIFIED="1742845172650"/>
-<node TEXT="BranchGenerator.groovy" ID="ID_BRANCH_GENERATOR" CREATED="1742845172655" MODIFIED="1742845172655"/>
-<node TEXT="ApiCaller.groovy" ID="ID_API_CALLER" CREATED="1742845172660" MODIFIED="1742845172660"/>
 <node TEXT="MessageFileHandler.groovy" ID="ID_MSG_FILE_HANDLER" CREATED="1742845172665" MODIFIED="1742845172665"/>
 <node TEXT="NodeTagger.groovy" ID="ID_NODE_TAGGER" CREATED="1743814000000" MODIFIED="1743814000000"/>
 <node TEXT="ResponseParser.groovy" ID="ID_1739809892" CREATED="1743816630922" MODIFIED="1743816630922"/>

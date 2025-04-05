@@ -10,15 +10,10 @@ def deps = DependencyLoaderClass.loadDependencies(config, logger, ui)
 
 // Extract needed functions/classes from deps
 def ConfigManager = deps.configManager
-def expandMessage = deps.messageExpander.expandMessage
+def expandMessage = deps.messageExpander.expandMessage // Get static method reference
 def loadMessagesFromFile = deps.messageFileHandler.loadMessagesFromFile
 def loadDefaultMessages = deps.messageLoader.loadDefaultMessages // Get the new loader function
-
-// Load the branch generator function
-def addonsDir = ConfigManager.getAddonsDir(config) // Get addonsDir via ConfigManager
-def createBranchGenerator = new GroovyShell(this.class.classLoader).evaluate(
-    new File("${addonsDir}/lib/BranchGenerator.groovy")
-)
+def createBranchGenerator = deps.branchGeneratorFactory // Get factory method
 
 // Load configuration using ConfigManager
 def configMap = ConfigManager.loadBaseConfig(config)
@@ -31,7 +26,7 @@ def systemMessageIndex = config.getProperty('openai.system_message_index', 0) as
 def userMessageIndex = config.getProperty('openai.user_message_index', 0) as int
 
 // Initialize the branch generator with necessary dependencies
-def generateBranches = createBranchGenerator([
+def generateBranches = createBranchGenerator([ // Call the factory method
         c      : c,
         ui     : ui,
         logger : logger,

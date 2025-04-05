@@ -4,6 +4,9 @@ package com.barrymac.freeplane.addons.llm
 import com.barrymac.freeplane.addons.llm.DialogHelperClass
 import com.barrymac.freeplane.addons.llm.ConfigManager
 import com.barrymac.freeplane.addons.llm.MessageLoaderClass
+import com.barrymac.freeplane.addons.llm.ApiCallerFactory
+import com.barrymac.freeplane.addons.llm.BranchGeneratorFactory
+import com.barrymac.freeplane.addons.llm.MessageExpander
 
 class DependencyLoaderClass {
     static Map loadDependencies(config, logger, ui) {
@@ -12,14 +15,14 @@ class DependencyLoaderClass {
         
         // Load all dependencies with a consistent approach
         return [
-            // Keep existing loaders
-            apiCaller: new GroovyShell(classLoader).evaluate(
-                new File("${addonsDir}/lib/ApiCaller.groovy")
-            )([logger: logger, ui: ui, config: config]), // Pass dependencies
+            // Instantiate ApiCaller using its factory
+            apiCaller: ApiCallerFactory.createApiCaller([logger: logger, ui: ui]),
             
-            messageExpander: new GroovyShell(classLoader).evaluate(
-                new File("${addonsDir}/lib/MessageExpander.groovy")
-            ),
+            // Provide BranchGenerator factory method reference
+            branchGeneratorFactory: BranchGeneratorFactory.&createGenerateBranches,
+            
+            // Provide MessageExpander static method references
+            messageExpander: [ expandMessage: MessageExpander.&expandMessage, getBindingMap: MessageExpander.&getBindingMap ],
             
             messageFileHandler: new GroovyShell(classLoader).evaluate(
                 new File("${addonsDir}/lib/MessageFileHandler.groovy")
