@@ -1,6 +1,6 @@
 package com.barrymac.freeplane.addons.llm
 
-import groovy.json.JsonOutput
+import groovy.json.JsonBuilder
 import java.awt.Desktop
 import java.net.URI
 
@@ -36,7 +36,8 @@ class ApiCallerFactory {
                 // Apply all headers
                 headers.each { key, value -> post.setRequestProperty(key, value) }
 
-                def payload = JsonOutput.toJson(payloadMap)
+                // Use JsonBuilder to create the payload string
+                def payload = new JsonBuilder(payloadMap).toString()
                 post.getOutputStream().write(payload.getBytes("UTF-8"))
 
                 def postRC = post.getResponseCode()
