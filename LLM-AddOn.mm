@@ -277,13 +277,13 @@
 <attribute NAME="delete" VALUE="${installationbase}/addons/${name}/scripts/AskGpt.groovy"/>
 <attribute NAME="delete" VALUE="${installationbase}/addons/${name}/scripts/QuickPrompt.groovy"/>
 <attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/NodeTagger.groovy"/>
-<attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/prompts/compareNodesUserMessage.txt"/>
+<attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/compareNodesUserMessage.txt"/>
 <attribute NAME="delete" VALUE="${installationbase}/addons/${name}/scripts/CompareConnectedNodes.groovy"/>
 <attribute NAME="delete" VALUE="${installationbase}/resources/images/promptLlmAddOn.svg"/>
 <attribute NAME="delete" VALUE="${installationbase}/resources/images/promptLlmAddOn-icon.svg"/>
 <attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/ConfigLoader.groovy"/>
-<attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/prompts/generateComparativeDimensionSystem.txt"/>
-<attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/prompts/compareNodesSystem.txt"/>
+<attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/generateComparativeDimensionSystem.txt"/>
+<attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/compareNodesSystem.txt"/>
 <attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/MessageLoader.groovy"/>
 <attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/ResponseParser.groovy"/>
 <attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/DependencyLoader.groovy"/>
