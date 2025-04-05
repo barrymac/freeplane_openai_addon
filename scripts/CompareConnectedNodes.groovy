@@ -143,7 +143,8 @@ def addAnalysisToNodeAsBranch(def nodeProxy, Map analysisMap, String comparisonT
             logger.warn("CompareNodes: Could not identify newly added comparison branch root for tagging on node: ${nodeProxy.text}")
         }
     } catch (Exception e) {
-        logger.error("Error calling appendTextOutlineAsBranch or tagging for node ${nodeProxy.text}", e as Throwable)
+        // Force message to String and ensure exception is Throwable
+        logger.error("Error calling appendTextOutlineAsBranch or tagging for node ${nodeProxy.text}".toString(), e as Throwable)
         // Optionally, inform the user via ui.errorMessage if needed, but logging might be sufficient
     }
 }
@@ -428,6 +429,7 @@ def workerThread = new Thread({
                     ui.informationMessage("Comparison analysis added to both nodes.") // Show success only if no exceptions during add
                 } catch (Exception e) {
                     // Catch any unexpected errors during the add process on the EDT
+                    // Ensure exception is Throwable
                     logger.error("Error during addAnalysisToNodeAsBranch calls on EDT", e as Throwable)
                     ui.errorMessage("Failed to add analysis results to the map. Check logs. Error: ${e.message}")
                 }
