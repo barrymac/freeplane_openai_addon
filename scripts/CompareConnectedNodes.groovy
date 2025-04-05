@@ -429,7 +429,7 @@ def workerThread = new Thread({
        }
 
     } catch (Exception e) {
-        logger.error("LLM Comparison failed", e)
+        logger.error("LLM Comparison failed", e as Throwable) // Cast Exception to Throwable for logger
         errorMessage = "LLM Comparison Error: ${e.message}"
         // Ensure dialog is closed and error shown on EDT
         SwingUtilities.invokeLater {
