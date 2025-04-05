@@ -111,7 +111,7 @@ def createGenerateBranches(closures) {
             workerThread.setContextClassLoader(this.class.classLoader)
             workerThread.start()
         } catch (Exception e) {
-            logger.error("Error in BranchGenerator setup", e as Throwable)
+            logger.severe("Error in BranchGenerator setup", e as Throwable)
             ui.errorMessage("Setup Error: ${e.message}")
         }
     }
