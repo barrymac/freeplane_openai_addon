@@ -23,6 +23,7 @@ def NodeHelper = deps.nodeHelperUtils.NodeHelper
 def addAnalysisToNodeAsBranch = deps.nodeHelperUtils.NodeHelper.&addAnalysisToNodeAsBranch
 def MessageLoader = deps.messageLoader
 def addModelTagRecursively = deps.nodeTagger.addModelTagRecursively
+def ValidationException = deps.exceptions
 
 // Load configuration using ConfigManager
 def configMap = ConfigManager.loadBaseConfig(config)
@@ -48,12 +49,12 @@ try {
         } else {
             java.awt.Desktop.desktop.browse(new URI("https://platform.openai.com/account/api-keys"))
         }
-        throw new deps.exceptions("API key is missing. Please configure it first via the LLM menu.")
+        throw new ValidationException("API key is missing. Please configure it first via the LLM menu.")
     }
 
     // Check if templates are loaded
     if (systemMessageTemplate.isEmpty() || compareNodesUserMessageTemplate.isEmpty()) {
-        throw new deps.exceptions("System message template or the dedicated compareNodesUserMessage.txt is missing or empty. Please check configuration or files.")
+        throw new ValidationException("System message template or the dedicated compareNodesUserMessage.txt is missing or empty. Please check configuration or files.")
     }
 
     // 2. Get Selected Nodes and Validate Connection (Use NodeHelper class from deps)
@@ -199,7 +200,7 @@ try {
     workerThread.setContextClassLoader(this.class.classLoader)
     workerThread.start()
 
-} catch (deps.exceptions e) {
+} catch (ValidationException e) {
     // Handle expected validation errors
     ui.errorMessage(e.message)
 } catch (Exception e) {
