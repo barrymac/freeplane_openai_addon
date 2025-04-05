@@ -268,7 +268,6 @@
 <attribute NAME="delete" VALUE="${installationbase}/addons/${name}/scripts/AskGPT.groovy"/>
 <attribute NAME="delete" VALUE="${installationbase}/images/${name}.svg"/>
 <attribute NAME="delete" VALUE="${installationbase}/images/${name}-icon.svg"/>
-<attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/MessageFileHandler.groovy"/>
 <attribute NAME="delete" VALUE="${installationbase}/addons/${name}/scripts/AskGpt.groovy"/>
 <attribute NAME="delete" VALUE="${installationbase}/addons/${name}/scripts/QuickPrompt.groovy"/>
 <attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/NodeTagger.groovy"/>
@@ -276,7 +275,6 @@
 <attribute NAME="delete" VALUE="${installationbase}/resources/images/promptLlmAddOn.svg"/>
 <attribute NAME="delete" VALUE="${installationbase}/resources/images/promptLlmAddOn-icon.svg"/>
 <attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/ResponseParser.groovy"/>
-<attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/NodeHelper.groovy"/>
 <attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/Exceptions.groovy"/>
 <attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/llm.jar"/>
 <attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib"/>
@@ -473,10 +471,8 @@
     </p>
   </body>
 </html></richcontent>
-<node TEXT="MessageFileHandler.groovy" ID="ID_MSG_FILE_HANDLER" CREATED="1742845172665" MODIFIED="1742845172665"/>
 <node TEXT="NodeTagger.groovy" ID="ID_NODE_TAGGER" CREATED="1743814000000" MODIFIED="1743814000000"/>
 <node TEXT="ResponseParser.groovy" ID="ID_1739809892" CREATED="1743816630922" MODIFIED="1743816630922"/>
-<node TEXT="NodeHelper.groovy" ID="ID_1309620952" CREATED="1743816630935" MODIFIED="1743816630935"/>
 <node TEXT="llm.jar" ID="ID_943135829" CREATED="1743859158919" MODIFIED="1743859162350"/>
 </node>
 <node TEXT="resources" POSITION="bottom_or_right" ID="ID_RESOURCES" CREATED="1742836000000" MODIFIED="1742836000000">

@@ -1,6 +1,8 @@
 package com.barrymac.freeplane.addons.llm
 
 // Helper class to centralize dependency loading
+import com.barrymac.freeplane.addons.llm.MessageFileHandler
+import com.barrymac.freeplane.addons.llm.NodeHelperClass
 
 class DependencyLoaderClass {
     static Map loadDependencies(config, logger, ui) {
@@ -18,9 +20,9 @@ class DependencyLoaderClass {
             // Provide MessageExpander static method references
             messageExpander: [ expandMessage: MessageExpander.&expandMessage, getBindingMap: MessageExpander.&getBindingMap ],
             
-            messageFileHandler: new GroovyShell(classLoader).evaluate(
-                new File("${addonsDir}/lib/MessageFileHandler.groovy")
-            ),
+            // Provide MessageFileHandler static method references
+            messageFileHandler: [ loadMessagesFromFile: MessageFileHandler.&loadMessagesFromFile,
+                                  saveMessagesToFile: MessageFileHandler.&saveMessagesToFile ],
             
             nodeTagger: new GroovyShell(classLoader).evaluate(
                 new File("${addonsDir}/lib/NodeTagger.groovy")
@@ -33,9 +35,8 @@ class DependencyLoaderClass {
             // Add new ones
             dialogHelper: DialogHelperClass,
             
-            nodeHelperUtils: new GroovyShell(classLoader).evaluate(
-                new File("${addonsDir}/lib/NodeHelper.groovy")
-            ),
+            // Provide NodeHelperClass directly
+            nodeHelperUtils: NodeHelperClass,
             
             configManager: ConfigManager,
             
