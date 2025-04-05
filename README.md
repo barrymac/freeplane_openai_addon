@@ -78,6 +78,13 @@ Check-list before starting
 ... you're done.
 
 ## Recent Features
+### v0.4.1
+- **Automatic LLM Tagging**: Added recursive model identification tags to all generated content
+  - Visible `LLM:<model>` tags in node cores
+  - Full model version in node notes
+  - Tags propagate through all child nodes
+- Improved error handling for API calls
+
 ### v0.4.0
 - Added "Compare Connected Nodes" feature for analyzing node relationships using a dedicated prompt and custom comparison types.
 ### v0.3.6
