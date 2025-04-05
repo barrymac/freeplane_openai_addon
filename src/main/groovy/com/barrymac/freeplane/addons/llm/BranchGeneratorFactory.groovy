@@ -13,18 +13,11 @@ class BranchGeneratorFactory {
             def ui = closures.ui
             def logger = closures.logger
             def SwingUtilities = SwingUtilities
-            def WindowConstants = WindowConstants
-            def BorderLayout = BorderLayout
-            def SwingBuilder = SwingBuilder
 
             // Get functions/classes from deps map
             def make_api_call = deps.apiCaller.make_api_call
             def addModelTagRecursively = deps.nodeTagger // Get method reference directly
             def DialogHelper = deps.dialogHelper
-            def ConfigManager = deps.configManager
-
-            // Get addonsDir from ConfigManager
-            def addonsDir = ConfigManager.getAddonsDir(closures.config)
 
             try {
 

@@ -9,7 +9,7 @@ class NodeHelperClass {
      *
      * @param selectedNodes The list of selected nodes
      * @return A tuple containing [sourceNode, targetNode] if valid
-     * @throws ValidationException if validation fails
+     * @throws Exception if validation fails
      */
     static def validateAndGetConnectedNodes(selectedNodes) {
         if (selectedNodes.size() != 2) {

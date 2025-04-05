@@ -4,8 +4,6 @@ package com.barrymac.freeplane.addons.llm
 
 class DependencyLoaderClass {
     static Map loadDependencies(config, logger, ui) {
-        def addonsDir = ConfigManager.getAddonsDir(config)
-        def classLoader = DependencyLoaderClass.class.classLoader
 
         // Load all dependencies with a consistent approach
         return [
