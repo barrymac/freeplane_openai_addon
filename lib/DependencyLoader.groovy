@@ -6,6 +6,11 @@ class DependencyLoaderClass {
         
         // Load all dependencies with a consistent approach
         return [
+            // Load exceptions first
+            exceptions: new GroovyShell(classLoader).evaluate(
+                new File("${addonsDir}/lib/Exceptions.groovy")
+            ),
+            
             // Keep existing loaders
             apiCaller: new GroovyShell(classLoader).evaluate(
                 new File("${addonsDir}/lib/ApiCaller.groovy")
@@ -38,10 +43,6 @@ class DependencyLoaderClass {
             
             configManager: new GroovyShell(classLoader).evaluate(
                 new File("${addonsDir}/lib/ConfigLoader.groovy")
-            ),
-            
-            exceptions: new GroovyShell(classLoader).evaluate(
-                new File("${addonsDir}/lib/Exceptions.groovy")
             ),
             
             messageLoader: new GroovyShell(classLoader).evaluate(

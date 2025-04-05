@@ -1,3 +1,5 @@
+import org.freeplane.features.map.NodeModel
+
 /**
  * Helper class for node operations
  */
@@ -9,7 +11,7 @@ class NodeHelperClass {
      * @return A tuple containing [sourceNode, targetNode] if valid
      * @throws ValidationException if validation fails
      */
-    static def validateAndGetConnectedNodes(selectedNodes) {
+    static def validateAndGetConnectedNodes(selectedNodes) throws ValidationException {
         if (selectedNodes.size() != 2) {
             throw new ValidationException("Please select exactly two nodes to compare.")
         }
@@ -96,15 +98,8 @@ class NodeHelperClass {
     }
 }
 
-// Custom exception class for validation errors
-class ValidationException extends Exception {
-    ValidationException(String message) {
-        super(message)
-    }
-}
 
-// Return the class and exception for use in scripts
+// Return the class for use in scripts
 return [
-    NodeHelper: NodeHelperClass,
-    ValidationException: ValidationException
+    NodeHelper: NodeHelperClass
 ]
