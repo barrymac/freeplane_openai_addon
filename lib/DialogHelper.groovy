@@ -5,7 +5,7 @@ import java.awt.*
 /**
  * Helper class for creating and managing UI dialogs
  */
-class DialogHelper {
+class DialogHelperClass {
     /**
      * Shows a dialog for selecting or entering a comparison type
      * 
@@ -109,5 +109,5 @@ class DialogHelper {
     }
 }
 
-// Return the class for use in scripts
-return DialogHelper
+// Return the renamed class for use in scripts
+return DialogHelperClass
