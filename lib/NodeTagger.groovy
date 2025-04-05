@@ -11,7 +11,7 @@ def addModelTagRecursively(node, modelName, logger) {
         node.children.each { child -> addModelTagRecursively(child, modelName, logger) } // Pass original modelName recursively
     } catch (Exception e) {
         // Log error if tagging fails for any reason
-        logger.error("Failed to add tag '${tagName}' to node ${node.text}", e)
+        logger.error("Failed to add tag '${tagName}' to node ${node.text}", e as Throwable)
     }
 }
 
