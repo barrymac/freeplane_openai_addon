@@ -79,19 +79,21 @@ def createGenerateBranches(closures) {
                 logger.info("GPT response: $response")
                 SwingUtilities.invokeLater {
                     dialog.dispose()
-                    def childrenBefore = node.children.size()
+                    // Get the set of children *before* adding
+                    def childrenBeforeSet = node.children.toSet()
                     node.appendTextOutlineAsBranch(response) // Add the branch
-                    def childrenAfter = node.children.size()
-                    def addedBranchRoot = null
-                    if (childrenAfter > childrenBefore) {
-                        // Assume the last child is the root of the newly added branch
-                        addedBranchRoot = node.children.last()
-                        // Recursively add the tag, passing the logger
-                        addTagRecursively(addedBranchRoot, "LLM_Generated", logger)
-                    }
+                    // Get the set of children *after* adding
+                    def childrenAfterSet = node.children.toSet()
 
+                    // Find the newly added nodes (difference between the sets)
+                    def newlyAddedNodes = childrenAfterSet - childrenBeforeSet
+
+                    if (!newlyAddedNodes.isEmpty()) {
+                        // Recursively add the tag, passing the logger
+                        newlyAddedNodes.each { newNode -> addTagRecursively(newNode, "LLM_Generated", logger) }
+                    }
                     // Add logging to confirm tagging for Quick Prompt
-                    logger.info("BranchGenerator: Tag 'LLM_Generated' applied to branch starting with node: ${addedBranchRoot?.text}")
+                    logger.info("BranchGenerator: Tag 'LLM_Generated' applied to ${newlyAddedNodes.size()} newly added top-level node(s).")
                 }
             } catch (Exception e) {
                 logger.error("API call failed", e)
