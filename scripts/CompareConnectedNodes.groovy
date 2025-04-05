@@ -143,7 +143,7 @@ def addAnalysisToNodeAsBranch(def nodeProxy, Map analysisMap, String comparisonT
             logger.warn("CompareNodes: Could not identify newly added comparison branch root for tagging on node: ${nodeProxy.text}")
         }
     } catch (Exception e) {
-        logger.error("Error calling appendTextOutlineAsBranch or tagging for node ${nodeProxy.text}", e) // Updated error message
+        logger.error("Error calling appendTextOutlineAsBranch or tagging for node ${nodeProxy.text}", e as Throwable) // Cast to Throwable
         // Optionally, inform the user via ui.errorMessage if needed, but logging might be sufficient
     }
 }
