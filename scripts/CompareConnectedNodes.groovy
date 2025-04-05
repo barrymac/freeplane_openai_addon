@@ -132,10 +132,21 @@ def addAnalysisToNodeAsBranch(def nodeProxy, Map analysisMap, String comparisonT
 
     // Add the formatted string as a new branch (this is undoable)
     try {
-        // Capture the root node of the added branch
-        def addedBranchRoot = nodeProxy.appendTextOutlineAsBranch(formattedAnalysis) // Call method on the NodeProxy
+        // Get the set of children *before* adding
+        def childrenBeforeSet = nodeProxy.children.toSet()
+        nodeProxy.appendTextOutlineAsBranch(formattedAnalysis) // Call method on the NodeProxy
+        // Get the set of children *after* adding
+        def childrenAfterSet = nodeProxy.children.toSet()
+        // Find the newly added root node (difference between the sets)
+        def addedBranchRoot = (childrenAfterSet - childrenBeforeSet).find { true } // Get the single added node
+
         logger.info("Successfully called appendTextOutlineAsBranch for node: ${nodeProxy.text}")
-        addTagRecursively(addedBranchRoot, "LLM_Generated", logger) // Add tag recursively, passing logger
+        if (addedBranchRoot) {
+            addTagRecursively(addedBranchRoot, "LLM_Generated", logger) // Add tag recursively, passing logger
+            logger.info("CompareNodes: Tag 'LLM_Generated' applied to comparison branch starting with node: ${addedBranchRoot.text}")
+        } else {
+            logger.warn("CompareNodes: Could not identify newly added comparison branch root for tagging on node: ${nodeProxy.text}")
+        }
     } catch (Exception e) {
         logger.error("Error calling appendTextOutlineAsBranch or tagging for node ${nodeProxy.text}", e) // Updated error message
         // Optionally, inform the user via ui.errorMessage if needed, but logging might be sufficient
