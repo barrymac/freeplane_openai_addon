@@ -423,8 +423,8 @@ def workerThread = new Thread({
            } else {
                 try {
                     // Call the standalone function, passing the node proxy
-                    addAnalysisToNodeAsBranch(sourceNode, sourceAnalysis, comparisonType) // Call function directly
-                    addAnalysisToNodeAsBranch(targetNode, targetAnalysis, comparisonType) // Call function directly
+                    addAnalysisToNodeAsBranch(sourceNode, sourceAnalysis, comparisonType, logger) // Add logger parameter
+                    addAnalysisToNodeAsBranch(targetNode, targetAnalysis, comparisonType, logger) // Add logger parameter
                     ui.informationMessage("Comparison analysis added to both nodes.") // Show success only if no exceptions during add
                 } catch (Exception e) {
                     // Catch any unexpected errors during the add process on the EDT
