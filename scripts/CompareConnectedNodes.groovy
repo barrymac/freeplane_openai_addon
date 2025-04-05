@@ -4,6 +4,15 @@ import groovy.text.SimpleTemplateEngine
 import javax.swing.*
 import java.awt.*
 
+// Helper function to parse generated dimension from LLM response
+def parseGeneratedDimension(String response) {
+    def match = (response =~ /Pole 1: (.+?)\s*;\s*Pole 2: (.+)/)
+    if (match) {
+        return [match[0][1].trim(), match[0][2].trim()]
+    }
+    throw new Exception("Invalid dimension format. Expected 'Pole 1: X; Pole 2: Y'")
+}
+
 // --- Load Core Dependencies ---
 def addonsDir = "${config.freeplaneUserDirectory}/addons/promptLlmAddOn"
 
@@ -84,27 +93,8 @@ try {
     }
     comparisonType = comparisonType.trim()
 
-    // 4. Prepare Prompts using loaded templates
-    logger.info("CompareNodes: Final userMessageTemplate for expansion:\n---\n${compareNodesUserMessageTemplate}\n---")
-
-    // --- Prepare source node prompt ---
-    def sourceBinding = getBindingMap(sourceNode)
-    sourceBinding['comparisonType'] = comparisonType
-    logger.info("CompareNodes: Source Binding Map: ${sourceBinding}")
-    def sourceEngine = new SimpleTemplateEngine()
-    def sourceUserPrompt = sourceEngine.createTemplate(compareNodesUserMessageTemplate).make(sourceBinding).toString()
-    logger.info("CompareNodes: Source User Prompt:\n${sourceUserPrompt}")
-
-    // --- Prepare target node prompt ---
-    def targetBinding = getBindingMap(targetNode)
-    targetBinding['comparisonType'] = comparisonType
-    logger.info("CompareNodes: Target Binding Map: ${targetBinding}")
-    def targetEngine = new SimpleTemplateEngine()
-    def targetUserPrompt = targetEngine.createTemplate(compareNodesUserMessageTemplate).make(targetBinding).toString()
-    logger.info("CompareNodes: Target User Prompt:\n${targetUserPrompt}")
-
-    // 5. Show Progress Dialog
-    def progressMessage = "Requesting analysis for '${sourceNode.text}' and '${targetNode.text}' based on '${comparisonType}'. Please wait..."
+    // 4. Show Progress Dialog
+    def progressMessage = "Generating '${comparisonType}' analysis framework..."
     def dialog = DialogHelper.createProgressDialog(ui, "Analyzing Nodes with LLM...", progressMessage)
     dialog.setVisible(true)
 
@@ -113,6 +103,49 @@ try {
         String errorMessage = null
 
         try {
+            // --- Generate Comparative Dimension ---
+            def dimensionPayload = [
+                'model': model,
+                'messages': [
+                    [role: 'system', content: '''Generate a 2-pole comparative dimension based on the input.
+Respond ONLY with: "Pole 1: [2-3 words]; Pole 2: [2-3 words]"'''],
+                    [role: 'user', content: "Comparison focus: ${comparisonType}"]
+                ],
+                'temperature': 0.3,
+                'max_tokens': 50
+            ]
+            
+            logger.info("Generating comparative dimension for: ${comparisonType}")
+            def dimensionResponse = make_api_call(provider, apiKey, dimensionPayload)
+            def dimensionContent = new JsonSlurper().parseText(dimensionResponse)?.choices[0]?.message?.content
+            def (pole1, pole2) = parseGeneratedDimension(dimensionContent)
+            def comparativeDimension = "${pole1} vs ${pole2}"
+            logger.info("Generated comparative dimension: ${comparativeDimension}")
+            
+            // --- Prepare Prompts with Generated Dimension ---
+            logger.info("CompareNodes: Final userMessageTemplate for expansion:\n---\n${compareNodesUserMessageTemplate}\n---")
+            
+            // --- Prepare source node prompt ---
+            def sourceBinding = getBindingMap(sourceNode)
+            sourceBinding['comparisonType'] = comparativeDimension
+            logger.info("CompareNodes: Source Binding Map: ${sourceBinding}")
+            def sourceEngine = new SimpleTemplateEngine()
+            def sourceUserPrompt = sourceEngine.createTemplate(compareNodesUserMessageTemplate).make(sourceBinding).toString()
+            logger.info("CompareNodes: Source User Prompt:\n${sourceUserPrompt}")
+            
+            // --- Prepare target node prompt ---
+            def targetBinding = getBindingMap(targetNode)
+            targetBinding['comparisonType'] = comparativeDimension
+            logger.info("CompareNodes: Target Binding Map: ${targetBinding}")
+            def targetEngine = new SimpleTemplateEngine()
+            def targetUserPrompt = targetEngine.createTemplate(compareNodesUserMessageTemplate).make(targetBinding).toString()
+            logger.info("CompareNodes: Target User Prompt:\n${targetUserPrompt}")
+            
+            // Update progress dialog
+            SwingUtilities.invokeLater {
+                dialog.setMessage("Analyzing '${sourceNode.text}' and '${targetNode.text}' using '${comparativeDimension}' framework...")
+            }
+
             // --- Call API for Source Node ---
             def sourcePayloadMap = [
                 'model': model,
@@ -174,10 +207,10 @@ try {
                     ui.informationMessage("The LLM analysis did not yield structured results for either node.")
                 } else {
                     try {
-                        // Add analysis branches, passing the tagging function
-                        addAnalysisToNodeAsBranch(sourceNode, sourceAnalysis, comparisonType, model, logger, addModelTagRecursively)
-                        addAnalysisToNodeAsBranch(targetNode, targetAnalysis, comparisonType, model, logger, addModelTagRecursively)
-                        ui.informationMessage("Comparison analysis added to both nodes.")
+                        // Add analysis branches, passing the tagging function and using the generated dimension
+                        addAnalysisToNodeAsBranch(sourceNode, sourceAnalysis, comparativeDimension, model, logger, addModelTagRecursively)
+                        addAnalysisToNodeAsBranch(targetNode, targetAnalysis, comparativeDimension, model, logger, addModelTagRecursively)
+                        ui.informationMessage("Comparison analysis using '${comparativeDimension}' framework added to both nodes.")
                     } catch (Exception e) {
                         logger.error("Error during addAnalysisToNodeAsBranch calls on EDT", e as Throwable)
                         ui.errorMessage("Failed to add analysis results to the map. Check logs. Error: ${e.message}")
