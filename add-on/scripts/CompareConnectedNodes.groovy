@@ -269,7 +269,8 @@ try {
             }
         }
     })
-    workerThread.setContextClassLoader(this.class.classLoader)
+    // Use the classloader of a known compiled class from the JAR
+    workerThread.setContextClassLoader(DependencyLoaderClass.class.classLoader)
     workerThread.start()
 
 } catch (Exception e) {

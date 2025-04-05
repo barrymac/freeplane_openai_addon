@@ -104,7 +104,8 @@ class BranchGeneratorFactory {
                         }
                     }
                 })
-                workerThread.setContextClassLoader(this.class.classLoader)
+                // Use the classloader of the factory class itself
+                workerThread.setContextClassLoader(BranchGeneratorFactory.class.classLoader)
                 workerThread.start()
             } catch (Exception e) {
                 logger.severe("Error in BranchGenerator setup", e as Throwable)
