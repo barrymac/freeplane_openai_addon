@@ -1,5 +1,5 @@
 // Helper class to centralize dependency loading
-class DependencyLoader {
+class DependencyLoaderClass {
     static Map loadDependencies(config, logger, ui) {
         def addonsDir = "${config.freeplaneUserDirectory}/addons/promptLlmAddOn"
         def classLoader = DependencyLoader.class.classLoader // Use a consistent classloader
@@ -52,4 +52,4 @@ class DependencyLoader {
 }
 
 // Return the class for use in scripts
-return DependencyLoader
+return DependencyLoaderClass
