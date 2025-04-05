@@ -402,11 +402,11 @@ def workerThread = new Thread({
 
         def sourceJsonResponse = jsonSlurper.parseText(sourceApiResponse)
         def sourceResponseContent = sourceJsonResponse?.choices[0]?.message?.content
-        if (!sourceResponseContent) throw new Exception("Could not extract content from source response: ${sourceApiResponse}")
+        if (!sourceResponseContent?.trim()) throw new Exception("Empty content in source response. Model may have hit token limit. Response: ${sourceApiResponse}")
 
         def targetJsonResponse = jsonSlurper.parseText(targetApiResponse)
         def targetResponseContent = targetJsonResponse?.choices[0]?.message?.content
-        if (!targetResponseContent) throw new Exception("Could not extract content from target response: ${targetApiResponse}")
+        if (!targetResponseContent?.trim()) throw new Exception("Empty content in target response. Model may have hit token limit. Response: ${targetApiResponse}")
 
         logger.info("Source Node Analysis:\n${sourceResponseContent}")
         logger.info("Target Node Analysis:\n${targetResponseContent}")
@@ -428,7 +428,7 @@ def workerThread = new Thread({
                     ui.informationMessage("Comparison analysis added to both nodes.") // Show success only if no exceptions during add
                 } catch (Exception e) {
                     // Catch any unexpected errors during the add process on the EDT
-                    logger.error("Error during addAnalysisToNodeAsBranch calls on EDT", e)
+                    logger.error("Error during addAnalysisToNodeAsBranch calls on EDT", e as Throwable)
                     ui.errorMessage("Failed to add analysis results to the map. Check logs. Error: ${e.message}")
                 }
            }
