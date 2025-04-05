@@ -6,7 +6,7 @@ package com.barrymac.freeplane.addons.llm
 class NodeHelperClass {
     /**
      * Validates that exactly two connected nodes are selected
-     * 
+     *
      * @param selectedNodes The list of selected nodes
      * @return A tuple containing [sourceNode, targetNode] if valid
      * @throws ValidationException if validation fails
@@ -35,10 +35,10 @@ class NodeHelperClass {
         // Return the nodes in selection order
         return [node1, node2]
     }
-    
+
     /**
      * Formats the analysis map into an indented string and adds it as a branch
-     * 
+     *
      * @param nodeProxy The node to add the branch to
      * @param analysisMap The map of analysis data
      * @param comparisonType The type of comparison performed
@@ -76,13 +76,13 @@ class NodeHelperClass {
             def addedBranchRoot = (childrenAfterSet - childrenBeforeSet).find { true } // Get the single added node
 
             logger.info("Successfully called appendTextOutlineAsBranch for node: ${nodeProxy.text}")
-            
+
             // Use the passed-in tagging function
             if (addedBranchRoot && addModelTagRecursivelyFunc != null) {
                 try {
                     // Use the passed function reference
                     addModelTagRecursivelyFunc(addedBranchRoot, model, logger)
-                    logger.info("CompareNodes: Tag 'LLM:${model.replace('/','_')}' applied to comparison branch starting with node: ${addedBranchRoot.text}")
+                    logger.info("CompareNodes: Tag 'LLM:${model.replace('/', '_')}' applied to comparison branch starting with node: ${addedBranchRoot.text}")
                 } catch (Exception e) {
                     logger.warn("Failed to apply node tagger function".toString(), e as Throwable)
                 }

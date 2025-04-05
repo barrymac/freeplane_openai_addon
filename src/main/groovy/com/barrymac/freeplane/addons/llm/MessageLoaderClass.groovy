@@ -6,7 +6,7 @@ package com.barrymac.freeplane.addons.llm
 class MessageLoaderClass {
     /**
      * Load resource from JAR classpath
-     * 
+     *
      * @param path Path to the resource in the classpath
      * @return String containing the resource content
      */
@@ -32,16 +32,16 @@ class MessageLoaderClass {
 
     /**
      * Loads message templates for node comparison
-     * 
+     *
      * @param config The Freeplane config object
      * @return Map containing system and user message templates
      */
     static Map loadComparisonMessages(config) {
         try {
             return [
-                systemTemplate: getResourceContent("/compareNodesSystem.txt"),
-                userTemplate: getResourceContent("/compareNodesUserMessage.txt"),
-                dimensionSystemTemplate: getResourceContent("/generateComparativeDimensionSystem.txt")
+                    systemTemplate         : getResourceContent("/compareNodesSystem.txt"),
+                    userTemplate           : getResourceContent("/compareNodesUserMessage.txt"),
+                    dimensionSystemTemplate: getResourceContent("/generateComparativeDimensionSystem.txt")
             ]
         } catch (Exception e) {
             throw new Exception("Failed to load comparison templates: ${e.message}")

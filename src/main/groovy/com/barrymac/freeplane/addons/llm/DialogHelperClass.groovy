@@ -11,7 +11,7 @@ import java.awt.*
 class DialogHelperClass {
     /**
      * Shows a dialog for selecting or entering a comparison type
-     * 
+     *
      * @param ui The Freeplane UI object
      * @param config The Freeplane config object
      * @param contextNode The node model for context
@@ -20,9 +20,9 @@ class DialogHelperClass {
      * @param configKey The config key to store custom types
      * @return The selected comparison type or null if cancelled
      */
-    static String showComparisonDialog(ui, config, contextNode, String message, 
-                                      java.util.List<String> defaultTypes, 
-                                      String configKey = "promptLlmAddOn.comparisonTypes") {
+    static String showComparisonDialog(ui, config, contextNode, String message,
+                                       java.util.List<String> defaultTypes,
+                                       String configKey = "promptLlmAddOn.comparisonTypes") {
         // Load previously saved custom types
         def savedTypesString = config.getProperty(configKey, '')
         def customTypes = savedTypesString ? savedTypesString.split('\\|').toList() : []
@@ -36,22 +36,23 @@ class DialogHelperClass {
 
         // Build the dialog
         def dialog = swing.dialog(
-            title: "Define Comparison Type",
-            modal: true, // Make it modal
-            owner: ui.currentFrame, // Parent frame
-            pack: true, // Size based on content
-            locationRelativeTo: ui.currentFrame // Center on frame
+                title: "Define Comparison Type",
+                modal: true, // Make it modal
+                owner: ui.currentFrame, // Parent frame
+                pack: true, // Size based on content
+                locationRelativeTo: ui.currentFrame // Center on frame
         ) {
             panel(layout: new BorderLayout(5, 5), border: BorderFactory.createEmptyBorder(10, 10, 10, 10)) {
                 // Message Label
-                label(text: "<html>${message.replaceAll('\n', '<br>')}</html>", constraints: BorderLayout.NORTH) // Use HTML for multi-line
+                label(text: "<html>${message.replaceAll('\n', '<br>')}</html>", constraints: BorderLayout.NORTH)
+                // Use HTML for multi-line
 
                 // Editable ComboBox
                 comboBox(id: 'typeCombo',
-                         items: allTypes,
-                         editable: true,
-                         selectedItem: allTypes.isEmpty() ? "" : allTypes[0], // Select first item or empty
-                         constraints: BorderLayout.CENTER)
+                        items: allTypes,
+                        editable: true,
+                        selectedItem: allTypes.isEmpty() ? "" : allTypes[0], // Select first item or empty
+                        constraints: BorderLayout.CENTER)
 
                 // Button Panel
                 panel(layout: new FlowLayout(FlowLayout.RIGHT), constraints: BorderLayout.SOUTH) {
@@ -84,10 +85,10 @@ class DialogHelperClass {
         // Return the selected type (or null if cancelled)
         return selectedType
     }
-    
+
     /**
      * Creates a progress dialog for long-running operations
-     * 
+     *
      * @param ui The Freeplane UI object
      * @param title The dialog title
      * @param message The message to display
@@ -96,21 +97,21 @@ class DialogHelperClass {
     static JDialog createProgressDialog(ui, String title, String message) {
         def swingBuilder = new SwingBuilder()
         def dialog = swingBuilder.dialog(
-            title: title,
-            owner: ui.currentFrame,
-            modal: false, // Non-modal
-            resizable: true, // Allow resizing for longer messages
-            defaultCloseOperation: WindowConstants.DO_NOTHING_ON_CLOSE) { // Prevent manual closing
+                title: title,
+                owner: ui.currentFrame,
+                modal: false, // Non-modal
+                resizable: true, // Allow resizing for longer messages
+                defaultCloseOperation: WindowConstants.DO_NOTHING_ON_CLOSE) { // Prevent manual closing
             swingBuilder.panel(layout: new BorderLayout(10, 10), border: BorderFactory.createEmptyBorder(10, 10, 10, 10)) {
                 // Use text area instead of label for multi-line support
                 scrollPane(constraints: BorderLayout.CENTER) {
                     textArea(
-                        text: message,
-                        lineWrap: true,
-                        wrapStyleWord: true,
-                        editable: false,
-                        margin: new Insets(5, 5, 5, 5),
-                        font: new Font(Font.SANS_SERIF, Font.PLAIN, 12)
+                            text: message,
+                            lineWrap: true,
+                            wrapStyleWord: true,
+                            editable: false,
+                            margin: new Insets(5, 5, 5, 5),
+                            font: new Font(Font.SANS_SERIF, Font.PLAIN, 12)
                     )
                 }
             }
@@ -119,7 +120,7 @@ class DialogHelperClass {
         // Set minimum size to prevent overly narrow dialogs
         dialog.minimumSize = new Dimension(300, 150)
         ui.setDialogLocationRelativeTo(dialog, ui.currentFrame) // Center on frame
-        
+
         return dialog
     }
 }

@@ -78,7 +78,8 @@ class ApiCallerFactory {
                         if (errorStream) {
                             logger.warn("Error response body: ${errorStream.getText('UTF-8')}")
                         }
-                    } catch (Exception ignored) {}
+                    } catch (Exception ignored) {
+                    }
                 }
 
             } catch (Exception e) {
@@ -88,20 +89,20 @@ class ApiCallerFactory {
 
             return responseText
         }
-        
+
         // For backward compatibility
         def make_openai_call = { String apiKey, Map<String, Object> payloadMap ->
             return make_api_call('openai', apiKey, payloadMap)
         }
-        
+
         def make_openrouter_call = { String apiKey, Map<String, Object> payloadMap ->
             return make_api_call('openrouter', apiKey, payloadMap)
         }
-        
+
         return [
-            make_api_call: make_api_call,
-            make_openai_call: make_openai_call,
-            make_openrouter_call: make_openrouter_call
+                make_api_call       : make_api_call,
+                make_openai_call    : make_openai_call,
+                make_openrouter_call: make_openrouter_call
         ]
     }
 }

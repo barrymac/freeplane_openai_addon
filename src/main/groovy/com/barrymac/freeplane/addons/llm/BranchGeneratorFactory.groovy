@@ -16,16 +16,16 @@ class BranchGeneratorFactory {
             def WindowConstants = WindowConstants
             def BorderLayout = BorderLayout
             def SwingBuilder = SwingBuilder
-            
+
             // Get functions/classes from deps map
             def make_api_call = deps.apiCaller.make_api_call
             def addModelTagRecursively = deps.nodeTagger // Get method reference directly
             def DialogHelper = deps.dialogHelper
             def ConfigManager = deps.configManager
-            
+
             // Get addonsDir from ConfigManager
             def addonsDir = ConfigManager.getAddonsDir(closures.config)
-            
+
             try {
 
                 // Validate API key
@@ -36,45 +36,45 @@ class BranchGeneratorFactory {
                         Desktop.desktop.browse(new URI("https://platform.openai.com/account/api-keys"))
                     }
                     ui.errorMessage("Invalid authentication or incorrect API key provided.")
-                    return;
+                    return
                 }
-                
+
                 def node = c.selected
-                
+
                 // Create progress dialog
                 def dialog = DialogHelper.createProgressDialog(
-                    ui, 
-                    'I am asking your question. Wait for the response.',
-                    userMessage
+                        ui,
+                        'I am asking your question. Wait for the response.',
+                        userMessage
                 )
                 ui.setDialogLocationRelativeTo(dialog, node.delegate)
                 dialog.setVisible(true)
                 logger.info(userMessage)
-                
+
                 // Run API call in background thread
                 def workerThread = new Thread({
                     try {
                         def payloadMap = [
-                            'model': model,
-                            'messages': [
-                                [role: 'system', content: systemMessage],
-                                [role: 'user', content: userMessage]
-                            ],
-                            'temperature': temperature,
-                            'max_tokens': maxTokens
+                                'model'      : model,
+                                'messages'   : [
+                                        [role: 'system', content: systemMessage],
+                                        [role: 'user', content: userMessage]
+                                ],
+                                'temperature': temperature,
+                                'max_tokens' : maxTokens
                         ]
-                        
+
                         // Use the unified API call function
                         def responseText = make_api_call(provider, apiKey, payloadMap)
-                        
+
                         if (responseText.isEmpty()) {
                             return
                         }
-                        
+
                         def jsonSlurper = new JsonSlurper()
                         def jsonResponse = jsonSlurper.parseText(responseText)
                         def response = jsonResponse.choices[0].message.content
-                        
+
                         logger.info("GPT response: $response")
                         SwingUtilities.invokeLater {
                             dialog.dispose()
@@ -89,14 +89,15 @@ class BranchGeneratorFactory {
 
                             if (!newlyAddedNodes.isEmpty()) {
                                 // Recursively add the tag, passing the logger
-                                newlyAddedNodes.each { newNode -> addModelTagRecursively(newNode, model, logger) } // Pass model name
+                                newlyAddedNodes.each { newNode -> addModelTagRecursively(newNode, model, logger) }
+                                // Pass model name
                             }
                             // Add logging to confirm tagging for Quick Prompt
-                            logger.info("BranchGenerator: Tag 'LLM:${model.replace('/','_')}' applied to ${newlyAddedNodes.size()} newly added top-level node(s).")
+                            logger.info("BranchGenerator: Tag 'LLM:${model.replace('/', '_')}' applied to ${newlyAddedNodes.size()} newly added top-level node(s).")
                         }
                     } catch (Exception e) {
                         // Ensure message is String and exception is Throwable
-                        logger.warn("API call failed".toString(), (Throwable)e)
+                        logger.warn("API call failed".toString(), (Throwable) e)
                         SwingUtilities.invokeLater {
                             dialog.dispose()
                             ui.errorMessage("API Error: ${e.message}")
