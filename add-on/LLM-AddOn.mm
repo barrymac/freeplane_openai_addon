@@ -282,7 +282,6 @@
 <attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/MessageLoader.groovy"/>
 <attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/ResponseParser.groovy"/>
 <attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/DependencyLoader.groovy"/>
-<attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/DialogHelper.groovy"/>
 <attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/NodeHelper.groovy"/>
 <attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/Exceptions.groovy"/>
 <attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/llm.jar"/>
@@ -489,7 +488,6 @@
 <node TEXT="MessageLoader.groovy" ID="ID_551718302" CREATED="1743816630921" MODIFIED="1743816630921"/>
 <node TEXT="ResponseParser.groovy" ID="ID_1739809892" CREATED="1743816630922" MODIFIED="1743816630922"/>
 <node TEXT="DependencyLoader.groovy" ID="ID_1442894888" CREATED="1743816630928" MODIFIED="1743816630928"/>
-<node TEXT="DialogHelper.groovy" ID="ID_1046826300" CREATED="1743816630934" MODIFIED="1743816630934"/>
 <node TEXT="NodeHelper.groovy" ID="ID_1309620952" CREATED="1743816630935" MODIFIED="1743816630935"/>
 <node TEXT="Exceptions.groovy" ID="ID_1312598981" CREATED="1743817255196" MODIFIED="1743817255196"/>
 <node TEXT="llm.jar" ID="ID_943135829" CREATED="1743859158919" MODIFIED="1743859162350"/>

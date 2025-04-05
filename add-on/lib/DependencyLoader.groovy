@@ -1,4 +1,6 @@
 // Helper class to centralize dependency loading
+import com.barrymac.freeplane.addons.llm.DialogHelperClass
+
 class DependencyLoaderClass {
     static Map loadDependencies(config, logger, ui) {
         def addonsDir = "${config.freeplaneUserDirectory}/addons/promptLlmAddOn"
@@ -28,9 +30,7 @@ class DependencyLoaderClass {
             ),
             
             // Add new ones
-            dialogHelper: new GroovyShell(classLoader).evaluate(
-                new File("${addonsDir}/lib/DialogHelper.groovy")
-            ),
+            dialogHelper: DialogHelperClass,
             
             nodeHelperUtils: new GroovyShell(classLoader).evaluate(
                 new File("${addonsDir}/lib/NodeHelper.groovy")
