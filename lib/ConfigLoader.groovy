@@ -3,11 +3,27 @@ class ConfigManager {
     static Map loadBaseConfig(config) {
         return [
             apiKey: config.getProperty('openai.key', ''),
-            model: config.getProperty('openai.gpt_model', 'gpt-3.5-turbo'),
-            maxTokens: config.getProperty('openai.max_response_length', 1000) as int,
+            model: config.getProperty('openai.gpt_model', 'gpt-4'),
+            maxTokens: config.getProperty('openai.max_response_length', 2000) as int,
             temperature: config.getProperty('openai.temperature', 0.7) as double,
             provider: config.getProperty('openai.api_provider', 'openrouter'),
-            systemMessageIndex: config.getProperty('openai.system_message_index', 0) as int
+            systemMessageIndex: config.getProperty('openai.system_message_index', 0) as int,
+            // Add available models with default list
+            availableModels: config.getProperty('openai.available_models', 
+                '''meta-llama/llama-3.2-1b-instruct
+                |deepseek/deepseek-r1-zero:free
+                |deepseek/deepseek-r1
+                |anthropic/claude-3-opus
+                |anthropic/claude-3-sonnet
+                |anthropic/claude-3-haiku
+                |openai/o3-mini
+                |openai/o3-mini-high
+                |google/gemini-2.5-pro-exp-03-25:free
+                |google/gemini-pro
+                |meta-llama/llama-3-70b-instruct
+                |gpt-3.5-turbo
+                |gpt-4'''.stripMargin().split('\n') as List
+            )
         ]
     }
     

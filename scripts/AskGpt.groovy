@@ -173,21 +173,11 @@ swingBuilder.edt { // edt method makes sure the GUI is built on the Event Dispat
                 }
                 c.gridx++
                 swingBuilder.panel(constraints: c, layout: new BorderLayout(), border: BorderFactory.createTitledBorder('Language Model')) {
-                    gptModelBox = comboBox(items: [
-                            'meta-llama/llama-3.2-1b-instruct',
-                            'deepseek/deepseek-r1-zero:free',
-                            'deepseek/deepseek-r1',
-                            'anthropic/claude-3-opus',
-                            'anthropic/claude-3-sonnet',
-                            'anthropic/claude-3-haiku',
-                            'openai/o3-mini',
-                            'openai/o3-mini-high',
-                            'google/gemini-2.5-pro-exp-03-25:free',
-                            'google/gemini-pro',
-                            'meta-llama/llama-3-70b-instruct',
-                            'gpt-3.5-turbo',
-                            'gpt-4',
-                    ], selectedItem: gptModel, prototypeDisplayValue: 'anthropic/claude-3-opus-12345')
+                    gptModelBox = comboBox(
+                        items: configMap.availableModels,
+                        selectedItem: gptModel,
+                        prototypeDisplayValue: configMap.availableModels.max { it.length() }
+                    )
                 }
                 c.gridx++
                 swingBuilder.panel(constraints: c, layout: new BorderLayout(), border: BorderFactory.createTitledBorder('API Provider')) {
