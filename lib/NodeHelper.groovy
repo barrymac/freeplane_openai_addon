@@ -1,7 +1,7 @@
 /**
  * Helper class for node operations
  */
-class NodeHelper {
+class NodeHelperClass {
     /**
      * Validates that exactly two connected nodes are selected
      * 
@@ -105,6 +105,6 @@ class ValidationException extends Exception {
 
 // Return the class and exception for use in scripts
 return [
-    NodeHelper: NodeHelper,
+    NodeHelper: NodeHelperClass,
     ValidationException: ValidationException
 ]

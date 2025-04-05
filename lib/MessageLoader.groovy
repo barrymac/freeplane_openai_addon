@@ -1,7 +1,7 @@
 /**
  * Helper class for loading and managing message templates
  */
-class MessageLoader {
+class MessageLoaderClass {
     /**
      * Loads message templates for node comparison
      * 
@@ -40,4 +40,4 @@ class MessageLoader {
 }
 
 // Return the class for use in scripts
-return MessageLoader
+return MessageLoaderClass
