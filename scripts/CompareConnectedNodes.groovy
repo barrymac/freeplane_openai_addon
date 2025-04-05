@@ -48,12 +48,12 @@ try {
         } else {
             java.awt.Desktop.desktop.browse(new URI("https://platform.openai.com/account/api-keys"))
         }
-        throw new Exception("API key is missing. Please configure it first via the LLM menu.")
+        throw new deps.exceptions("API key is missing. Please configure it first via the LLM menu.")
     }
 
     // Check if templates are loaded
     if (systemMessageTemplate.isEmpty() || compareNodesUserMessageTemplate.isEmpty()) {
-        throw new Exception("System message template or the dedicated compareNodesUserMessage.txt is missing or empty. Please check configuration or files.")
+        throw new deps.exceptions("System message template or the dedicated compareNodesUserMessage.txt is missing or empty. Please check configuration or files.")
     }
 
     // 2. Get Selected Nodes and Validate Connection (Use NodeHelper class from deps)
@@ -199,7 +199,7 @@ try {
     workerThread.setContextClassLoader(this.class.classLoader)
     workerThread.start()
 
-} catch (Exception e) {
+} catch (deps.exceptions e) {
     // Handle expected validation errors
     ui.errorMessage(e.message)
 } catch (Exception e) {

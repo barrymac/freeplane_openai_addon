@@ -4,3 +4,6 @@ class ValidationException extends Exception {
         super(message) 
     }
 }
+
+// Explicitly return the class definition
+return ValidationException
