@@ -19,10 +19,12 @@ String defaultUserMessagesFilePath = "${config.freeplaneUserDirectory}/addons/pr
 String defaultSystemMessages = new File(defaultSystemMessagesFilePath).text.trim()
 String userSystemMessages = new File(defaultUserMessagesFilePath).text.trim()
 
-// Load the message expander function from external file
-def expandMessage = new GroovyShell(this.class.classLoader).evaluate(
+// Load the message expander *map* from external file
+def expandMessageLoader = new GroovyShell(this.class.classLoader).evaluate(
         new File("${config.freeplaneUserDirectory}/addons/promptLlmAddOn/lib/MessageExpander.groovy")
 )
+// Extract the actual expandMessage function from the map
+def expandMessageFunction = expandMessageLoader.expandMessage
 
 // Load the branch generator function from external file
 def createBranchGenerator = new GroovyShell(this.class.classLoader).evaluate(
@@ -209,8 +211,8 @@ swingBuilder.edt { // edt method makes sure the GUI is built on the Event Dispat
             swingBuilder.panel(constraints: constraints) {
                 def askGptButton = swingBuilder.button(constraints: c, action: swingBuilder.action(name: 'Prompt LLM') {
                     generateBranches(String.valueOf(apiKeyField.password),
-                            systemMessageArea.textArea.text,
-                            expandMessage(userMessageArea.textArea.text, c.selected),
+                            systemMessageArea.textArea.text, // Call the extracted function
+                            expandMessageFunction(userMessageArea.textArea.text, c.selected),
                             gptModelBox.selectedItem,
                             responseLengthField.value,
                             temperatureSlider.value / 100.0,
