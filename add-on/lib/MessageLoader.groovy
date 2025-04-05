@@ -49,5 +49,8 @@ class MessageLoaderClass {
 
 // Return the class for use in scripts
 return [
-    MessageLoaderClass: MessageLoaderClass // Keep existing export if needed elsewhere
-] + MessageLoaderClass // Add static methods directly to the map
+    MessageLoaderClass: MessageLoaderClass, // Keep existing export if needed elsewhere
+    // Explicitly export static methods using method pointers
+    loadDefaultMessages: MessageLoaderClass.&loadDefaultMessages,
+    loadComparisonMessages: MessageLoaderClass.&loadComparisonMessages
+]
