@@ -48,8 +48,8 @@ def make_api_call = deps.apiCaller.make_api_call
 def getBindingMap = deps.messageExpander.getBindingMap
 def parseAnalysis = deps.responseParser.&parseAnalysis
 def DialogHelper = deps.dialogHelper
-def NodeHelper = deps.nodeHelperUtils
-def addAnalysisToNodeAsBranch = deps.nodeHelperUtils.NodeHelper.&addAnalysisToNodeAsBranch
+def NodeHelper = deps.nodeHelperUtils // Get the NodeHelperClass directly
+def addAnalysisToNodeAsBranch = NodeHelper.&addAnalysisToNodeAsBranch // Get method reference from the class
 def MessageLoader = deps.messageLoader
 def addModelTagRecursively = deps.nodeTagger.addModelTagRecursively
 
