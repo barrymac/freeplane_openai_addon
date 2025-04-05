@@ -128,24 +128,7 @@ try {
             def dimensionPayload = [
                 'model': model,
                 'messages': [
-                    [role: 'system', content: '''\
-                        Generate EXACTLY ONE comparative dimension with TWO poles based on the user's focus. 
-                        STRICT FORMAT REQUIREMENTS:
-                        1. Use format: "Pole 1: [2-3 word concept]; Pole 2: [2-3 word concept]"
-                        2. No explanations or additional text
-                        3. Poles must be contrasting/opposing concepts
-                        4. Use semicolon as separator
-                        
-                        Examples of VALID formats:
-                        - Pole 1: Environmental Impact; Pole 2: Economic Viability
-                        - Pole 1: Short-term Costs; Pole 2: Long-term Benefits
-                        - Pole 1: Technical Feasibility; Pole 2: User Accessibility
-                        
-                        Invalid examples:
-                        - Here's the comparison: Environmental vs Economic (missing "Pole X" labels)
-                        - First aspect: Cost, Second aspect: Quality (wrong labels)
-                        - Pole 1: Sustainability (only one pole)
-                        '''.stripIndent()],
+                    [role: 'system', content: messages.dimensionSystemTemplate],
                     [role: 'user', content: "Create a focused comparative dimension for analyzing: ${comparisonType}"]
                 ],
                 'temperature': 0.2,
