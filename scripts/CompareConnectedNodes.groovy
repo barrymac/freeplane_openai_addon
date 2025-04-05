@@ -6,11 +6,32 @@ import java.awt.*
 
 // Helper function to parse generated dimension from LLM response
 def parseGeneratedDimension(String response) {
-    def match = (response =~ /Pole 1: (.+?)\s*;\s*Pole 2: (.+)/)
-    if (match) {
-        return [match[0][1].trim(), match[0][2].trim()]
+    // More flexible regex pattern
+    def pattern = ~/(?i)(Pole\s*1:\s*([^;]+?)\s*;\s*Pole\s*2:\s*([^\n]+?))\s*$/
+    def matcher = pattern.matcher(response)
+    
+    if (matcher.find()) {
+        def pole1 = matcher[0][2].trim().replaceAll(/["']/, '')
+        def pole2 = matcher[0][3].trim().replaceAll(/["']/, '')
+        return [pole1, pole2]
     }
-    throw new Exception("Invalid dimension format. Expected 'Pole 1: X; Pole 2: Y'")
+    
+    // Try alternative patterns if initial fails
+    def altPatterns = [
+        ~/([A-Z][\w\s]+?)\s*\/\/\s*([A-Z][\w\s]+)/,
+        ~/(.+)\s+vs\s+(.+)/,
+        ~/^([^;]+);([^;]+)$/
+    ]
+    
+    for (p in altPatterns) {
+        matcher = p.matcher(response)
+        if (matcher.find() && matcher.groupCount() >= 2) {
+            return [matcher[0][1].trim(), matcher[0][2].trim()]
+        }
+    }
+    
+    throw new Exception("""Invalid dimension format. Received: '$response'
+        Expected format: 'Pole 1: [concept]; Pole 2: [concept]'""")
 }
 
 // --- Load Core Dependencies ---
@@ -103,24 +124,62 @@ try {
         String errorMessage = null
 
         try {
-            // --- Generate Comparative Dimension ---
+            // --- Generate Comparative Dimension with Validation ---
             def dimensionPayload = [
                 'model': model,
                 'messages': [
-                    [role: 'system', content: '''Generate a 2-pole comparative dimension based on the input.
-Respond ONLY with: "Pole 1: [2-3 words]; Pole 2: [2-3 words]"'''],
-                    [role: 'user', content: "Comparison focus: ${comparisonType}"]
+                    [role: 'system', content: '''\
+                        Generate EXACTLY ONE comparative dimension with TWO poles based on the user's focus. 
+                        STRICT FORMAT REQUIREMENTS:
+                        1. Use format: "Pole 1: [2-3 word concept]; Pole 2: [2-3 word concept]"
+                        2. No explanations or additional text
+                        3. Poles must be contrasting/opposing concepts
+                        4. Use semicolon as separator
+                        
+                        Examples of VALID formats:
+                        - Pole 1: Environmental Impact; Pole 2: Economic Viability
+                        - Pole 1: Short-term Costs; Pole 2: Long-term Benefits
+                        - Pole 1: Technical Feasibility; Pole 2: User Accessibility
+                        
+                        Invalid examples:
+                        - Here's the comparison: Environmental vs Economic (missing "Pole X" labels)
+                        - First aspect: Cost, Second aspect: Quality (wrong labels)
+                        - Pole 1: Sustainability (only one pole)
+                        '''.stripIndent()],
+                    [role: 'user', content: "Create a focused comparative dimension for analyzing: ${comparisonType}"]
                 ],
-                'temperature': 0.3,
-                'max_tokens': 50
+                'temperature': 0.2,
+                'max_tokens': 100
             ]
             
             logger.info("Generating comparative dimension for: ${comparisonType}")
-            def dimensionResponse = make_api_call(provider, apiKey, dimensionPayload)
-            def dimensionContent = new JsonSlurper().parseText(dimensionResponse)?.choices[0]?.message?.content
-            def (pole1, pole2) = parseGeneratedDimension(dimensionContent)
-            def comparativeDimension = "${pole1} vs ${pole2}"
-            logger.info("Generated comparative dimension: ${comparativeDimension}")
+            
+            def maxRetries = 2
+            def attempts = 0
+            def comparativeDimension = null
+            def dimensionContent = null
+            
+            while (attempts <= maxRetries) {
+                try {
+                    def dimensionResponse = make_api_call(provider, apiKey, dimensionPayload)
+                    dimensionContent = new JsonSlurper().parseText(dimensionResponse)?.choices[0]?.message?.content
+                    def (pole1, pole2) = parseGeneratedDimension(dimensionContent)
+                    comparativeDimension = "${pole1} vs ${pole2}"
+                    logger.info("Generated comparative dimension: ${comparativeDimension}")
+                    break
+                } catch (Exception e) {
+                    attempts++
+                    if (attempts > maxRetries) throw e
+                    
+                    // Add correction attempt
+                    dimensionPayload.messages.add([role: 'assistant', content: dimensionContent])
+                    dimensionPayload.messages.add([role: 'user', content: """
+                        Format was incorrect. Please STRICTLY follow:
+                        Pole 1: [2-3 words]; Pole 2: [2-3 words]
+                        No other text. Just the poles in this format.
+                    """])
+                }
+            }
             
             // --- Prepare Prompts with Generated Dimension ---
             logger.info("CompareNodes: Final userMessageTemplate for expansion:\n---\n${compareNodesUserMessageTemplate}\n---")
@@ -219,8 +278,8 @@ Respond ONLY with: "Pole 1: [2-3 words]; Pole 2: [2-3 words]"'''],
             }
 
         } catch (Exception e) {
-            logger.error("LLM Comparison failed", e as Throwable)
-            errorMessage = "LLM Comparison Error: ${e.message}"
+            logger.error("LLM Comparison failed: ${e.message}", e as Throwable)
+            errorMessage = "Comparison Error: ${e.message.split('\n').head()}"
             // Ensure dialog is closed and error shown on EDT
             SwingUtilities.invokeLater {
                 dialog.dispose()
