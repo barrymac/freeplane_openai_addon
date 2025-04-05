@@ -72,13 +72,13 @@ static def createApiCaller(closures) {
                 try {
                     def errorStream = post.getErrorStream()
                     if (errorStream) {
-                        logger.error("Error response body: ${errorStream.getText('UTF-8')}")
+                        logger.warn("Error response body: ${errorStream.getText('UTF-8')}")
                     }
                 } catch (Exception ignored) {}
             }
 
         } catch (Exception e) {
-            logger.error("Exception during API call to ${provider}".toString(), e as Throwable)
+            logger.warn("Exception during API call to ${provider}".toString(), e as Throwable)
             ui.errorMessage("Network or processing error during API call: ${e.message}")
         }
 

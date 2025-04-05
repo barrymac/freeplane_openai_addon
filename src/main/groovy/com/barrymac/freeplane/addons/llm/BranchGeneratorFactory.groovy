@@ -97,7 +97,7 @@ class BranchGeneratorFactory {
                         }
                     } catch (Exception e) {
                         // Ensure message is String and exception is Throwable
-                        logger.error("API call failed".toString(), (Throwable)e)
+                        logger.warn("API call failed".toString(), (Throwable)e)
                         SwingUtilities.invokeLater {
                             dialog.dispose()
                             ui.errorMessage("API Error: ${e.message}")

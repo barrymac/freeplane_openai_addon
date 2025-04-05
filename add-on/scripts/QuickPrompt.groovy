@@ -57,6 +57,6 @@ try {
     def expandedUserMessage = expandMessage(userMessageTemplate, c.selected)
     generateBranches(apiKey, systemMessage, expandedUserMessage, model, maxTokens, temperature, provider)
 } catch (Exception e) {
-    logger.error("Quick prompt failed", e)
+    logger.warn("Quick prompt failed", e)
     ui.errorMessage("Quick prompt error: ${e.message}")
 }
