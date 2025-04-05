@@ -3,6 +3,7 @@ package com.barrymac.freeplane.addons.llm
 // Helper class to centralize dependency loading
 import com.barrymac.freeplane.addons.llm.MessageFileHandler
 import com.barrymac.freeplane.addons.llm.ResponseParserClass
+import com.barrymac.freeplane.addons.llm.NodeTagger
 import com.barrymac.freeplane.addons.llm.NodeHelperClass
 
 class DependencyLoaderClass {
@@ -25,9 +26,8 @@ class DependencyLoaderClass {
             messageFileHandler: [ loadMessagesFromFile: MessageFileHandler.&loadMessagesFromFile,
                                   saveMessagesToFile: MessageFileHandler.&saveMessagesToFile ],
             
-            nodeTagger: new GroovyShell(classLoader).evaluate(
-                new File("${addonsDir}/lib/NodeTagger.groovy")
-            ),
+            // Provide NodeTagger static method reference
+            nodeTagger: NodeTagger.&addModelTagRecursively,
             
             // Provide ResponseParserClass directly
             responseParser: ResponseParserClass,

@@ -51,7 +51,7 @@ def DialogHelper = deps.dialogHelper
 def NodeHelper = deps.nodeHelperUtils // Get the NodeHelperClass directly
 def addAnalysisToNodeAsBranch = NodeHelper.&addAnalysisToNodeAsBranch // Get method reference from the class
 def MessageLoader = deps.messageLoader
-def addModelTagRecursively = deps.nodeTagger.addModelTagRecursively
+def addModelTagRecursively = deps.nodeTagger
 
 // Load configuration using ConfigManager
 def configMap = ConfigManager.loadBaseConfig(config)
