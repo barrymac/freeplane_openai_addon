@@ -259,7 +259,8 @@ try {
             }
 
         } catch (Exception e) {
-            logger.error("LLM Comparison failed: ${e.message}".toString(), e as Throwable)
+            // Ensure message is String and exception is Throwable
+            logger.error("LLM Comparison failed: ${e.message}".toString(), (Throwable)e)
             errorMessage = "Comparison Error: ${e.message.split('\n').head()}"
             // Ensure dialog is closed and error shown on EDT
             SwingUtilities.invokeLater {
@@ -274,5 +275,6 @@ try {
 } catch (Exception e) {
     // Handle all errors with a simple message
     ui.errorMessage(e.message)
-    logger.error("Error in CompareConnectedNodes: ${e.message}", e as Throwable)
+    // Ensure message is String and exception is Throwable
+    logger.error("Error in CompareConnectedNodes: ${e.message}".toString(), (Throwable)e)
 }
