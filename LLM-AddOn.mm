@@ -1,6 +1,6 @@
 <map version="freeplane 1.12.1">
 <!--To view this file, download free mind mapping software Freeplane from https://www.freeplane.org -->
-<node TEXT="Prompt-LLM-AddOn" FOLDED="false" ID="ID_696401721" CREATED="1685111823904" MODIFIED="1743739925471" LINK="https://github.com/barrymac/freeplane_openai_addon" BACKGROUND_COLOR="#97c7dc" STYLE="oval" MAX_WIDTH="20 cm">
+<node TEXT="Prompt-LLM-AddOn" FOLDED="false" ID="ID_696401721" CREATED="1685111823904" MODIFIED="1743822878515" LINK="https://github.com/barrymac/freeplane_openai_addon" BACKGROUND_COLOR="#97c7dc" STYLE="oval" MAX_WIDTH="20 cm">
 <font SIZE="16" BOLD="true" ITALIC="true"/>
 <hook NAME="MapStyle">
     <properties show_icon_for_attributes="true" edgeColorConfiguration="#808080ff,#ff0000ff,#0000ffff,#00ff00ff,#ff00ffff,#00ffffff,#7c0000ff,#00007cff,#007c00ff,#7c007cff,#007c7cff,#7c7c00ff" mapUsesOwnSaveOptions="true" save_modification_times="false" show_tags="UNDER_NODES" save_last_visited_node="default" show_note_icons="true" associatedTemplateLocation="template:/standard-1.6.mm" save_folding="save_folding_if_map_is_changed" fit_to_viewport="false" show_icons="BESIDE_NODES"/>
@@ -75,7 +75,7 @@
 <hook NAME="AutomaticEdgeColor" COUNTER="18" RULE="ON_BRANCH_CREATION"/>
 <attribute_layout NAME_WIDTH="112.61538 pt" VALUE_WIDTH="333.23076 pt"/>
 <attribute NAME="name" VALUE="promptLlmAddOn"/>
-<attribute NAME="version" VALUE="v0.4.0"/>
+<attribute NAME="version" VALUE="v0.4.1"/>
 <attribute NAME="author" VALUE="barry, dpolivaev"/>
 <attribute NAME="freeplaneVersionFrom" VALUE="v1.11.3" OBJECT="org.freeplane.features.format.FormattedObject|java.lang.String&amp;#x7c;v1.11.3|number:decimal:#0.####"/>
 <attribute NAME="freeplaneVersionTo" VALUE=""/>
@@ -250,7 +250,7 @@
 <attribute NAME="addons.${name}.compareConnectedNodes" VALUE="Compare Connected Nodes"/>
 </node>
 </node>
-<node TEXT="deinstall" POSITION="top_or_left" ID="ID_1927303474" CREATED="1685111823977" MODIFIED="1743044537834">
+<node TEXT="deinstall" POSITION="top_or_left" ID="ID_1927303474" CREATED="1685111823977" MODIFIED="1743817256629">
 <edge COLOR="#00007c"/>
 <richcontent TYPE="NOTE">
 <html>
@@ -281,6 +281,13 @@
 <attribute NAME="delete" VALUE="${installationbase}/addons/${name}/scripts/CompareConnectedNodes.groovy"/>
 <attribute NAME="delete" VALUE="${installationbase}/resources/images/promptLlmAddOn.svg"/>
 <attribute NAME="delete" VALUE="${installationbase}/resources/images/promptLlmAddOn-icon.svg"/>
+<attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/ConfigLoader.groovy"/>
+<attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/MessageLoader.groovy"/>
+<attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/ResponseParser.groovy"/>
+<attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/DependencyLoader.groovy"/>
+<attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/DialogHelper.groovy"/>
+<attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/NodeHelper.groovy"/>
+<attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/Exceptions.groovy"/>
 </node>
 <node TEXT="scripts" POSITION="bottom_or_right" ID="ID_684917236" CREATED="1685111823977" MODIFIED="1742834859980">
 <edge COLOR="#007c00"/>
@@ -482,6 +489,13 @@
 <node TEXT="defaultSystemMessages.txt" ID="ID_1170696227" CREATED="1742845172678" MODIFIED="1742845172678"/>
 <node TEXT="compareNodesUserMessage.txt" ID="ID_COMPARE_USER_MSG" CREATED="1743739999999" MODIFIED="1743739999999"/>
 <node TEXT="NodeTagger.groovy" ID="ID_NODE_TAGGER" CREATED="1743814000000" MODIFIED="1743814000000"/>
+<node TEXT="ConfigLoader.groovy" ID="ID_539433532" CREATED="1743816630916" MODIFIED="1743816630916"/>
+<node TEXT="MessageLoader.groovy" ID="ID_551718302" CREATED="1743816630921" MODIFIED="1743816630921"/>
+<node TEXT="ResponseParser.groovy" ID="ID_1739809892" CREATED="1743816630922" MODIFIED="1743816630922"/>
+<node TEXT="DependencyLoader.groovy" ID="ID_1442894888" CREATED="1743816630928" MODIFIED="1743816630928"/>
+<node TEXT="DialogHelper.groovy" ID="ID_1046826300" CREATED="1743816630934" MODIFIED="1743816630934"/>
+<node TEXT="NodeHelper.groovy" ID="ID_1309620952" CREATED="1743816630935" MODIFIED="1743816630935"/>
+<node TEXT="Exceptions.groovy" ID="ID_1312598981" CREATED="1743817255196" MODIFIED="1743817255196"/>
 </node>
 <node TEXT="resources" POSITION="bottom_or_right" ID="ID_RESOURCES" CREATED="1742836000000" MODIFIED="1742836000000">
 <edge COLOR="#7c7c00"/>

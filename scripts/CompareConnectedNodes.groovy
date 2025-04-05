@@ -1,3 +1,4 @@
+import groovy.json.JsonSlurper
 import groovy.swing.SwingBuilder
 import org.freeplane.features.map.NodeModel
 import javax.swing.*
@@ -151,7 +152,7 @@ try {
             }
 
             // --- Process Responses ---
-            def jsonSlurper = new groovy.json.JsonSlurper()
+            def jsonSlurper = new JsonSlurper()
 
             def sourceJsonResponse = jsonSlurper.parseText(sourceApiResponse)
             def sourceResponseContent = sourceJsonResponse?.choices[0]?.message?.content

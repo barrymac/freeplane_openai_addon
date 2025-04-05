@@ -15,7 +15,7 @@ def createApiCaller(closures) {
             apiUrl = 'https://openrouter.ai/api/v1/chat/completions'
             headers["Authorization"] = "Bearer " + apiKey
             // Add OpenRouter specific headers
-            headers["HTTP-Referer"] = "${config.freeplaneUserDirectory}"
+            headers["HTTP-Referer"] = "https://github.com/barrymac/freeplane_openai_addon"
             headers["X-Title"] = "Freeplane GPT AddOn"
         } else {
             ui.errorMessage("Unsupported API provider: ${provider}")
