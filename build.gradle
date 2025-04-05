@@ -24,11 +24,14 @@ apply plugin: 'org.freeplane.gradle-freeplane-plugin'
 //    }
 //}
 
+def freeplaneVersion = "1.12.9"
+def freeplaneBasePath = System.getenv('FREEPLANE_HOME') ?: "${System.getProperty('user.home')}/bin/freeplane-${freeplaneVersion}/"
+
 freeplane {
     // mandatory, freeplane installation directory.
     // (Freeplane.app directory on MacOS)
     // In this example it is taken from system environment.
-    freeplaneDirectory = "/home/barry/bin/freeplane-1.12.9/"
+    freeplaneDirectory = freeplaneBasePath
 
     // recommended, freeplane user setting directory.
     // It should be specified without the version number suffix.
