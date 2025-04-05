@@ -268,28 +268,13 @@
 <attribute NAME="delete" VALUE="${installationbase}/addons/${name}/scripts/AskGPT.groovy"/>
 <attribute NAME="delete" VALUE="${installationbase}/images/${name}.svg"/>
 <attribute NAME="delete" VALUE="${installationbase}/images/${name}-icon.svg"/>
-<attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/MessageExpander.groovy"/>
-<attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/defaultSystemMessages.txt"/>
-<attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/BranchGenerator.groovy"/>
-<attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/ApiCaller.groovy"/>
-<attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/MessageFileHandler.groovy"/>
 <attribute NAME="delete" VALUE="${installationbase}/addons/${name}/scripts/AskGpt.groovy"/>
 <attribute NAME="delete" VALUE="${installationbase}/addons/${name}/scripts/QuickPrompt.groovy"/>
-<attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/NodeTagger.groovy"/>
 <attribute NAME="delete" VALUE="${installationbase}/addons/${name}/scripts/CompareConnectedNodes.groovy"/>
 <attribute NAME="delete" VALUE="${installationbase}/resources/images/promptLlmAddOn.svg"/>
 <attribute NAME="delete" VALUE="${installationbase}/resources/images/promptLlmAddOn-icon.svg"/>
-<attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/ConfigLoader.groovy"/>
-<attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/generateComparativeDimensionSystem.txt"/>
-<attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/compareNodesSystem.txt"/>
-<attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/MessageLoader.groovy"/>
-<attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/ResponseParser.groovy"/>
-<attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/DependencyLoader.groovy"/>
-<attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/DialogHelper.groovy"/>
-<attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/NodeHelper.groovy"/>
-<attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/Exceptions.groovy"/>
-<attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/compareNodesSystem.txt"/>
-<attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/compareNodesUserMessage.txt"/>
+<attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/llm.jar"/>
+<attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib"/>
 </node>
 <node TEXT="scripts" POSITION="bottom_or_right" ID="ID_684917236" CREATED="1685111823977" MODIFIED="1742834859980">
 <edge COLOR="#007c00"/>
@@ -483,21 +468,6 @@
     </p>
   </body>
 </html></richcontent>
-<node TEXT="MessageExpander.groovy" ID="ID_MESSAGE_EXPANDER" CREATED="1742845172650" MODIFIED="1742845172650"/>
-<node TEXT="BranchGenerator.groovy" ID="ID_BRANCH_GENERATOR" CREATED="1742845172655" MODIFIED="1742845172655"/>
-<node TEXT="ApiCaller.groovy" ID="ID_API_CALLER" CREATED="1742845172660" MODIFIED="1742845172660"/>
-<node TEXT="MessageFileHandler.groovy" ID="ID_MSG_FILE_HANDLER" CREATED="1742845172665" MODIFIED="1742845172665"/>
-<node TEXT="NodeTagger.groovy" ID="ID_NODE_TAGGER" CREATED="1743814000000" MODIFIED="1743814000000"/>
-<node TEXT="ConfigLoader.groovy" ID="ID_539433532" CREATED="1743816630916" MODIFIED="1743816630916"/>
-<node TEXT="MessageLoader.groovy" ID="ID_551718302" CREATED="1743816630921" MODIFIED="1743816630921"/>
-<node TEXT="ResponseParser.groovy" ID="ID_1739809892" CREATED="1743816630922" MODIFIED="1743816630922"/>
-<node TEXT="DependencyLoader.groovy" ID="ID_1442894888" CREATED="1743816630928" MODIFIED="1743816630928"/>
-<node TEXT="DialogHelper.groovy" ID="ID_1046826300" CREATED="1743816630934" MODIFIED="1743816630934"/>
-<node TEXT="NodeHelper.groovy" ID="ID_1309620952" CREATED="1743816630935" MODIFIED="1743816630935"/>
-<node TEXT="Exceptions.groovy" ID="ID_1312598981" CREATED="1743817255196" MODIFIED="1743817255196"/>
-<node TEXT="compareNodesSystem.txt" ID="ID_265074119" CREATED="1743857677424" MODIFIED="1743857677424"/>
-<node TEXT="generateComparativeDimensionSystem.txt" ID="ID_193093025" CREATED="1743857677427" MODIFIED="1743857677427"/>
-<node TEXT="compareNodesUserMessage.txt" ID="ID_19038797" CREATED="1743857677428" MODIFIED="1743857677428"/>
 <node TEXT="llm.jar" ID="ID_943135829" CREATED="1743859158919" MODIFIED="1743859162350"/>
 </node>
 <node TEXT="resources" POSITION="bottom_or_right" ID="ID_RESOURCES" CREATED="1742836000000" MODIFIED="1742836000000">
