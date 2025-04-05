@@ -105,7 +105,7 @@ def parseAnalysis(String analysisText) {
 /**
  * Formats the analysis map into an indented string and adds it as a branch.
  */
-def addAnalysisToNodeAsBranch(def nodeProxy, Map analysisMap, String comparisonType) { // Accept NodeProxy
+def addAnalysisToNodeAsBranch(def nodeProxy, Map analysisMap, String comparisonType, def logger) { // Add logger parameter
     logger.info("Attempting to add analysis to node: ${nodeProxy.text}")
     if (analysisMap.isEmpty()) {
         logger.warn("No analysis data to add for node: ${nodeProxy.text}")
