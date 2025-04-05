@@ -24,12 +24,12 @@ class MessageLoaderClass {
      */
     static Map loadComparisonMessages(config) {
         def addonsDir = "${config.freeplaneUserDirectory}/addons/promptLlmAddOn"
-        def promptsPath = "${addonsDir}/lib/prompts"
+        def libPath = "${addonsDir}/lib"
         
         return [
-            systemTemplate: loadTemplate("${promptsPath}/compareNodesSystem.txt"),
-            userTemplate: loadTemplate("${promptsPath}/compareNodesUserMessage.txt"),
-            dimensionSystemTemplate: loadTemplate("${promptsPath}/generateComparativeDimensionSystem.txt")
+            systemTemplate: loadTemplate("${libPath}/compareNodesSystem.txt"),
+            userTemplate: loadTemplate("${libPath}/compareNodesUserMessage.txt"),
+            dimensionSystemTemplate: loadTemplate("${libPath}/generateComparativeDimensionSystem.txt")
         ]
     }
 }
