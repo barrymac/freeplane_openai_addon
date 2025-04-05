@@ -250,7 +250,7 @@
 <attribute NAME="addons.${name}.compareConnectedNodes" VALUE="Compare Connected Nodes"/>
 </node>
 </node>
-<node TEXT="deinstall" POSITION="top_or_left" ID="ID_1927303474" CREATED="1685111823977" MODIFIED="1743817256629">
+<node TEXT="deinstall" POSITION="top_or_left" ID="ID_1927303474" CREATED="1685111823977" MODIFIED="1743857685913">
 <edge COLOR="#00007c"/>
 <richcontent TYPE="NOTE">
 <html>
@@ -290,6 +290,9 @@
 <attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/DialogHelper.groovy"/>
 <attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/NodeHelper.groovy"/>
 <attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/Exceptions.groovy"/>
+<attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/compareNodesSystem.txt"/>
+<attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/generateComparativeDimensionSystem.txt"/>
+<attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/compareNodesUserMessage.txt"/>
 </node>
 <node TEXT="scripts" POSITION="bottom_or_right" ID="ID_684917236" CREATED="1685111823977" MODIFIED="1742834859980">
 <edge COLOR="#007c00"/>
@@ -489,7 +492,6 @@
 <node TEXT="MessageFileHandler.groovy" ID="ID_MSG_FILE_HANDLER" CREATED="1742845172665" MODIFIED="1742845172665"/>
 <node TEXT="defaultUserMessages.txt" ID="ID_369580043" CREATED="1742845172659" MODIFIED="1742845172659"/>
 <node TEXT="defaultSystemMessages.txt" ID="ID_1170696227" CREATED="1742845172678" MODIFIED="1742845172678"/>
-<node TEXT="compareNodesUserMessage.txt" ID="ID_COMPARE_USER_MSG" CREATED="1743739999999" MODIFIED="1743739999999"/>
 <node TEXT="NodeTagger.groovy" ID="ID_NODE_TAGGER" CREATED="1743814000000" MODIFIED="1743814000000"/>
 <node TEXT="ConfigLoader.groovy" ID="ID_539433532" CREATED="1743816630916" MODIFIED="1743816630916"/>
 <node TEXT="MessageLoader.groovy" ID="ID_551718302" CREATED="1743816630921" MODIFIED="1743816630921"/>
@@ -498,6 +500,9 @@
 <node TEXT="DialogHelper.groovy" ID="ID_1046826300" CREATED="1743816630934" MODIFIED="1743816630934"/>
 <node TEXT="NodeHelper.groovy" ID="ID_1309620952" CREATED="1743816630935" MODIFIED="1743816630935"/>
 <node TEXT="Exceptions.groovy" ID="ID_1312598981" CREATED="1743817255196" MODIFIED="1743817255196"/>
+<node TEXT="compareNodesSystem.txt" ID="ID_265074119" CREATED="1743857677424" MODIFIED="1743857677424"/>
+<node TEXT="generateComparativeDimensionSystem.txt" ID="ID_193093025" CREATED="1743857677427" MODIFIED="1743857677427"/>
+<node TEXT="compareNodesUserMessage.txt" ID="ID_19038797" CREATED="1743857677428" MODIFIED="1743857677428"/>
 </node>
 <node TEXT="resources" POSITION="bottom_or_right" ID="ID_RESOURCES" CREATED="1742836000000" MODIFIED="1742836000000">
 <edge COLOR="#7c7c00"/>
@@ -524,6 +529,8 @@
     </p>
   </body>
 </html></richcontent>
+<node TEXT="defaultUserMessages.txt" ID="ID_1947158145" CREATED="1742845172659" MODIFIED="1742845172659"/>
+<node TEXT="defaultSystemMessages.txt" ID="ID_10935479" CREATED="1742845172678" MODIFIED="1742845172678"/>
 </node>
 <node TEXT="zips" POSITION="bottom_or_right" ID="ID_169986368" CREATED="1685111823978" MODIFIED="1685111823978">
 <edge COLOR="#007c7c"/>
