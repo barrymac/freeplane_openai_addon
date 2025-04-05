@@ -1,5 +1,5 @@
 // Helper class to centralize configuration loading
-class ConfigLoader {
+class ConfigManager {
     static Map loadBaseConfig(config) {
         return [
             apiKey: config.getProperty('openai.key', ''),
@@ -17,4 +17,4 @@ class ConfigLoader {
 }
 
 // Return the class for use in scripts
-return ConfigLoader
+return ConfigManager

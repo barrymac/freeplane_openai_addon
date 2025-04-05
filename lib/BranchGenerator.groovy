@@ -17,8 +17,8 @@ def createGenerateBranches(closures) {
         def addonsDir = closures.addonsDir // Get add-on directory from closures
 
         try {
-            // Load dependencies using our new structure
-            def configLoader = new GroovyShell(this.class.classLoader).evaluate(
+            // Load configuration manager
+            def ConfigManager = new GroovyShell(this.class.classLoader).evaluate(
                 new File("${addonsDir}/lib/ConfigLoader.groovy")
             )
             

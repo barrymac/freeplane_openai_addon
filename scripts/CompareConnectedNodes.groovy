@@ -7,11 +7,11 @@ import java.awt.*
 def addonsDir = "${config.freeplaneUserDirectory}/addons/promptLlmAddOn"
 
 // Load the ConfigLoader
-def configLoader = new GroovyShell(this.class.classLoader).evaluate(
+def ConfigManager = new GroovyShell(this.class.classLoader).evaluate(
     new File("${addonsDir}/lib/ConfigLoader.groovy")
 )
 // Get configuration values
-def configMap = configLoader.loadBaseConfig(config)
+def configMap = ConfigManager.loadBaseConfig(config)
 def apiKey = configMap.apiKey
 def model = configMap.model
 def maxTokens = configMap.maxTokens
