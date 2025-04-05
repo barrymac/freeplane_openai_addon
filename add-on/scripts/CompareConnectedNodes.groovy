@@ -1,3 +1,4 @@
+import com.barrymac.freeplane.addons.llm.DependencyLoaderClass
 import groovy.json.JsonSlurper
 import groovy.text.SimpleTemplateEngine
 
@@ -36,7 +37,6 @@ def parseGeneratedDimension(String response) {
 
 // --- Load Core Dependencies ---
 // Import the compiled DependencyLoaderClass
-import com.barrymac.freeplane.addons.llm.DependencyLoaderClass
 
 // Load all dependencies
 // Call static method directly
