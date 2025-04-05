@@ -1,13 +1,12 @@
 import groovy.swing.SwingBuilder
 import javax.swing.JOptionPane
 
-// Load DependencyLoader first
-def addonsDir = "${config.freeplaneUserDirectory}/addons/promptLlmAddOn"
-def dependencyLoader = new GroovyShell(this.class.classLoader).evaluate(
-    new File("${addonsDir}/lib/DependencyLoader.groovy")
-)
+// Import the compiled DependencyLoaderClass
+import com.barrymac.freeplane.addons.llm.DependencyLoaderClass
+
 // Load all dependencies
-def deps = dependencyLoader.loadDependencies(config, logger, ui)
+// Call static method directly
+def deps = DependencyLoaderClass.loadDependencies(config, logger, ui)
 
 // Extract needed functions/classes from deps
 def ConfigManager = deps.configManager
@@ -16,6 +15,7 @@ def loadMessagesFromFile = deps.messageFileHandler.loadMessagesFromFile
 def loadDefaultMessages = deps.messageLoader.loadDefaultMessages // Get the new loader function
 
 // Load the branch generator function
+def addonsDir = ConfigManager.getAddonsDir(config) // Get addonsDir via ConfigManager
 def createBranchGenerator = new GroovyShell(this.class.classLoader).evaluate(
     new File("${addonsDir}/lib/BranchGenerator.groovy")
 )

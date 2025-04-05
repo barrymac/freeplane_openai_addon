@@ -35,14 +35,12 @@ def parseGeneratedDimension(String response) {
 }
 
 // --- Load Core Dependencies ---
-def addonsDir = "${config.freeplaneUserDirectory}/addons/promptLlmAddOn"
+// Import the compiled DependencyLoaderClass
+import com.barrymac.freeplane.addons.llm.DependencyLoaderClass
 
-// Load DependencyLoader first
-def dependencyLoader = new GroovyShell(this.class.classLoader).evaluate(
-    new File("${addonsDir}/lib/DependencyLoader.groovy")
-)
 // Load all dependencies
-def deps = dependencyLoader.loadDependencies(config, logger, ui)
+// Call static method directly
+def deps = DependencyLoaderClass.loadDependencies(config, logger, ui)
 
 // Extract needed functions/classes from deps
 def ConfigManager = deps.configManager
