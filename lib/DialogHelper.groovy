@@ -96,13 +96,26 @@ class DialogHelperClass {
             title: title,
             owner: ui.currentFrame,
             modal: false, // Non-modal
-            resizable: false,
+            resizable: true, // Allow resizing for longer messages
             defaultCloseOperation: WindowConstants.DO_NOTHING_ON_CLOSE) { // Prevent manual closing
-            swingBuilder.panel(layout: new BorderLayout()) {
-                label(text: message, constraints: BorderLayout.CENTER)
+            swingBuilder.panel(layout: new BorderLayout(10, 10), border: BorderFactory.createEmptyBorder(10, 10, 10, 10)) {
+                // Use text area instead of label for multi-line support
+                scrollPane(constraints: BorderLayout.CENTER) {
+                    textArea(
+                        text: message,
+                        lineWrap: true,
+                        wrapStyleWord: true,
+                        editable: false,
+                        background: background, // Match dialog background
+                        margin: new Insets(5, 5, 5, 5),
+                        font: new Font(Font.SANS_SERIF, Font.PLAIN, 12)
+                    )
+                }
             }
         }
         dialog.pack()
+        // Set minimum size to prevent overly narrow dialogs
+        dialog.minimumSize = new Dimension(300, 150)
         ui.setDialogLocationRelativeTo(dialog, ui.currentFrame) // Center on frame
         
         return dialog
