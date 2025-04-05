@@ -33,7 +33,7 @@ def getBindingMap = deps.messageExpander.getBindingMap
 def parseAnalysis = deps.responseParser.parseAnalysis
 
 // Load the DialogHelper
-def dialogHelper = new GroovyShell(this.class.classLoader).evaluate(
+def DialogHelperClass = new GroovyShell(this.class.classLoader).evaluate(
     new File("${addonsDir}/lib/DialogHelper.groovy")
 )
 
@@ -105,7 +105,7 @@ try {
     def defaultComparisonTypes = ["Pros and Cons", "Compare and Contrast", "Strengths vs Weaknesses", "Advantages and Disadvantages"]
     def comparisonTypesConfigKey = "promptLlmAddOn.comparisonTypes"
 
-    String comparisonType = dialogHelper.showComparisonDialog(
+    String comparisonType = DialogHelperClass.showComparisonDialog(
         ui, 
         config, 
         sourceNode.delegate, 
@@ -141,7 +141,7 @@ try {
 
     // 5. Show Progress Dialog
     def progressMessage = "Requesting analysis for '${sourceNode.text}' and '${targetNode.text}' based on '${comparisonType}'. Please wait..."
-    def dialog = dialogHelper.createProgressDialog(ui, "Analyzing Nodes with LLM...", progressMessage)
+    def dialog = DialogHelperClass.createProgressDialog(ui, "Analyzing Nodes with LLM...", progressMessage)
     dialog.setVisible(true)
 
     // 6. Run API Calls in Background Thread
