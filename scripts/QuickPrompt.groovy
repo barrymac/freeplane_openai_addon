@@ -28,7 +28,8 @@ def generateBranches = createBranchGenerator([
         ui                  : ui,
         logger              : logger,
         make_openai_call    : make_openai_call,
-        make_openrouter_call: make_openrouter_call
+        make_openrouter_call: make_openrouter_call,
+        addonsDir           : "${config.freeplaneUserDirectory}/addons/promptLlmAddOn" // Pass add-on directory
 ])
 
 // Load saved configuration

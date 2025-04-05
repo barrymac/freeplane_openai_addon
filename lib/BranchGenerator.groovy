@@ -3,12 +3,6 @@ import groovy.swing.SwingBuilder
 import javax.swing.*
 import java.awt.*
 
-// Load the tagging function
-def nodeTaggerLoader = new GroovyShell(this.class.classLoader).evaluate(
-    new File("${config.freeplaneUserDirectory}/addons/promptLlmAddOn/lib/NodeTagger.groovy")
-)
-def addModelTagRecursively = nodeTaggerLoader.addModelTagRecursively
-
 // Function to create a branch generator with necessary dependencies
 def createGenerateBranches(closures) {
     return { apiKey, systemMessage, userMessage, model, maxTokens, temperature, provider ->
@@ -21,7 +15,17 @@ def createGenerateBranches(closures) {
         def SwingBuilder = SwingBuilder
         def make_openai_call = closures.make_openai_call
         def make_openrouter_call = closures.make_openrouter_call
-        
+        def addonsDir = closures.addonsDir // Get add-on directory from closures
+
+        // Load the tagging function using the provided addonsDir
+        def nodeTaggerLoader = new GroovyShell(this.class.classLoader).evaluate(
+            new File("${addonsDir}/lib/NodeTagger.groovy")
+        )
+        def addModelTagRecursively = nodeTaggerLoader.addModelTagRecursively
+        // Note: Making addModelTagRecursively available via closures might be useful elsewhere,
+        // but it's not strictly necessary for the current BranchGenerator logic itself.
+        // closures.addModelTagRecursively = addModelTagRecursively
+
         if (apiKey.isEmpty()) {
             if (provider == 'openrouter') {
                 Desktop.desktop.browse(new URI("https://openrouter.ai/keys"))
