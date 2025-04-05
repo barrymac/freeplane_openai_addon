@@ -16,6 +16,7 @@ def ConfigManager = deps.configManager
 def expandMessageFunction = deps.messageExpander.expandMessage
 def loadMessagesFromFile = deps.messageFileHandler.loadMessagesFromFile
 def saveMessagesToFile = deps.messageFileHandler.saveMessagesToFile
+def loadDefaultMessages = deps.messageLoader.loadDefaultMessages // Get the new loader function
 
 // Load the branch generator function
 def createBranchGenerator = new GroovyShell(this.class.classLoader).evaluate(
@@ -34,11 +35,6 @@ def selectedUserMessageIndex = config.getProperty('openai.user_message_index', 0
 
 String systemMessagesFilePath = "${config.freeplaneUserDirectory}/chatGptSystemMessages.txt"
 String userMessagesFilePath = "${config.freeplaneUserDirectory}/chatGptUserMessages.txt"
-String defaultSystemMessagesFilePath = "${config.freeplaneUserDirectory}/addons/promptLlmAddOn/lib/defaultSystemMessages.txt"
-String defaultUserMessagesFilePath = "${config.freeplaneUserDirectory}/addons/promptLlmAddOn/lib/defaultUserMessages.txt"
-
-String defaultSystemMessages = new File(defaultSystemMessagesFilePath).text.trim()
-String userSystemMessages = new File(defaultUserMessagesFilePath).text.trim()
 
 // Initialize the branch generator with necessary dependencies
 def generateBranches = createBranchGenerator([
@@ -148,8 +144,9 @@ swingBuilder.edt { // edt method makes sure the GUI is built on the Event Dispat
             constraints.weightx = 1.0
             constraints.gridx = 0
             constraints.gridy = -1  // Will be incremented to 0 in the first call to createSection
-            def systemMessages = loadMessagesFromFile(systemMessagesFilePath, defaultSystemMessages)
-            def userMessages = loadMessagesFromFile(userMessagesFilePath, userSystemMessages)
+            // Load messages, using defaults from JAR via MessageLoader if user file doesn't exist
+            def systemMessages = loadMessagesFromFile(systemMessagesFilePath, "/defaultSystemMessages.txt", loadDefaultMessages)
+            def userMessages = loadMessagesFromFile(userMessagesFilePath, "/defaultUserMessages.txt", loadDefaultMessages)
             MessageArea systemMessageArea = createMessageSection(swingBuilder, systemMessages, "System Message", selectedSystemMessageIndex, constraints, 4)
             MessageArea userMessageArea = createMessageSection(swingBuilder, userMessages, "User Message", selectedUserMessageIndex, constraints, 1)
             constraints.gridy++

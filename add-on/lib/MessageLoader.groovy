@@ -17,6 +17,18 @@ class MessageLoaderClass {
     }
 
     /**
+     * Loads a single default message/resource file from the JAR classpath.
+     *
+     * @param resourcePath The absolute path within the JAR (e.g., "/defaultSystemMessages.txt")
+     * @return The content of the resource file as a String.
+     * @throws Exception if the resource cannot be found.
+     */
+    static String loadDefaultMessages(String resourcePath) {
+        // Use the existing getResourceContent which already handles errors
+        return getResourceContent(resourcePath)
+    }
+
+    /**
      * Loads message templates for node comparison
      * 
      * @param config The Freeplane config object
@@ -36,4 +48,6 @@ class MessageLoaderClass {
 }
 
 // Return the class for use in scripts
-return MessageLoaderClass
+return [
+    MessageLoaderClass: MessageLoaderClass // Keep existing export if needed elsewhere
+] + MessageLoaderClass // Add static methods directly to the map

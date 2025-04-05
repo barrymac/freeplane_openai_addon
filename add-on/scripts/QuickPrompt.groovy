@@ -13,6 +13,7 @@ def deps = dependencyLoader.loadDependencies(config, logger, ui)
 def ConfigManager = deps.configManager
 def expandMessage = deps.messageExpander.expandMessage
 def loadMessagesFromFile = deps.messageFileHandler.loadMessagesFromFile
+def loadDefaultMessages = deps.messageLoader.loadDefaultMessages // Get the new loader function
 
 // Load the branch generator function
 def createBranchGenerator = new GroovyShell(this.class.classLoader).evaluate(
@@ -40,14 +41,10 @@ def generateBranches = createBranchGenerator([
 // Load message templates
 def systemMessagesFilePath = "${config.freeplaneUserDirectory}/chatGptSystemMessages.txt"
 def userMessagesFilePath = "${config.freeplaneUserDirectory}/chatGptUserMessages.txt"
-def defaultSystemMessagesFilePath = "${config.freeplaneUserDirectory}/addons/promptLlmAddOn/lib/defaultSystemMessages.txt"
-def defaultUserMessagesFilePath = "${config.freeplaneUserDirectory}/addons/promptLlmAddOn/lib/defaultUserMessages.txt"
 
-def defaultSystemMessages = new File(defaultSystemMessagesFilePath).text.trim()
-def userSystemMessages = new File(defaultUserMessagesFilePath).text.trim()
-
-def systemMessages = loadMessagesFromFile(systemMessagesFilePath, defaultSystemMessages)
-def userMessages = loadMessagesFromFile(userMessagesFilePath, userSystemMessages)
+// Load messages, using defaults from JAR via MessageLoader if user file doesn't exist
+def systemMessages = loadMessagesFromFile(systemMessagesFilePath, "/defaultSystemMessages.txt", loadDefaultMessages)
+def userMessages = loadMessagesFromFile(userMessagesFilePath, "/defaultUserMessages.txt", loadDefaultMessages)
 
 // Validate and fallback to defaults if needed
 def systemMessage = systemMessageIndex < systemMessages.size() ? systemMessages[systemMessageIndex] : systemMessages[0]

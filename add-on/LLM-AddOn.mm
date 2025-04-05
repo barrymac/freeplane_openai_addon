@@ -269,7 +269,6 @@
 <attribute NAME="delete" VALUE="${installationbase}/images/${name}.svg"/>
 <attribute NAME="delete" VALUE="${installationbase}/images/${name}-icon.svg"/>
 <attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/MessageExpander.groovy"/>
-<attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/defaultUserMessages.txt"/>
 <attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/defaultSystemMessages.txt"/>
 <attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/BranchGenerator.groovy"/>
 <attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/ApiCaller.groovy"/>
@@ -277,7 +276,6 @@
 <attribute NAME="delete" VALUE="${installationbase}/addons/${name}/scripts/AskGpt.groovy"/>
 <attribute NAME="delete" VALUE="${installationbase}/addons/${name}/scripts/QuickPrompt.groovy"/>
 <attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/NodeTagger.groovy"/>
-<attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/compareNodesUserMessage.txt"/>
 <attribute NAME="delete" VALUE="${installationbase}/addons/${name}/scripts/CompareConnectedNodes.groovy"/>
 <attribute NAME="delete" VALUE="${installationbase}/resources/images/promptLlmAddOn.svg"/>
 <attribute NAME="delete" VALUE="${installationbase}/resources/images/promptLlmAddOn-icon.svg"/>
@@ -291,7 +289,6 @@
 <attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/NodeHelper.groovy"/>
 <attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/Exceptions.groovy"/>
 <attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/compareNodesSystem.txt"/>
-<attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/generateComparativeDimensionSystem.txt"/>
 <attribute NAME="delete" VALUE="${installationbase}/addons/${name}/lib/compareNodesUserMessage.txt"/>
 </node>
 <node TEXT="scripts" POSITION="bottom_or_right" ID="ID_684917236" CREATED="1685111823977" MODIFIED="1742834859980">
@@ -490,8 +487,6 @@
 <node TEXT="BranchGenerator.groovy" ID="ID_BRANCH_GENERATOR" CREATED="1742845172655" MODIFIED="1742845172655"/>
 <node TEXT="ApiCaller.groovy" ID="ID_API_CALLER" CREATED="1742845172660" MODIFIED="1742845172660"/>
 <node TEXT="MessageFileHandler.groovy" ID="ID_MSG_FILE_HANDLER" CREATED="1742845172665" MODIFIED="1742845172665"/>
-<node TEXT="defaultUserMessages.txt" ID="ID_369580043" CREATED="1742845172659" MODIFIED="1742845172659"/>
-<node TEXT="defaultSystemMessages.txt" ID="ID_1170696227" CREATED="1742845172678" MODIFIED="1742845172678"/>
 <node TEXT="NodeTagger.groovy" ID="ID_NODE_TAGGER" CREATED="1743814000000" MODIFIED="1743814000000"/>
 <node TEXT="ConfigLoader.groovy" ID="ID_539433532" CREATED="1743816630916" MODIFIED="1743816630916"/>
 <node TEXT="MessageLoader.groovy" ID="ID_551718302" CREATED="1743816630921" MODIFIED="1743816630921"/>
@@ -530,8 +525,6 @@
     </p>
   </body>
 </html></richcontent>
-<node TEXT="defaultUserMessages.txt" ID="ID_1947158145" CREATED="1742845172659" MODIFIED="1742845172659"/>
-<node TEXT="defaultSystemMessages.txt" ID="ID_10935479" CREATED="1742845172678" MODIFIED="1742845172678"/>
 </node>
 <node TEXT="zips" POSITION="bottom_or_right" ID="ID_169986368" CREATED="1685111823978" MODIFIED="1685111823978">
 <edge COLOR="#007c7c"/>
