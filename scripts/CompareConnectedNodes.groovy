@@ -144,7 +144,7 @@ def addAnalysisToNodeAsBranch(def nodeProxy, Map analysisMap, String comparisonT
         }
     } catch (Exception e) {
         // Force message to String and ensure exception is Throwable
-        logger.error("Error calling appendTextOutlineAsBranch or tagging for node ${nodeProxy.text}".toString(), e as Throwable)
+        logger.warn("Error calling appendTextOutlineAsBranch or tagging for node ${nodeProxy.text}".toString(), e as Throwable)
         // Optionally, inform the user via ui.errorMessage if needed, but logging might be sufficient
     }
 }
