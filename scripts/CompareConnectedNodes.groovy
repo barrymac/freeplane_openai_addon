@@ -1,6 +1,6 @@
 import groovy.json.JsonSlurper
-import groovy.swing.SwingBuilder
-import org.freeplane.features.map.NodeModel
+import groovy.text.SimpleTemplateEngine
+
 import javax.swing.*
 import java.awt.*
 
@@ -45,9 +45,9 @@ try {
     // 1. Check API Key
     if (apiKey.isEmpty()) {
         if (provider == 'openrouter') {
-            java.awt.Desktop.desktop.browse(new URI("https://openrouter.ai/keys"))
+            Desktop.desktop.browse(new URI("https://openrouter.ai/keys"))
         } else {
-            java.awt.Desktop.desktop.browse(new URI("https://platform.openai.com/account/api-keys"))
+            Desktop.desktop.browse(new URI("https://platform.openai.com/account/api-keys"))
         }
         throw new Exception("API key is missing. Please configure it first via the LLM menu.")
     }
@@ -91,7 +91,7 @@ try {
     def sourceBinding = getBindingMap(sourceNode)
     sourceBinding['comparisonType'] = comparisonType
     logger.info("CompareNodes: Source Binding Map: ${sourceBinding}")
-    def sourceEngine = new groovy.text.SimpleTemplateEngine()
+    def sourceEngine = new SimpleTemplateEngine()
     def sourceUserPrompt = sourceEngine.createTemplate(compareNodesUserMessageTemplate).make(sourceBinding).toString()
     logger.info("CompareNodes: Source User Prompt:\n${sourceUserPrompt}")
 
@@ -99,7 +99,7 @@ try {
     def targetBinding = getBindingMap(targetNode)
     targetBinding['comparisonType'] = comparisonType
     logger.info("CompareNodes: Target Binding Map: ${targetBinding}")
-    def targetEngine = new groovy.text.SimpleTemplateEngine()
+    def targetEngine = new SimpleTemplateEngine()
     def targetUserPrompt = targetEngine.createTemplate(compareNodesUserMessageTemplate).make(targetBinding).toString()
     logger.info("CompareNodes: Target User Prompt:\n${targetUserPrompt}")
 
@@ -110,8 +110,6 @@ try {
 
     // 6. Run API Calls in Background Thread
     def workerThread = new Thread({
-        String sourceApiResponse = null
-        String targetApiResponse = null
         String errorMessage = null
 
         try {

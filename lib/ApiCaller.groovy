@@ -1,8 +1,11 @@
-def createApiCaller(closures) {
+import groovy.json.JsonOutput
+
+import java.awt.Desktop
+
+static def createApiCaller(closures) {
     def logger = closures.logger
     def ui = closures.ui
-    def config = closures.config
-    
+
     def make_api_call = { String provider, String apiKey, Map<String, Object> payloadMap ->
         def responseText = ""
         String apiUrl
@@ -30,7 +33,7 @@ def createApiCaller(closures) {
             // Apply all headers
             headers.each { key, value -> post.setRequestProperty(key, value) }
 
-            def payload = groovy.json.JsonOutput.toJson(payloadMap)
+            def payload = JsonOutput.toJson(payloadMap)
             post.getOutputStream().write(payload.getBytes("UTF-8"))
 
             def postRC = post.getResponseCode()
@@ -41,7 +44,7 @@ def createApiCaller(closures) {
                 logger.info("${provider} response: ${responseText.take(200)}...") // Log truncated response
             } else {
                 // Handle common error codes centrally
-                String errorMsg = "API Error (${provider}): Code ${postRC}"
+                String errorMsg
                 String browseUrl = null
                 switch (postRC) {
                     case 401:
@@ -59,7 +62,7 @@ def createApiCaller(closures) {
                 }
                 if (browseUrl) {
                     try {
-                        java.awt.Desktop.desktop.browse(new URI(browseUrl))
+                        Desktop.desktop.browse(new URI(browseUrl))
                     } catch (Exception browseEx) {
                         logger.warn("Failed to open browser for URL: ${browseUrl}", browseEx as Throwable)
                     }
