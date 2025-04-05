@@ -1,12 +1,6 @@
 package com.barrymac.freeplane.addons.llm
 
 // Helper class to centralize dependency loading
-import com.barrymac.freeplane.addons.llm.DialogHelperClass
-import com.barrymac.freeplane.addons.llm.ConfigManager
-import com.barrymac.freeplane.addons.llm.MessageLoaderClass
-import com.barrymac.freeplane.addons.llm.ApiCallerFactory
-import com.barrymac.freeplane.addons.llm.BranchGeneratorFactory
-import com.barrymac.freeplane.addons.llm.MessageExpander
 
 class DependencyLoaderClass {
     static Map loadDependencies(config, logger, ui) {

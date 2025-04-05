@@ -1,8 +1,8 @@
 package com.barrymac.freeplane.addons.llm
 
 import groovy.json.JsonBuilder
-import java.awt.Desktop
-import java.net.URI
+
+import java.awt.*
 
 class ApiCallerFactory {
     static def createApiCaller(Map closures) {

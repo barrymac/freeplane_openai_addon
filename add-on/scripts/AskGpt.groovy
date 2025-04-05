@@ -1,10 +1,10 @@
+import com.barrymac.freeplane.addons.llm.DependencyLoaderClass
 import groovy.swing.SwingBuilder
 
 import javax.swing.*
 import java.awt.*
 
 // Import the compiled DependencyLoaderClass
-import com.barrymac.freeplane.addons.llm.DependencyLoaderClass
 
 // Load all dependencies
 // Call static method directly

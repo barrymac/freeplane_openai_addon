@@ -1,5 +1,3 @@
-import org.freeplane.features.map.NodeModel
-
 /**
  * Helper class for node operations
  */
