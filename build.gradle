@@ -1,0 +1,60 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'org.freeplane:gradle-freeplane-plugin:0.8'
+    }
+}
+
+plugins {
+    id 'groovy'
+}
+
+
+repositories {
+    mavenCentral()
+}
+
+apply plugin: 'org.freeplane.gradle-freeplane-plugin'
+
+//java {
+//    toolchain {
+//        languageVersion = JavaLanguageVersion.of(8)
+//    }
+//}
+
+freeplane {
+    // mandatory, freeplane installation directory.
+    // (Freeplane.app directory on MacOS)
+    // In this example it is taken from system environment.
+    freeplaneDirectory = "/home/barry/bin/freeplane-1.12.9/"
+
+    // recommended, freeplane user setting directory.
+    // It should be specified without the version number suffix.
+    // The value used by default can be different from your OS default.
+    // userDirectory = 'user-directory'
+
+    // optional, addon source directory
+     addonSourceDirectory = 'add-on'
+
+    // optional, to be set only if more then one mind map file in the addon source directory
+    // addonDefinitionMindMapFileName = 'Greetings.mm'
+
+    // optional, includes
+    // includes = ['**/*']
+
+    // optional, excludes
+    // excludes = ['**/*.bak', '**/~*', '**/$~*.mm~', '**/*.gdsl', '**/*.dsld']
+
+    // optional, max heap size for freeplane
+    // maxHeapSize = '1024m'
+
+    // optional, additional Java Runtime options
+    // jvmArgs = []
+
+}
+
+jar {
+    archiveFileName = 'llm.jar'
+}
